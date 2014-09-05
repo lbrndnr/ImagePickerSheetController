@@ -24,9 +24,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
     
     var delegate: BRNImagePickerSheetDelegate?
     
-    private let overlayView = UIView()
-    private let tableView = UITableView()
-    
     private var photos = [UIImage]()
     private var selectedPhotos = [UIImage]()
     private var previewsPhotos: Bool {
@@ -49,6 +46,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
     private class var animationDuration: Double {
         return 0.3
     }
+    
+    private let overlayView = UIView()
+    private let tableView = UITableView()
     
     // MARK: Initialization
     
@@ -100,6 +100,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
         }
         
         return numberOfTitles
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if self.previewsPhotos {
+            if indexPath.row == 0 {
+                return 100.0
+            }
+        }
+        
+        return self.tableView.rowHeight
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -175,7 +185,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
             }, completion: { (finished: Bool) -> Void in
                 self.delegate?.imagePickerSheet?(self, didDismissWithButtonIndex: buttonIndex)
                 self.removeFromSuperview()
-                println("finished")
         })
     }
     
@@ -210,17 +219,21 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
 
 class BRNImagePreviewCell : UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    var delegate: BRNImagePreviewCellDelegate?
     var photos = [UIImage]()
     
-    private let collectionView: UICollectionView
+    private class var sectionInset: UIEdgeInsets {
+        return UIEdgeInsetsMake(4.0, 4.0, 4.0, 4.0)
+    }
     
-    var delegate: BRNImagePreviewCellDelegate?
+    private let collectionView: UICollectionView
     
     // MARK: Initialization
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .Horizontal
+        layout.sectionInset = BRNImagePreviewCell.sectionInset
         self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -237,7 +250,7 @@ class BRNImagePreviewCell : UITableViewCell, UICollectionViewDataSource, UIColle
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UITableViewDataSource
+    // MARK: - UICollectionViewDataSource
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
@@ -246,6 +259,7 @@ class BRNImagePreviewCell : UITableViewCell, UICollectionViewDataSource, UIColle
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.photos.count
     }
+
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
@@ -254,7 +268,15 @@ class BRNImagePreviewCell : UITableViewCell, UICollectionViewDataSource, UIColle
         return cell
     }
     
-    // MARK: - UITableViewDelegate
+    func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let photo = self.photos[indexPath.row]
+        let height = CGRectGetHeight(self.frame) - BRNImagePreviewCell.sectionInset.top - BRNImagePreviewCell.sectionInset.bottom
+        let factor = height / photo.size.height
+        
+        return CGSizeMake(factor * photo.size.width, height)
+    }
+    
+    // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         self.delegate?.imagePreviewCell?(self, didSelectImageAtIndex: indexPath.row)
