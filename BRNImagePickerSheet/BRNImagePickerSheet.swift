@@ -34,7 +34,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     var cancelButtonIndex: Int {
-        return self.tableView.numberOfRowsInSection(0) - 1
+        let lastIndex = self.tableView.numberOfRowsInSection(0) - 1
+        if self.previewsPhotos {
+            return lastIndex - 1
+        }
+            
+        return lastIndex
     }
     
     private var titles: [NSString] {
@@ -67,9 +72,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
                 group.setAssetsFilter(ALAssetsFilter.allPhotos())
                 group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
                     if asset != nil {
-//                        let representation: ALAssetRepresentation = asset.defaultRepresentation()
-//                        let photo = UIImage(CGImage: representation.fullResolutionImage())
-//                        self.photos.append(photo)
+                        let representation: ALAssetRepresentation = asset.defaultRepresentation()
+                        let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue())
+                        self.photos.append(photo)
                     }
                 })
                 
@@ -127,13 +132,15 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        var buttonIndex = indexPath.row
         var dismiss = true
         if self.previewsPhotos {
+            --buttonIndex
             dismiss = (indexPath.row != 0)
         }
         
         if dismiss {
-            self.dismissWithClickedButtonIndex(indexPath.row, animated: true)
+            self.dismissWithClickedButtonIndex(buttonIndex, animated: true)
         }
     }
     
@@ -201,21 +208,29 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate {
 
 }
 
-class BRNImagePreviewCell : UITableViewCell, UITableViewDataSource, UITableViewDelegate {
+class BRNImagePreviewCell : UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var photos = [UIImage]()
     
-    private let tableView = UITableView()
+    private let collectionView: UICollectionView
     
     var delegate: BRNImagePreviewCellDelegate?
     
     // MARK: Initialization
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .Horizontal
+        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
+        self.collectionView.backgroundColor = UIColor.clearColor()
+        self.collectionView.alwaysBounceHorizontal = true
+        self.collectionView.registerClass(BRNImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "Cell")
+        self.addSubview(self.collectionView)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -224,35 +239,60 @@ class BRNImagePreviewCell : UITableViewCell, UITableViewDataSource, UITableViewD
 
     // MARK: - UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.photos.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
-        cell.imageView!.image = self.photos[indexPath.row]
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
+        cell.imageView.image = self.photos[indexPath.row]
         
         return cell
     }
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         self.delegate?.imagePreviewCell?(self, didSelectImageAtIndex: indexPath.row)
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         self.delegate?.imagePreviewCell?(self, didDeselectImageAtIndex: indexPath.row)
     }
 
     // MARK: - Layout
     
     override func layoutSubviews() {
-        self.tableView.frame = self.bounds
+        self.collectionView.frame = self.bounds
     }
 
+}
+
+class BRNImageCollectionViewCell : UICollectionViewCell {
+    
+    let imageView = UIImageView()
+    
+    // MARK: - Initialization
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.addSubview(imageView)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Layout
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.imageView.frame = self.bounds
+    }
 }

@@ -28,7 +28,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
         if buttonIndex != imagePickerSheet.cancelButtonIndex {
             let controller = UIImagePickerController()
             controller.delegate = self
-            controller.sourceType = .PhotoLibrary
+            controller.sourceType = (buttonIndex == 0) ? .PhotoLibrary : .Camera
             self.presentViewController(controller, animated: true, completion: nil)
         }
     }
