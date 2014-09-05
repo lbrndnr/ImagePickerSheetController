@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4907781219B9D5BF000A73D8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4907781119B9D5BF000A73D8 /* AssetsLibrary.framework */; };
 		49887F6319B874A30020C938 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F6219B874A30020C938 /* AppDelegate.swift */; };
 		49887F6519B874A30020C938 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F6419B874A30020C938 /* ViewController.swift */; };
 		49887F6A19B874A40020C938 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49887F6919B874A40020C938 /* Images.xcassets */; };
@@ -25,6 +26,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4907781119B9D5BF000A73D8 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		49887F5D19B874A30020C938 /* BRNImagePickerSheet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BRNImagePickerSheet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49887F6119B874A30020C938 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49887F6219B874A30020C938 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4907781219B9D5BF000A73D8 /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +57,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4907781319B9D5CA000A73D8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4907781119B9D5BF000A73D8 /* AssetsLibrary.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		49887F5419B874A30020C938 = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +90,7 @@
 				49887F6419B874A30020C938 /* ViewController.swift */,
 				49887F7F19B885F20020C938 /* BRNImagePickerSheet.swift */,
 				49887F6919B874A40020C938 /* Images.xcassets */,
+				4907781319B9D5CA000A73D8 /* Frameworks */,
 				49887F6019B874A30020C938 /* Supporting Files */,
 			);
 			path = BRNImagePickerSheet;
@@ -386,6 +398,7 @@
 				49887F7B19B874A40020C938 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		49887F7C19B874A40020C938 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheetTests" */ = {
 			isa = XCConfigurationList;
@@ -394,6 +407,7 @@
 				49887F7E19B874A40020C938 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
