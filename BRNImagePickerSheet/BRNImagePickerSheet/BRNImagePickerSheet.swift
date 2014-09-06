@@ -20,7 +20,7 @@ import AssetsLibrary
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
 
-class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, BRNImagePreviewCellDelegate {
+class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, BRNImagePreviewTableViewCellDelegate {
     
     private let overlayView = UIView()
     private let tableView = UITableView()
@@ -119,7 +119,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, B
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && self.previewsPhotos {
-            let cell = BRNImagePreviewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
+            let cell = BRNImagePreviewTableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
             cell.delegate = self
             cell.photos = self.photos
             
@@ -162,7 +162,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, B
     
     // MARK: - BRNImagePreviewCellDelegate
     
-    func imagePreviewCell(imagePreviewCell: BRNImagePreviewCell, didSelectImageAtIndex imageIndex: Int) {
+    func imagePreviewCell(imagePreviewCell: BRNImagePreviewTableViewCell, didSelectImageAtIndex imageIndex: Int) {
         self.enlargedPreviews = true
         self.tableView.reloadData()
         self.setNeedsLayout()
@@ -170,7 +170,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, B
         self.selectedPhotos.append(self.photos[imageIndex])
     }
     
-    func imagePreviewCell(imagePreviewCell: BRNImagePreviewCell, didDeselectImageAtIndex imageIndex: Int) {
+    func imagePreviewCell(imagePreviewCell: BRNImagePreviewTableViewCell, didDeselectImageAtIndex imageIndex: Int) {
         self.selectedPhotos.removeAtIndex(find(self.photos, self.photos[imageIndex])!)
     }
     
@@ -225,190 +225,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, B
         
         self.tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), self.tableView.contentSize.height)
         self.tableView.frame.origin.y = CGRectGetMaxY(bounds)-CGRectGetHeight(self.tableView.frame)
-    }
-    
-}
-
-@objc protocol BRNImagePreviewCellDelegate {
-    
-    optional func imagePreviewCell(imagePreviewCell: BRNImagePreviewCell, didSelectImageAtIndex imageIndex: Int)
-    
-    optional func imagePreviewCell(imagePreviewCell: BRNImagePreviewCell, didDeselectImageAtIndex imageIndex: Int)
-
-}
-
-class BRNImagePreviewCell : UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    private let collectionView: UICollectionView
-    
-    var delegate: BRNImagePreviewCellDelegate?
-    var photos = [UIImage]()
-    private var sections = [Int: BRNImageSupplementaryView]()
-    
-    private class var sectionInset: UIEdgeInsets {
-        return UIEdgeInsetsMake(4.0, 0.0, 4.0, -16.0)
-    }
-    
-    private class var contentInset: UIEdgeInsets {
-        return UIEdgeInsetsMake(0.0, 4.0, 0.0, 4.0)
-    }
-    
-    // MARK: Initialization
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .Horizontal
-        layout.sectionInset = BRNImagePreviewCell.sectionInset
-        layout.footerReferenceSize = CGSizeMake(20.0, 100)
-        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
-        
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.contentInset = BRNImagePreviewCell.contentInset
-        self.collectionView.backgroundColor = UIColor.clearColor()
-        self.collectionView.showsHorizontalScrollIndicator = false
-        self.collectionView.alwaysBounceHorizontal = true
-        self.collectionView.registerClass(BRNImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "Cell")
-        self.collectionView.registerClass(BRNImageSupplementaryView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "SupplementaryView")
-        self.addSubview(self.collectionView)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - UICollectionViewDataSource
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.photos.count
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
-        cell.imageView.image = self.photos[indexPath.section]
-        
-        return cell
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let photo = self.photos[indexPath.section]
-        let height = CGRectGetHeight(self.frame) - BRNImagePreviewCell.sectionInset.top - BRNImagePreviewCell.sectionInset.bottom
-        let factor = height / photo.size.height
-        
-        return CGSizeMake(factor * photo.size.width, height)
-    }
-    
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view: BRNImageSupplementaryView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "SupplementaryView", forIndexPath: indexPath) as BRNImageSupplementaryView
-        view.userInteractionEnabled = false
-        
-        self.sections[indexPath.section] = view
-        return view
-    }
-    
-    // MARK: - UICollectionViewDelegate
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let possibleView = self.sections[indexPath.section]
-        if let view = possibleView {
-            view.selected = true
-        }
-        
-        self.delegate?.imagePreviewCell?(self, didSelectImageAtIndex: indexPath.section)
-    }
-    
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        let possibleView = self.sections[indexPath.section]
-        if let view = possibleView {
-            view.selected = false
-        }
-        
-        self.delegate?.imagePreviewCell?(self, didDeselectImageAtIndex: indexPath.section)
-    }
-
-    // MARK: - Layout
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.collectionView.frame = self.bounds
-    }
-
-}
-
-class BRNImageCollectionViewCell : UICollectionViewCell {
-    
-    let imageView = UIImageView()
-    
-    // MARK: - Initialization
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.addSubview(imageView)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Layout
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.imageView.frame = self.bounds
-    }
-}
-
-class BRNImageSupplementaryView : UICollectionReusableView {
-    
-    private let button = UIButton()
-    
-    var selected: Bool = false {
-        didSet {
-            self.button.selected = self.selected
-            self.button.backgroundColor = (self.selected) ? self.tintColor : nil
-        }
-    }
-    
-    private class var checkmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark").imageWithRenderingMode(.AlwaysTemplate)
-    }
-    
-    private class var selectedCheckmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark-selected").imageWithRenderingMode(.AlwaysTemplate)
-    }
-    
-    // MARK: - Initialization
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.button.tintColor = UIColor.whiteColor()
-        self.button.setImage(BRNImageSupplementaryView.checkmarkImage, forState: .Normal)
-        self.button.setImage(BRNImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)
-        self.addSubview(self.button)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Layout
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.button.sizeToFit()
-        self.button.frame.origin.y = CGRectGetHeight(self.bounds)-CGRectGetHeight(self.button.frame)-20
-        self.button.layer.cornerRadius = CGRectGetHeight(self.button.frame) / 2.0
     }
     
 }
