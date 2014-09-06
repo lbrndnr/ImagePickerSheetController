@@ -12,7 +12,7 @@ class BRNImageCollectionViewCell : UICollectionViewCell {
     
     let imageView = UIImageView()
     
-    // MARK: - Initialization
+    // MARK: Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)

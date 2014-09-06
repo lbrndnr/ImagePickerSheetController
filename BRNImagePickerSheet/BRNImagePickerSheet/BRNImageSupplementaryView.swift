@@ -12,6 +12,8 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     
     private let button = UIButton()
     
+    var buttonInset = UIEdgeInsetsZero
+    
     var selected: Bool = false {
         didSet {
             self.button.selected = self.selected
@@ -19,15 +21,15 @@ class BRNImageSupplementaryView : UICollectionReusableView {
         }
     }
     
-    private class var checkmarkImage: UIImage {
+    class var checkmarkImage: UIImage {
         return UIImage(named: "BRNImagePickerSheet-checkmark").imageWithRenderingMode(.AlwaysTemplate)
     }
     
-    private class var selectedCheckmarkImage: UIImage {
+    class var selectedCheckmarkImage: UIImage {
         return UIImage(named: "BRNImagePickerSheet-checkmark-selected").imageWithRenderingMode(.AlwaysTemplate)
     }
     
-    // MARK: - Initialization
+    // MARK: Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,13 +44,21 @@ class BRNImageSupplementaryView : UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Other Methods
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.selected = false
+    }
+    
     // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         self.button.sizeToFit()
-        self.button.frame.origin.y = CGRectGetHeight(self.bounds)-CGRectGetHeight(self.button.frame)-20
+        self.button.frame.origin = CGPointMake(self.buttonInset.left, CGRectGetHeight(self.bounds)-CGRectGetHeight(self.button.frame)-self.buttonInset.bottom)
         self.button.layer.cornerRadius = CGRectGetHeight(self.button.frame) / 2.0
     }
     
