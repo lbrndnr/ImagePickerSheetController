@@ -52,7 +52,15 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     private class var animationDuration: Double {
         return 0.3
     }
-    
+    private class var tableViewRowHeight: CGFloat {
+        return 44.0
+    }
+    private class var tableViewPreviewRowHeight: CGFloat {
+        return 100.0
+    }
+    private class var tableViewEnlargedPreviewRowHeight: CGFloat {
+        return 200.0
+    }
     private class var collectionViewInset: CGFloat {
         return 4.0
     }
@@ -127,14 +135,14 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         if self.previewsPhotos {
             if indexPath.row == 0 {
                 if (self.enlargedPreviews) {
-                    return 200.0
+                    return BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight
                 }
                 
-                return 100.0
+                return BRNImagePickerSheet.tableViewPreviewRowHeight
             }
         }
         
-        return 44.0
+        return BRNImagePickerSheet.tableViewRowHeight
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
