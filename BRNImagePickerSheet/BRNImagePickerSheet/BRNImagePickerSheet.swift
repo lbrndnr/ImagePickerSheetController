@@ -134,7 +134,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             }
         }
         
-        return self.tableView.rowHeight
+        return 44.0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -223,9 +223,13 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if !self.enlargedPreviews {
             self.enlargedPreviews = true
-            self.tableView.reloadData()
-            self.collectionView.reloadData()
+            
             self.setNeedsLayout()
+            UIView.animateWithDuration(1.0, animations: { () -> Void in
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+                self.layoutIfNeeded()
+            }, completion: nil)
         }
         
         let selected = contains(self.selectedPhotoIndices, indexPath.section)
@@ -291,7 +295,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         
         self.overlayView.frame = bounds
         
-        self.tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), self.tableView.contentSize.height)
+        var tableViewHeight: CGFloat = 0.0
+        for var row = 0; row < self.tableView.numberOfRowsInSection(0); ++row {
+            tableViewHeight += self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
+        }
+        
+        self.tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), tableViewHeight)
         self.tableView.frame.origin.y = CGRectGetMaxY(bounds)-CGRectGetHeight(self.tableView.frame)
     }
     
