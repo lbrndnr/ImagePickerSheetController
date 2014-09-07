@@ -70,6 +70,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     override init() {
         let inset = BRNImagePickerSheet.collectionViewInset
         let layout = BRNHorizontalImagePreviewFlowLayout()
+        layout.showsSupplementaryViews = false
         layout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset)
         self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         
@@ -212,7 +213,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         let view: BRNImageSupplementaryView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView", forIndexPath: indexPath) as BRNImageSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewInset, BRNImagePickerSheet.collectionViewInset, 0.0)
-        view.hidden = !self.enlargedPreviews
         view.selected = contains(self.selectedPhotoIndices, indexPath.section)
         
         self.supplementaryViews[indexPath.section] = view
@@ -242,7 +242,10 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 self.tableView.endUpdates()
                 self.collectionView.collectionViewLayout.invalidateLayout()
                 self.layoutIfNeeded()
-            }, completion: nil)
+            }, completion: { (finished) -> Void in
+                let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
+                layout.showsSupplementaryViews = true
+            })
         }
         
         let selected = contains(self.selectedPhotoIndices, indexPath.section)

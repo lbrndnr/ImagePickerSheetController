@@ -10,6 +10,12 @@ import UIKit
 
 class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
+    var showsSupplementaryViews: Bool = true {
+        didSet {
+            self.invalidateLayout()
+        }
+    }
+    
     // MARK: Initialization
     
     override init() {
@@ -73,16 +79,8 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
             let itemFrame = CGRect(origin: itemOrigin, size: itemSize)
             
             if visibleFrame.intersects(itemFrame) {
-                let itemAttributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
-                itemAttributes.zIndex = 0
-                itemAttributes.frame = itemFrame
-                
-                let headerAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withIndexPath: indexPath)
-                headerAttributes.zIndex = 1
-                
-                let headerSize = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: section)
-                let headerOriginX = max(itemFrame.minX, min(itemFrame.maxX - headerSize.width, visibleFrame.maxX - headerSize.width))
-                headerAttributes.frame = CGRect(origin: CGPoint(x: headerOriginX, y: itemFrame.minY), size: headerSize)
+                let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath)
+                let headerAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: indexPath)
                 
                 allAttributes += [itemAttributes, headerAttributes]
             }
@@ -93,22 +91,72 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return allAttributes
     }
     
-    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let possibleAttributes = super.initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath)
-        if let attributes = possibleAttributes {
-            attributes.alpha = 1.0
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+        if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
+            return nil
         }
         
-        return possibleAttributes
+        let collectionView = self.collectionView!
+        let dataSource = collectionView.dataSource!
+        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
+        
+        // TODO: really necessary to have to dataSources?
+        
+        var origin = CGPoint(x: self.sectionInset.left, y: self.sectionInset.top)
+        for section in 0 ..< dataSource.numberOfSectionsInCollectionView!(collectionView) {
+            let currentIndexPath = NSIndexPath(forRow: 0, inSection: section)
+            let size = layoutDataSource.collectionView!(collectionView, layout: self, sizeForItemAtIndexPath: currentIndexPath)
+            let frame = CGRect(origin: origin, size: size)
+            
+            if currentIndexPath == indexPath {
+                let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+                attributes.zIndex = 0
+                attributes.frame = frame
+                
+                return attributes
+            }
+            
+            origin.x = frame.maxX + self.sectionInset.right
+        }
+        
+        return nil
+    }
+    
+    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+        if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
+            return nil
+        }
+        
+        let collectionView = self.collectionView!
+        let dataSource = collectionView.dataSource!
+        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
+        
+        // TODO: really necessary to have to dataSources?
+        
+        let contentOffset = collectionView.contentOffset
+        let collectionViewSize = collectionView.frame.size
+        let visibleFrame = CGRect(origin: contentOffset, size: collectionViewSize)
+        
+        let possibleItemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath)
+        if let itemAttributes = possibleItemAttributes {
+            let itemFrame = itemAttributes.frame
+            
+            let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
+            attributes.zIndex = 1
+            attributes.hidden = !self.showsSupplementaryViews
+            
+            let size = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section)
+            let originX = max(itemFrame.minX, min(itemFrame.maxX - size.width, visibleFrame.maxX - size.width))
+            attributes.frame = CGRect(origin: CGPoint(x: originX, y: itemFrame.minY), size: size)
+            
+            return attributes
+        }
+        
+        return nil
     }
     
     override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let possibleAttributes = super.finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath)
-        if let attributes = possibleAttributes {
-            attributes.alpha = 1.0
-        }
-        
-        return possibleAttributes
+        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
     }
     
 }
