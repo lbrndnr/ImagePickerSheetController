@@ -25,14 +25,25 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     // MARK: - Layout
     
     override func collectionViewContentSize() -> CGSize {
-        var contentSize = super.collectionViewContentSize()
-        
-        if let collectionView = self.collectionView {
-            var sectionsCount = collectionView.numberOfSections()
-            contentSize.width -= CGFloat(sectionsCount) * self.headerReferenceSize.width
+        if self.collectionView == nil {
+            return CGSizeZero
         }
         
-        return contentSize
+        let collectionView = self.collectionView!
+        let dataSource = collectionView.dataSource!
+        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
+        
+        // TODO: really necessary to have to dataSources?
+        
+        var width: CGFloat = self.sectionInset.left
+        for section in 0 ..< dataSource.numberOfSectionsInCollectionView!(collectionView) {
+            let indexPath = NSIndexPath(forRow: 0, inSection: section)
+            let size = layoutDataSource.collectionView!(collectionView, layout: self, sizeForItemAtIndexPath: indexPath)
+            
+            width += size.width + self.sectionInset.right
+        }
+        
+        return CGSizeMake(width, collectionView.frame.height)
     }
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
@@ -40,37 +51,64 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-        let attributes: [UICollectionViewLayoutAttributes] = super.layoutAttributesForElementsInRect(rect) as [UICollectionViewLayoutAttributes]
-        
-        var sectionedAttributes = [Int: UICollectionViewLayoutAttributes]()
-        for attribute in attributes {
-            if attribute.representedElementCategory == .Cell {
-                attribute.zIndex = 0
-                attribute.frame.origin.x -= CGFloat(attribute.indexPath.section+1) * self.headerReferenceSize.width
-                
-                sectionedAttributes[attribute.indexPath.section] = attribute
-            }
+        if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
+            return nil
         }
         
-        for attribute in attributes {
-            if attribute.representedElementCategory == .SupplementaryView {
-                attribute.zIndex = 1
+        let collectionView = self.collectionView!
+        let dataSource = collectionView.dataSource!
+        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
+        
+        // TODO: really necessary to have to dataSources?
+        
+        let contentOffset = collectionView.contentOffset
+        let collectionViewSize = collectionView.frame.size
+        let visibleFrame = CGRect(origin: contentOffset, size: collectionViewSize)
+        
+        var allAttributes = [UICollectionViewLayoutAttributes]()
+        var itemOrigin = CGPoint(x: self.sectionInset.left, y: self.sectionInset.top)
+        for section in 0 ..< dataSource.numberOfSectionsInCollectionView!(collectionView) {
+            let indexPath = NSIndexPath(forRow: 0, inSection: section)
+            let itemSize = layoutDataSource.collectionView!(collectionView, layout: self, sizeForItemAtIndexPath: indexPath)
+            let itemFrame = CGRect(origin: itemOrigin, size: itemSize)
+            
+            if visibleFrame.intersects(itemFrame) {
+                let itemAttributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+                itemAttributes.zIndex = 0
+                itemAttributes.frame = itemFrame
                 
-                let width = CGRectGetWidth(attribute.frame)
-                let contentOffset = (self.collectionView? != nil) ? (self.collectionView!.contentOffset.x + CGRectGetWidth(self.collectionView!.frame) - width) : 0.0
-                var minOriginX: CGFloat = 0.0
-                var maxOriginX: CGFloat = 0.0
-                let possibleCellAttributes = sectionedAttributes[attribute.indexPath.section]
-                if let cellAttributes = possibleCellAttributes {
-                    minOriginX = CGRectGetMinX(cellAttributes.frame)
-                    maxOriginX = CGRectGetMaxX(cellAttributes.frame)-width
-                }
+                let headerAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withIndexPath: indexPath)
+                headerAttributes.zIndex = 1
+                
+                let headerSize = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: section)
+                let headerOriginX = max(itemFrame.minX, min(itemFrame.maxX - headerSize.width, visibleFrame.maxX - headerSize.width))
+                headerAttributes.frame = CGRect(origin: CGPoint(x: headerOriginX, y: itemFrame.minY), size: headerSize)
+                
+                allAttributes += [itemAttributes, headerAttributes]
+            }
+            
+            itemOrigin.x = itemFrame.maxX + self.sectionInset.right
+        }
 
-                attribute.frame.origin.x = max(minOriginX, min(maxOriginX, contentOffset))
-            }
+        return allAttributes
+    }
+    
+    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        let possibleAttributes = super.initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath)
+        if let attributes = possibleAttributes {
+            attributes.alpha = 1.0
         }
         
-        return attributes
+        return possibleAttributes
+    }
+    
+    override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        let possibleAttributes = super.finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath)
+        if let attributes = possibleAttributes {
+            attributes.alpha = 1.0
+        }
+        
+        return possibleAttributes
     }
     
 }

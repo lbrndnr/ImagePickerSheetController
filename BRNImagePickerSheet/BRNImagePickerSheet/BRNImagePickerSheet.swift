@@ -68,9 +68,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     // MARK: Initialization
     
     override init() {
+        let inset = BRNImagePickerSheet.collectionViewInset
         let layout = BRNHorizontalImagePreviewFlowLayout()
-        layout.sectionInset = UIEdgeInsetsMake(BRNImagePickerSheet.collectionViewInset, 0.0, BRNImagePickerSheet.collectionViewInset, 4.0)
-        layout.headerReferenceSize = CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + 2.0 * BRNImagePickerSheet.collectionViewInset, 0.0)
+        layout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset)
         self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         
         super.init(frame: CGRectZero)
@@ -104,7 +104,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
-        self.collectionView.contentInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewInset, 0.0, 0.0)
         self.collectionView.backgroundColor = UIColor.clearColor()
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.alwaysBounceHorizontal = true
@@ -204,10 +203,15 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return cell
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let inset = 2.0 * BRNImagePickerSheet.collectionViewInset
+        return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, collectionView.frame.height - inset)
+    }
+    
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let view: BRNImageSupplementaryView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView", forIndexPath: indexPath) as BRNImageSupplementaryView
         view.userInteractionEnabled = false
-        view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewInset, 2.0 * BRNImagePickerSheet.collectionViewInset, 0.0)
+        view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewInset, BRNImagePickerSheet.collectionViewInset, 0.0)
         view.hidden = !self.enlargedPreviews
         view.selected = contains(self.selectedPhotoIndices, indexPath.section)
         
@@ -236,6 +240,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             UIView.animateWithDuration(1.0, animations: { () -> Void in
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
+                self.collectionView.collectionViewLayout.invalidateLayout()
                 self.layoutIfNeeded()
             }, completion: nil)
         }
