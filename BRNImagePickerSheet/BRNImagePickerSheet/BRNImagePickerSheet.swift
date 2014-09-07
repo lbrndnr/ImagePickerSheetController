@@ -253,6 +253,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
+                self.collectionView.collectionViewLayout.invalidateLayout()
                 self.layoutIfNeeded()
                 
                 scrolled = true
