@@ -49,7 +49,10 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     private var enlargedPreviews = false
     
-    private class var animationDuration: Double {
+    private class var presentationAnimationDuration: Double {
+        return 0.3
+    }
+    private class var enlargementAnimationDuration: Double {
         return 0.3
     }
     private class var tableViewRowHeight: CGFloat {
@@ -237,7 +240,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             self.enlargedPreviews = true
             
             self.setNeedsLayout()
-            UIView.animateWithDuration(1.0, animations: { () -> Void in
+            UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: { () -> Void in
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
                 self.collectionView.collectionViewLayout.invalidateLayout()
@@ -274,7 +277,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         
         self.delegate?.willPresentImagePickerSheet?(self)
 
-        UIView.animateWithDuration(BRNImagePickerSheet.animationDuration, animations: { () -> Void in
+        UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
             self.tableView.frame.origin.y = originalTableViewOffset
             self.overlayView.alpha = 1.0
             }, completion: { (finished: Bool) -> Void in
@@ -286,7 +289,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
         self.delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
         
-        let duration = (animated) ? BRNImagePickerSheet.animationDuration : 0.0
+        let duration = (animated) ? BRNImagePickerSheet.presentationAnimationDuration : 0.0
         UIView.animateWithDuration(duration, animations: { () -> Void in
             self.overlayView.alpha = 0.0
             self.tableView.frame.origin.y += CGRectGetHeight(self.tableView.frame)
