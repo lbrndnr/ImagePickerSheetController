@@ -190,6 +190,7 @@
 				TargetAttributes = {
 					49887F5C19B874A30020C938 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 5953RHWYWT;
 					};
 					49887F6E19B874A40020C938 = {
 						CreatedOnToolsVersion = 6.0;

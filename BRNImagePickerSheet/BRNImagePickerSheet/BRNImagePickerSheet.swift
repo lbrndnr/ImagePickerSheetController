@@ -98,7 +98,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                     if asset != nil {
                         let representation: ALAssetRepresentation = asset.defaultRepresentation()
                         let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue())
-                        self.photos.append(photo)
+                        self.photos.insert(photo, atIndex: 0)
                     }
                 })
                 
@@ -236,28 +236,36 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let selected = contains(self.selectedPhotoIndices, indexPath.section)
+        var scrolled = false
+        
         if !self.enlargedPreviews {
             self.enlargedPreviews = true
             
             self.setNeedsLayout()
-            UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: { () -> Void in
+            UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration*5, animations: { () -> Void in
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
                 self.collectionView.collectionViewLayout.invalidateLayout()
+                if !selected {
+                    self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+                    scrolled = true
+                }
                 self.layoutIfNeeded()
             }, completion: { (finished) -> Void in
                 let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
                 layout.showsSupplementaryViews = true
             })
         }
-        
-        let selected = contains(self.selectedPhotoIndices, indexPath.section)
     
         if selected {
             self.selectedPhotoIndices.removeAtIndex(find(self.selectedPhotoIndices, indexPath.section)!)
         }
         else {
             self.selectedPhotoIndices.append(indexPath.section)
+            if !scrolled {
+                self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
+            }
         }
         
         if let sectionView = self.supplementaryViews[indexPath.section] {

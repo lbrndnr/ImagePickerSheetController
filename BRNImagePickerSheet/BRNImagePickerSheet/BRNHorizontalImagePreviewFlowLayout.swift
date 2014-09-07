@@ -155,6 +155,10 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return nil
     }
     
+    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
+    }
+    
     override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
     }
