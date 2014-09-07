@@ -12,6 +12,7 @@ import AssetsLibrary
 @objc protocol BRNImagePickerSheetDelegate {
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, clickedButtonAtIndex buttonIndex: Int)
     optional func imagePickerSheetCancel(imagePickerSheet: BRNImagePickerSheet)
+    // TODO: Call cancel delegate method
     
     optional func willPresentImagePickerSheet(imagePickerSheet: BRNImagePickerSheet)
     optional func didPresentImagePickerSheet(imagePickerSheet: BRNImagePickerSheet)
@@ -41,6 +42,17 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
             
         return lastIndex
+    }
+    
+    var selectedPhotos: [UIImage] {
+        get {
+            var selectedPhotos = [UIImage]()
+            for index in self.selectedPhotoIndices {
+                selectedPhotos.append(self.photos[index])
+            }
+            
+            return selectedPhotos
+        }
     }
     
     private var titles: [NSString] {
@@ -191,6 +203,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
         
         if dismiss {
+            self.delegate?.imagePickerSheet?(self, clickedButtonAtIndex: buttonIndex)
             self.dismissWithClickedButtonIndex(buttonIndex, animated: true)
         }
     }
@@ -250,12 +263,10 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             
             self.setNeedsLayout()
             UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration*5, animations: { () -> Void in
-                self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
-                self.collectionView.collectionViewLayout.invalidateLayout()
                 self.layoutIfNeeded()
-                
+                //self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
                 scrolled = true
                 }, completion: { (finished) -> Void in
                     let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
