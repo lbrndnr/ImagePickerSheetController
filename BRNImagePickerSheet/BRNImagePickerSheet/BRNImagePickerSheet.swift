@@ -56,16 +56,19 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return 0.3
     }
     private class var tableViewRowHeight: CGFloat {
-        return 44.0
+        return 50.0
     }
     private class var tableViewPreviewRowHeight: CGFloat {
-        return 100.0
+        return 140.0
     }
     private class var tableViewEnlargedPreviewRowHeight: CGFloat {
-        return 200.0
+        return 243.0
     }
     private class var collectionViewInset: CGFloat {
-        return 4.0
+        return 5.0
+    }
+    private class var collectionViewCheckmarkInset: CGFloat {
+        return 3.5
     }
     
     // MARK: Initialization
@@ -207,15 +210,10 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let inset = 2.0 * BRNImagePickerSheet.collectionViewInset
-        return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, collectionView.frame.height - inset)
-    }
-    
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let view: BRNImageSupplementaryView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView", forIndexPath: indexPath) as BRNImageSupplementaryView
         view.userInteractionEnabled = false
-        view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewInset, BRNImagePickerSheet.collectionViewInset, 0.0)
+        view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewCheckmarkInset, BRNImagePickerSheet.collectionViewCheckmarkInset, 0.0)
         view.selected = contains(self.selectedPhotoIndices, indexPath.section)
         
         self.supplementaryViews[indexPath.section] = view
@@ -231,6 +229,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         let factor = height / photo.size.height
         
         return CGSizeMake(factor * photo.size.width, height)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let inset = 2.0 * BRNImagePickerSheet.collectionViewCheckmarkInset
+        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
+        return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
     }
     
     // MARK: - UICollectionViewDelegate
