@@ -24,7 +24,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     private let overlayView = UIView()
     private let tableView = UITableView()
-    private let collectionView: UICollectionView
+    private let collectionView: BRNImagePickerCollectionView
     
     var delegate: BRNImagePickerSheetDelegate?
     private var photos = [UIImage]()
@@ -78,7 +78,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         let layout = BRNHorizontalImagePreviewFlowLayout()
         layout.showsSupplementaryViews = false
         layout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset)
-        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+        self.collectionView = BRNImagePickerCollectionView(frame: CGRectZero, collectionViewLayout: layout)
         
         super.init(frame: CGRectZero)
         
@@ -99,6 +99,8 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 group.setAssetsFilter(ALAssetsFilter.allPhotos())
                 group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
                     if asset != nil {
+                        // TODO: Rotate CGImage properly
+                        
                         let representation: ALAssetRepresentation = asset.defaultRepresentation()
                         let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue())
                         self.photos.insert(photo, atIndex: 0)
@@ -248,20 +250,18 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             
             self.setNeedsLayout()
             UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration*5, animations: { () -> Void in
+                self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
-                self.collectionView.collectionViewLayout.invalidateLayout()
-                if !selected {
-                    self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
-                    scrolled = true
-                }
                 self.layoutIfNeeded()
-            }, completion: { (finished) -> Void in
-                let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
-                layout.showsSupplementaryViews = true
+                
+                scrolled = true
+                }, completion: { (finished) -> Void in
+                    let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
+                    layout.showsSupplementaryViews = true
             })
         }
-    
+        
         if selected {
             self.selectedPhotoIndices.removeAtIndex(find(self.selectedPhotoIndices, indexPath.section)!)
         }

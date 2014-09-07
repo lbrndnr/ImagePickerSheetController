@@ -17,6 +17,7 @@
 		49887F6519B874A30020C938 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F6419B874A30020C938 /* ViewController.swift */; };
 		49887F6A19B874A40020C938 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49887F6919B874A40020C938 /* Images.xcassets */; };
 		49887F7619B874A40020C938 /* BRNImagePickerSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F7519B874A40020C938 /* BRNImagePickerSheetTests.swift */; };
+		49A0CF5319BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A0CF5219BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		49887F6F19B874A40020C938 /* BRNImagePickerSheetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRNImagePickerSheetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49887F7419B874A40020C938 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49887F7519B874A40020C938 /* BRNImagePickerSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BRNImagePickerSheetTests.swift; sourceTree = "<group>"; };
+		49A0CF5219BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			children = (
 				490E468519BB1C50004E90E7 /* BRNImagePickerSheet.swift */,
 				490E468719BB1C83004E90E7 /* BRNImagePreviewTableViewCell.swift */,
+				49A0CF5219BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift */,
 				490E468D19BB1EB6004E90E7 /* BRNHorizontalImagePreviewFlowLayout.swift */,
 				490E468919BB1D0A004E90E7 /* BRNImageCollectionViewCell.swift */,
 				490E468B19BB1D43004E90E7 /* BRNImageSupplementaryView.swift */,
@@ -243,6 +246,7 @@
 				490E468619BB1C50004E90E7 /* BRNImagePickerSheet.swift in Sources */,
 				490E468E19BB1EB6004E90E7 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */,
 				49887F6519B874A30020C938 /* ViewController.swift in Sources */,
+				49A0CF5319BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift in Sources */,
 				49887F6319B874A30020C938 /* AppDelegate.swift in Sources */,
 				490E468C19BB1D43004E90E7 /* BRNImageSupplementaryView.swift in Sources */,
 				490E468819BB1C83004E90E7 /* BRNImagePreviewTableViewCell.swift in Sources */,

@@ -53,7 +53,11 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
-        return true
+        if (self.collectionView == nil) {
+            return true
+        }
+        
+        return (self.collectionView!.bounds != newBounds)
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
@@ -79,8 +83,8 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
             let itemFrame = CGRect(origin: itemOrigin, size: itemSize)
             
             if visibleFrame.intersects(itemFrame) {
-                let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath)
-                let headerAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: indexPath)
+                let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath, frame: itemFrame)
+                let headerAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: indexPath, itemFrame: itemFrame)
                 
                 allAttributes += [itemAttributes, headerAttributes]
             }
@@ -92,8 +96,24 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+        return self.layoutAttributesForItemAtIndexPath(indexPath, frame: nil)
+    }
+    
+    func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath, var frame: CGRect?) -> UICollectionViewLayoutAttributes! {
+        let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+        attributes.zIndex = 0
+        
+        if frame == nil {
+            frame = self.frameAttributeForItemAtIndexPath(indexPath)
+        }
+        attributes.frame = frame!
+        
+        return attributes
+    }
+    
+    func frameAttributeForItemAtIndexPath(indexPath: NSIndexPath) -> CGRect {
         if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
-            return nil
+            return CGRectZero
         }
         
         let collectionView = self.collectionView!
@@ -109,50 +129,49 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
             let frame = CGRect(origin: origin, size: size)
             
             if currentIndexPath == indexPath {
-                let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
-                attributes.zIndex = 0
-                attributes.frame = frame
-                
-                return attributes
+                return frame
             }
             
             origin.x = frame.maxX + self.sectionInset.right
         }
         
-        return nil
+        return CGRectZero
     }
     
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+        return self.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath, itemFrame: nil)
+    }
+    
+    func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath, var itemFrame: CGRect?) -> UICollectionViewLayoutAttributes! {
+        let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
+        attributes.zIndex = 1
+        attributes.hidden = !self.showsSupplementaryViews
+        
+        if itemFrame == nil {
+            itemFrame = self.frameAttributeForItemAtIndexPath(indexPath)
+        }
+        
+        attributes.frame = self.frameAttributeForSupplementaryViewAtIndexPath(indexPath, itemFrame: itemFrame!)
+        
+        return attributes
+    }
+    
+    func frameAttributeForSupplementaryViewAtIndexPath(indexPath: NSIndexPath, itemFrame: CGRect) -> CGRect {
         if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
-            return nil
+            return CGRectZero
         }
         
         let collectionView = self.collectionView!
-        let dataSource = collectionView.dataSource!
         let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
-        
-        // TODO: really necessary to have to dataSources?
         
         let contentOffset = collectionView.contentOffset
         let collectionViewSize = collectionView.frame.size
         let visibleFrame = CGRect(origin: contentOffset, size: collectionViewSize)
         
-        let possibleItemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath)
-        if let itemAttributes = possibleItemAttributes {
-            let itemFrame = itemAttributes.frame
-            
-            let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
-            attributes.zIndex = 1
-            attributes.hidden = !self.showsSupplementaryViews
-            
-            let size = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section)
-            let originX = max(itemFrame.minX, min(itemFrame.maxX - size.width, visibleFrame.maxX - size.width))
-            attributes.frame = CGRect(origin: CGPoint(x: originX, y: itemFrame.minY), size: size)
-            
-            return attributes
-        }
+        let size = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section)
+        let originX = max(itemFrame.minX, min(itemFrame.maxX - size.width, visibleFrame.maxX - size.width))
         
-        return nil
+        return CGRect(origin: CGPoint(x: originX, y: itemFrame.minY), size: size)
     }
     
     override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
