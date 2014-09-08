@@ -44,7 +44,7 @@ extension UIImageOrientation {
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
 
-class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
+class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     private let overlayView = UIView()
     private let tableView = UITableView()
@@ -119,7 +119,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.addTarget(self, action: "overlayViewWasTapped:")
-        tapRecognizer.delegate = self
         self.overlayView.addGestureRecognizer(tapRecognizer)
         self.overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
         self.addSubview(self.overlayView)
@@ -128,23 +127,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         self.tableView.delegate = self
         self.tableView.alwaysBounceVertical = false
         self.addSubview(self.tableView)
-        
-        let library = ALAssetsLibrary()
-        library.enumerateGroupsWithTypes((1 << 4), usingBlock: { (group: ALAssetsGroup!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-            if group != nil {
-                group.setAssetsFilter(ALAssetsFilter.allPhotos())
-                group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                    if asset != nil {
-                        let representation: ALAssetRepresentation = asset.defaultRepresentation()
-                        let orientation = UIImageOrientation(representation.orientation())
-                        let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
-                        self.photos.insert(photo, atIndex: 0)
-                    }
-                })
-                
-                self.tableView.reloadData()
-            }
-        }, failureBlock:nil)
         
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -279,20 +261,22 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(self.selectedPhotoIndices, indexPath.section)
+        
         var scrolled = false
         
         if !self.enlargedPreviews {
             self.enlargedPreviews = true
             
+            scrolled = true
+            let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
+            layout.invalidationCenteredIndexPath = indexPath
+            
             self.setNeedsLayout()
             UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration*5, animations: { () -> Void in
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
-                self.layoutIfNeeded()
-                scrolled = true
-                //self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+                self.layoutIfNeeded()                
                 }, completion: { (finished) -> Void in
-                let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
                 layout.showsSupplementaryViews = true
             })
         }
@@ -303,7 +287,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         else {
             self.selectedPhotoIndices.append(indexPath.section)
             if !scrolled {
-                self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
+                collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
             }
         }
         
@@ -319,22 +303,44 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             return
         }
         
-        self.frame = view.frame
-        view.superview!.addSubview(self)
-    
-        let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
-        self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
-        self.overlayView.alpha = 0.0
-        
         self.delegate?.willPresentImagePickerSheet?(self)
-
-        UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
-            self.tableView.frame.origin.y = originalTableViewOffset
-            self.overlayView.alpha = 1.0
-            }, completion: { (finished: Bool) -> Void in
-            self.delegate?.didPresentImagePickerSheet?(self)
-            println("finished")
-        })
+        
+        var show: () {
+            self.frame = view.frame
+            view.superview!.addSubview(self)
+                
+            let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
+            self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
+            self.overlayView.alpha = 0.0
+            
+            UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
+                self.tableView.frame.origin.y = originalTableViewOffset
+                self.overlayView.alpha = 1.0
+                }, completion: { (finished: Bool) -> Void in
+                    self.delegate?.didPresentImagePickerSheet?(self)
+                    println("finished")
+            })
+        }
+        
+        let library = ALAssetsLibrary()
+        library.enumerateGroupsWithTypes((1 << 4), usingBlock: { (group: ALAssetsGroup!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            if group != nil {
+                group.setAssetsFilter(ALAssetsFilter.allPhotos())
+                group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+                    if asset != nil {
+                        let representation: ALAssetRepresentation = asset.defaultRepresentation()
+                        let orientation = UIImageOrientation(representation.orientation())
+                        let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
+                        self.photos.insert(photo, atIndex: 0)
+                    }
+                })
+                
+                self.tableView.reloadData()
+            }
+            show
+        }) { (error) -> Void in
+            show
+        }
     }
     
     func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
@@ -348,12 +354,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 self.delegate?.imagePickerSheet?(self, didDismissWithButtonIndex: buttonIndex)
                 self.removeFromSuperview()
         })
-    }
-    
-    // MARK: - UIGestureRecognizerDelegate
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false
     }
     
     // MARK: - Other Methods

@@ -10,6 +10,8 @@ import UIKit
 
 class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
+    var invalidationCenteredIndexPath: NSIndexPath?
+    
     var showsSupplementaryViews: Bool = true {
         didSet {
             self.invalidateLayout()
@@ -50,6 +52,21 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         }
         
         return CGSizeMake(width, collectionView.frame.height)
+    }
+    
+    override func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint) -> CGPoint {
+        var contentOffset = proposedContentOffset
+        if let indexPath = self.invalidationCenteredIndexPath {
+            if let collectionView = self.collectionView {
+                let frame = self.frameAttributeForItemAtIndexPath(indexPath)
+                contentOffset.x = frame.midX - collectionView.frame.width / 2.0
+                
+                contentOffset.x = max(contentOffset.x, 0.0)
+                contentOffset.x = min(contentOffset.x, self.collectionViewContentSize().width - collectionView.frame.width)
+            }
+        }
+        
+        return super.targetContentOffsetForProposedContentOffset(contentOffset)
     }
     
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
@@ -173,18 +190,12 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return CGRect(origin: CGPoint(x: originX, y: itemFrame.minY), size: size)
     }
     
-//    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-//        let attributes = self.layoutAttributesForItemAtIndexPath(itemIndexPath)
-//        attributes.transform = CGAffineTransformMakeTranslation(100, 0.0)
-//        
-//        return attributes
-//    }
-//    
-//    override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-//        let attributes = self.layoutAttributesForItemAtIndexPath(itemIndexPath)
-//        attributes.transform = CGAffineTransformMakeTranslation(100, 0.0)
-//        
-//        return attributes
-//    }
+    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
+    }
+    
+    override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
+    }
     
 }
