@@ -315,8 +315,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - Presentation
     
     func showInView(view: UIView) {
-        self.frame = view.bounds
-        view.addSubview(self)
+        if view.superview == nil {
+            return
+        }
+        
+        self.frame = view.frame
+        view.superview!.addSubview(self)
     
         let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
         self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
