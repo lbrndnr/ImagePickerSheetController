@@ -9,6 +9,29 @@
 import UIKit
 import AssetsLibrary
 
+extension UIImageOrientation {
+    init(_ value: ALAssetOrientation) {
+        switch value {
+        case .Up:
+            self = .Up
+        case .Down:
+            self = .Down
+        case .Left:
+            self = .Left
+        case .Right:
+            self = .Right
+        case .UpMirrored:
+            self = .UpMirrored
+        case .DownMirrored:
+            self = DownMirrored
+        case .LeftMirrored:
+            self = .LeftMirrored
+        case .RightMirrored:
+            self = .RightMirrored
+        }
+    }
+}
+
 @objc protocol BRNImagePickerSheetDelegate {
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, clickedButtonAtIndex buttonIndex: Int)
     optional func imagePickerSheetCancel(imagePickerSheet: BRNImagePickerSheet)
@@ -111,10 +134,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 group.setAssetsFilter(ALAssetsFilter.allPhotos())
                 group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
                     if asset != nil {
-                        // TODO: Rotate CGImage properly
-                        
                         let representation: ALAssetRepresentation = asset.defaultRepresentation()
-                        let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue())
+                        let orientation = UIImageOrientation(representation.orientation())
+                        let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
                         self.photos.insert(photo, atIndex: 0)
                     }
                 })
@@ -261,16 +283,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         if !self.enlargedPreviews {
             self.enlargedPreviews = true
             
+            self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
             self.setNeedsLayout()
             UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration*5, animations: { () -> Void in
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
                 self.layoutIfNeeded()
-                //self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
                 scrolled = true
                 }, completion: { (finished) -> Void in
-                    let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
-                    layout.showsSupplementaryViews = true
+                let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
+                layout.showsSupplementaryViews = true
             })
         }
         
