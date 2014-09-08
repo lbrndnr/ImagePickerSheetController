@@ -12,9 +12,16 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     
     // MARK: View Lifecycle
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "presentImagePickerSheet:")
+        self.view.addGestureRecognizer(tapRecognizer)
+    }
+    
+    // MARK: Other Methods
+    
+    func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
         var sheet = BRNImagePickerSheet()
         sheet.delegate = self
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in

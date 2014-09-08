@@ -81,14 +81,13 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
             let indexPath = NSIndexPath(forRow: 0, inSection: section)
             let itemSize = layoutDataSource.collectionView!(collectionView, layout: self, sizeForItemAtIndexPath: indexPath)
             let itemFrame = CGRect(origin: itemOrigin, size: itemSize)
-            
             if visibleFrame.intersects(itemFrame) {
                 let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath, frame: itemFrame)
                 let headerAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: indexPath, itemFrame: itemFrame)
                 
                 allAttributes += [itemAttributes, headerAttributes]
             }
-            
+
             itemOrigin.x = itemFrame.maxX + self.sectionInset.right
         }
 
@@ -174,12 +173,18 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return CGRect(origin: CGPoint(x: originX, y: itemFrame.minY), size: size)
     }
     
-    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
-    }
-    
-    override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
-    }
+//    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+//        let attributes = self.layoutAttributesForItemAtIndexPath(itemIndexPath)
+//        attributes.transform = CGAffineTransformMakeTranslation(100, 0.0)
+//        
+//        return attributes
+//    }
+//    
+//    override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+//        let attributes = self.layoutAttributesForItemAtIndexPath(itemIndexPath)
+//        attributes.transform = CGAffineTransformMakeTranslation(100, 0.0)
+//        
+//        return attributes
+//    }
     
 }

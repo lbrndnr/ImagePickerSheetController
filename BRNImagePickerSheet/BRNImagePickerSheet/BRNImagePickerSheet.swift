@@ -44,7 +44,7 @@ extension UIImageOrientation {
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
 
-class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
     
     private let overlayView = UIView()
     private let tableView = UITableView()
@@ -119,6 +119,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.addTarget(self, action: "overlayViewWasTapped:")
+        tapRecognizer.delegate = self
         self.overlayView.addGestureRecognizer(tapRecognizer)
         self.overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
         self.addSubview(self.overlayView)
@@ -283,13 +284,13 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         if !self.enlargedPreviews {
             self.enlargedPreviews = true
             
-            self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
             self.setNeedsLayout()
             UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration*5, animations: { () -> Void in
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
                 self.layoutIfNeeded()
                 scrolled = true
+                //self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
                 }, completion: { (finished) -> Void in
                 let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
                 layout.showsSupplementaryViews = true
@@ -343,6 +344,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 self.delegate?.imagePickerSheet?(self, didDismissWithButtonIndex: buttonIndex)
                 self.removeFromSuperview()
         })
+    }
+    
+    // MARK: - UIGestureRecognizerDelegate
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
     }
     
     // MARK: - Other Methods
