@@ -23,6 +23,8 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     
     func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
         var sheet = BRNImagePickerSheet()
+        sheet.addButtonWithTitle("Take Photo Or Video", secondaryTitle: "Add Comment")
+        sheet.addButtonWithTitle("Photo Library", secondaryTitle: "Send")
         sheet.delegate = self
         sheet.showInView(self.view)
     }
@@ -33,7 +35,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
         if buttonIndex != imagePickerSheet.cancelButtonIndex {
             let controller = UIImagePickerController()
             controller.delegate = self
-            controller.sourceType = (buttonIndex == 0) ? .PhotoLibrary : .Camera
+            controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
             self.presentViewController(controller, animated: true, completion: nil)
         }
     }

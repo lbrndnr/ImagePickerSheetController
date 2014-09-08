@@ -63,12 +63,8 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     private var supplementaryViews = [Int: BRNImageSupplementaryView]()
     
     var cancelButtonIndex: Int {
-        let lastIndex = self.tableView.numberOfRowsInSection(0) - 1
-        if self.previewsPhotos {
-            return lastIndex - 1
-        }
-            
-        return lastIndex
+        let lastRow = self.tableView.numberOfRowsInSection(0) - 1
+        return self.buttonIndexForRow(lastRow)
     }
     
     var selectedPhotos: [UIImage] {
@@ -82,9 +78,19 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    private var titles: [NSString] {
-        return ["Photo Library", "Take Photo or Video", "Cancel"]
+    var numberOfButtons: Int {
+        get {
+           return self.titles.count
+        }
     }
+    
+    var showsSecondaryTitles: Bool {
+        get {
+            return (self.selectedPhotoIndices.count > 0)
+        }
+    }
+    
+    private var titles: [(title: String, secondaryTitle: String?)] = [("Cancel", nil)]
     
     private class var presentationAnimationDuration: Double {
         return 0.3
@@ -180,15 +186,19 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             return cell
         }
         
-        var titleIndex = indexPath.row
-        if self.previewsPhotos {
-            --titleIndex
-        }
-        
         let cell = UITableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
         cell.textLabel!.textAlignment = .Center
         cell.textLabel!.textColor = self.tintColor
-        cell.textLabel!.text = self.titles[titleIndex]
+        cell.textLabel!.font = UIFont.systemFontOfSize(21)
+        
+        let buttonIndex = self.buttonIndexForRow(indexPath.row)
+        let (title, secondaryTitle) = self.titles[buttonIndex]
+        var cellTitle = (self.showsSecondaryTitles) ? secondaryTitle : title
+        if cellTitle == nil {
+            cellTitle = title
+        }
+        
+        cell.textLabel!.text = cellTitle
         
         return cell
     }
@@ -202,14 +212,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        var buttonIndex = indexPath.row
-        var dismiss = true
+        var handle = true
         if self.previewsPhotos {
-            --buttonIndex
-            dismiss = (indexPath.row != 0)
+            if indexPath.row == 0 {
+                handle = false
+            }
         }
         
-        if dismiss {
+        if handle {
+            let buttonIndex = self.buttonIndexForRow(indexPath.row)
+            
             self.delegate?.imagePickerSheet?(self, clickedButtonAtIndex: buttonIndex)
             self.dismissWithClickedButtonIndex(buttonIndex, animated: true)
         }
@@ -264,35 +276,34 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(self.selectedPhotoIndices, indexPath.section)
         
-        var scrolled = false
-        
-        if !self.enlargedPreviews {
-            self.delegate?.imagePickerSheetWillEnlargePreviews?(self)
-            self.enlargedPreviews = true
-            
-            scrolled = true
-            let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
-            layout.invalidationCenteredIndexPath = indexPath
-            
-            self.setNeedsLayout()
-            UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: { () -> Void in
-                self.tableView.beginUpdates()
-                self.tableView.endUpdates()
-                self.layoutIfNeeded()
-                }, completion: { (finished) -> Void in
-                    layout.showsSupplementaryViews = true
-                    self.delegate?.imagePickerSheetDidEnlargePreviews?(self)
-            })
-        }
-        
-        if selected {
-            self.selectedPhotoIndices.removeAtIndex(find(self.selectedPhotoIndices, indexPath.section)!)
-        }
-        else {
+        if !selected {
             self.selectedPhotoIndices.append(indexPath.section)
-            if !scrolled {
+            
+            if !self.enlargedPreviews {
+                self.delegate?.imagePickerSheetWillEnlargePreviews?(self)
+                self.enlargedPreviews = true
+                
+                let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
+                layout.invalidationCenteredIndexPath = indexPath
+                
+                self.setNeedsLayout()
+                UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: { () -> Void in
+                    self.tableView.beginUpdates()
+                    self.tableView.endUpdates()
+                    self.layoutIfNeeded()
+                    }, completion: { (finished) -> Void in
+                        self.tableView.reloadData()
+                        layout.showsSupplementaryViews = true
+                        self.delegate?.imagePickerSheetDidEnlargePreviews?(self)
+                })
+            }
+            else {
+                self.tableView.reloadData()
                 collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
             }
+        }
+        else {
+            self.selectedPhotoIndices.removeAtIndex(find(self.selectedPhotoIndices, indexPath.section)!)
         }
         
         if let sectionView = self.supplementaryViews[indexPath.section] {
@@ -361,6 +372,27 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     }
     
     // MARK: - Other Methods
+    
+    func buttonIndexForRow(row: Int) -> Int {
+        var buttonIndex = row
+        if self.previewsPhotos {
+            --buttonIndex
+        }
+        
+        // MARK: Why is endIndex not working?
+        
+        return self.titles.count - 1 - buttonIndex
+    }
+    
+    func addButtonWithTitle(title: String, secondaryTitle: String?) -> Int {
+        self.titles.append(title: title, secondaryTitle: secondaryTitle)
+        
+        return self.titles.endIndex
+    }
+    
+    func buttonTitlesAtIndex(buttonIndex: Int) -> (String, String?) {
+        return self.titles[buttonIndex]
+    }
     
     func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {
         self.dismissWithClickedButtonIndex(self.cancelButtonIndex, animated: true)
