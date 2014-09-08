@@ -40,6 +40,9 @@ extension UIImageOrientation {
     optional func willPresentImagePickerSheet(imagePickerSheet: BRNImagePickerSheet)
     optional func didPresentImagePickerSheet(imagePickerSheet: BRNImagePickerSheet)
     
+    optional func imagePickerSheetWillEnlargePreviews(imagePickerSheet: BRNImagePickerSheet)
+    optional func imagePickerSheetDidEnlargePreviews(imagePickerSheet: BRNImagePickerSheet)
+    
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int)
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
@@ -50,6 +53,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     private let tableView = UITableView()
     private let collectionView: BRNImagePickerCollectionView
     
+    var enlargedPreviews = false
     var delegate: BRNImagePickerSheetDelegate?
     private var photos = [UIImage]()
     private var selectedPhotoIndices = [Int]()
@@ -81,8 +85,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     private var titles: [NSString] {
         return ["Photo Library", "Take Photo or Video", "Cancel"]
     }
-    
-    private var enlargedPreviews = false
     
     private class var presentationAnimationDuration: Double {
         return 0.3
@@ -265,6 +267,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         var scrolled = false
         
         if !self.enlargedPreviews {
+            self.delegate?.imagePickerSheetWillEnlargePreviews?(self)
             self.enlargedPreviews = true
             
             scrolled = true
@@ -272,12 +275,13 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             layout.invalidationCenteredIndexPath = indexPath
             
             self.setNeedsLayout()
-            UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration*5, animations: { () -> Void in
+            UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: { () -> Void in
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
-                self.layoutIfNeeded()                
+                self.layoutIfNeeded()
                 }, completion: { (finished) -> Void in
-                layout.showsSupplementaryViews = true
+                    layout.showsSupplementaryViews = true
+                    self.delegate?.imagePickerSheetDidEnlargePreviews?(self)
             })
         }
         

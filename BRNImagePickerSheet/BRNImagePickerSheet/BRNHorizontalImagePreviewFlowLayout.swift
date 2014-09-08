@@ -64,6 +64,7 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
                 contentOffset.x = max(contentOffset.x, 0.0)
                 contentOffset.x = min(contentOffset.x, self.collectionViewContentSize().width - collectionView.frame.width)
             }
+            self.invalidationCenteredIndexPath = nil
         }
         
         return super.targetContentOffsetForProposedContentOffset(contentOffset)
