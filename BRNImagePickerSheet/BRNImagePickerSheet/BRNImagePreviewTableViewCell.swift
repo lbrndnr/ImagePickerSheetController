@@ -33,7 +33,7 @@ class BRNImagePreviewTableViewCell : UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // Setting the frame of the collectionView this large avoids a small animation glitch when resizing the previews. You'll get a beer from @larcus94 if you'll fix this without this workaround :)
+        // Setting the frame of the collectionView this large avoids a small animation glitch when resizing the previews. You'll get a beer from @larcus94 if you'll get it to work without this workaround :)
         
         if let collectionView = self.collectionView {
             var collectionViewFrame = self.bounds
