@@ -35,10 +35,15 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     
     func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex != imagePickerSheet.cancelButtonIndex {
-            let controller = UIImagePickerController()
-            controller.delegate = self
-            controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
-            self.presentViewController(controller, animated: true, completion: nil)
+            if imagePickerSheet.showsSecondaryTitles {
+                println(imagePickerSheet.selectedPhotos)
+            }
+            else {
+                let controller = UIImagePickerController()
+                controller.delegate = self
+                controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
+                self.presentViewController(controller, animated: true, completion: nil)
+            }
         }
     }
     

@@ -317,8 +317,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 })
             }
             else {
+                let possibleCell = collectionView.cellForItemAtIndexPath(indexPath)
+                if let cell = possibleCell {
+                    var contentOffset = CGPointMake(cell.frame.midX - collectionView.frame.width / 2.0, 0.0)
+                    contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
+                    contentOffset.x = min(contentOffset.x, collectionView.contentSize.width - collectionView.frame.width + collectionView.contentInset.right)
+                    
+                    collectionView.setContentOffset(contentOffset, animated: true)
+                }
+                
                 self.reloadButtonTitles()
-                collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
             }
         }
         else {
