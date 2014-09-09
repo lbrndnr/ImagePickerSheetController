@@ -204,10 +204,10 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         let (title, singularSecondaryTitle, pluralSecondaryTitle) = self.titles[buttonIndex]
         var cellTitle = title
         if self.showsSecondaryTitles {
+            let photoCountString = String(self.selectedPhotos.count)
             if self.showsPluralSecondaryTitles && pluralSecondaryTitle != nil {
                 if let secondaryTitle = pluralSecondaryTitle {
                     cellTitle = secondaryTitle
-//                     cellTitle = secondaryTitle.stringByReplacingOccurrencesOfString(BRNImagePickerSheet.selectedPhotoCountPlaceholder, withString: "1", options: .LiteralSearch, range: .utf16Count)
                 }
             }
             else {
@@ -215,6 +215,8 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                     cellTitle = secondaryTitle
                 }
             }
+            
+            cellTitle = cellTitle.stringByReplacingOccurrencesOfString(BRNImagePickerSheet.selectedPhotoCountPlaceholder, withString: photoCountString, options: .LiteralSearch, range:nil)
         }
         
         cell.textLabel!.text = cellTitle
