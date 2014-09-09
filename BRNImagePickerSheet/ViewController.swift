@@ -22,9 +22,11 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     // MARK: Other Methods
     
     func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
+        let placeholder = BRNImagePickerSheet.selectedPhotoCountPlaceholder
+        
         var sheet = BRNImagePickerSheet()
-        sheet.addButtonWithTitle("Take Photo Or Video", secondaryTitle: "Add Comment")
-        sheet.addButtonWithTitle("Photo Library", secondaryTitle: "Send")
+        sheet.addButtonWithTitle("Take Photo Or Video", singularSecondaryTitle: "Add Comment", pluralSecondaryTitle: nil)
+        sheet.addButtonWithTitle("Photo Library", singularSecondaryTitle: "Send \(placeholder) Photo", pluralSecondaryTitle: "Send \(placeholder) Photos")
         sheet.delegate = self
         sheet.showInView(self.view)
     }

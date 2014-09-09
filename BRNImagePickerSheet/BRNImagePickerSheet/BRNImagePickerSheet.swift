@@ -89,8 +89,17 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             return (self.selectedPhotoIndices.count > 0)
         }
     }
+    var showsPluralSecondaryTitles: Bool {
+        get {
+            return (self.selectedPhotoIndices.count > 1)
+        }
+    }
     
-    private var titles: [(title: String, secondaryTitle: String?)] = [("Cancel", nil)]
+    private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [("Cancel", nil, nil)]
+    
+    class var selectedPhotoCountPlaceholder: String {
+        return "[ch.laurinbrandner.BRNImagePickerSheet.placeholder]"
+    }
     
     private class var presentationAnimationDuration: Double {
         return 0.3
@@ -192,10 +201,20 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         cell.textLabel!.font = UIFont.systemFontOfSize(21)
         
         let buttonIndex = self.buttonIndexForRow(indexPath.row)
-        let (title, secondaryTitle) = self.titles[buttonIndex]
-        var cellTitle = (self.showsSecondaryTitles) ? secondaryTitle : title
-        if cellTitle == nil {
-            cellTitle = title
+        let (title, singularSecondaryTitle, pluralSecondaryTitle) = self.titles[buttonIndex]
+        var cellTitle = title
+        if self.showsSecondaryTitles {
+            if self.showsPluralSecondaryTitles && pluralSecondaryTitle != nil {
+                if let secondaryTitle = pluralSecondaryTitle {
+                    cellTitle = secondaryTitle
+//                     cellTitle = secondaryTitle.stringByReplacingOccurrencesOfString(BRNImagePickerSheet.selectedPhotoCountPlaceholder, withString: "1", options: .LiteralSearch, range: .utf16Count)
+                }
+            }
+            else {
+                if let secondaryTitle = singularSecondaryTitle {
+                    cellTitle = secondaryTitle
+                }
+            }
         }
         
         cell.textLabel!.text = cellTitle
@@ -292,18 +311,19 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                     self.tableView.endUpdates()
                     self.layoutIfNeeded()
                     }, completion: { (finished) -> Void in
-                        self.tableView.reloadData()
+                        self.reloadButtonTitles()
                         layout.showsSupplementaryViews = true
                         self.delegate?.imagePickerSheetDidEnlargePreviews?(self)
                 })
             }
             else {
-                self.tableView.reloadData()
+                self.reloadButtonTitles()
                 collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
             }
         }
         else {
             self.selectedPhotoIndices.removeAtIndex(find(self.selectedPhotoIndices, indexPath.section)!)
+            self.reloadButtonTitles()
         }
         
         if let sectionView = self.supplementaryViews[indexPath.section] {
@@ -379,18 +399,27 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             --buttonIndex
         }
         
-        // MARK: Why is endIndex not working?
+        // TODO: Why is endIndex not working?
         
         return self.titles.count - 1 - buttonIndex
     }
     
-    func addButtonWithTitle(title: String, secondaryTitle: String?) -> Int {
-        self.titles.append(title: title, secondaryTitle: secondaryTitle)
+    func reloadButtonTitles() {
+        var indexPaths = [NSIndexPath]()
+        for row in 0 ..< self.titles.count {
+            indexPaths.append(NSIndexPath(forRow: self.buttonIndexForRow(row), inSection: 0))
+        }
+        
+        self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+    }
+    
+    func addButtonWithTitle(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?) -> Int {
+        self.titles.append(title: title, singularSecondaryTitle: singularSecondaryTitle, pluralSecondaryTitle: pluralSecondaryTitle)
         
         return self.titles.endIndex
     }
     
-    func buttonTitlesAtIndex(buttonIndex: Int) -> (String, String?) {
+    func buttonTitlesAtIndex(buttonIndex: Int) -> (String, String?, String?) {
         return self.titles[buttonIndex]
     }
     
