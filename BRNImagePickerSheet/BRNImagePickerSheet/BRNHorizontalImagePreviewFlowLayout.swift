@@ -11,6 +11,7 @@ import UIKit
 class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
     var invalidationCenteredIndexPath: NSIndexPath?
+    var supplementaryViewBounds: CGSize?
     
     var showsSupplementaryViews: Bool = true {
         didSet {
@@ -181,9 +182,15 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         let collectionView = self.collectionView!
         let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
         
-        let contentOffset = collectionView.contentOffset
-        let collectionViewSize = collectionView.frame.size
+        var contentOffset = collectionView.contentOffset
+        contentOffset.x += collectionView.contentInset.left
+        var collectionViewSize = collectionView.frame.size
+        if let size = self.supplementaryViewBounds {
+            collectionViewSize = size
+        }
+        
         let visibleFrame = CGRect(origin: contentOffset, size: collectionViewSize)
+        println(visibleFrame)
         
         let size = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section)
         let originX = max(itemFrame.minX, min(itemFrame.maxX - size.width, visibleFrame.maxX - size.width))
