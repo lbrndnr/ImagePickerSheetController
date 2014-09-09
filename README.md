@@ -4,7 +4,10 @@
 BRNImagePickerSheet is a duplicate of that shiny new custom action sheet seen in iOS8's iMessage that Apple didn't make part of UIKit. It's the first project I've written in Swift. It works well but I might have coded something the Objective-C kind of way. Don't hesitate to open an issue/ pullrequest if you spotted something.
 
 ![BRNImagePickerSheet](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about.png)
+
+<div style="margin:0 0 0 20px" markdown="1">
 ![BRNImagePickerSheet with selected photos](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png)
+</div>
 
 ## Usage
 BRNImagePickerSheet's API is similar to the one of UIActionSheet so you should get along with it just well.
