@@ -16,7 +16,7 @@ class BRNImagePickerCollectionView: UICollectionView {
             let contentSize = self.contentSize
             let contentInset = self.contentInset
             
-            return contentOffset.x < contentInset.left || contentOffset.x + self.frame.width > contentSize.width + contentInset.right
+            return contentOffset.x < -contentInset.left || contentOffset.x + self.frame.width > contentSize.width + contentInset.right
         }
     }
     
