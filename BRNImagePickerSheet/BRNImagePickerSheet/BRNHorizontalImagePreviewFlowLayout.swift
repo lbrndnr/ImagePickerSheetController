@@ -190,7 +190,6 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         }
         
         let visibleFrame = CGRect(origin: contentOffset, size: collectionViewSize)
-        println(visibleFrame)
         
         let size = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section)
         let originX = max(itemFrame.minX, min(itemFrame.maxX - size.width, visibleFrame.maxX - size.width))

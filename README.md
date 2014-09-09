@@ -24,18 +24,17 @@ Note that you can use the placeholder to specify where BRNImagePickerSheet shoul
 
 ```swift
 func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
-if buttonIndex != imagePickerSheet.cancelButtonIndex {
-if imagePickerSheet.showsSecondaryTitles {
-let selectedImages = imagePickerSheet.selectedPhotos
-// Do something with the selectedImages
-}
-else {
-let controller = UIImagePickerController()
-controller.delegate = self
-controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
-self.presentViewController(controller, animated: true, completion: nil)
-}
-}
+    if buttonIndex != imagePickerSheet.cancelButtonIndex {
+        if imagePickerSheet.showsSecondaryTitles {
+            println(imagePickerSheet.selectedPhotos)
+        }
+    else {
+        let controller = UIImagePickerController()
+        controller.delegate = self
+        controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
+        self.presentViewController(controller, animated: true, completion: nil)
+        }
+    }
 }
 ```
 
