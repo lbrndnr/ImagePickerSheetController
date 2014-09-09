@@ -6,7 +6,7 @@ BRNImagePickerSheet is a duplicate of that shiny new custom action sheet seen in
 ![BRNImagePickerSheet](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about.png)
 
 <div style="margin:0 0 0 20px" markdown="1">
-![BRNImagePickerSheet with selected photos](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png)
+<img src="https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png" alt="BRNImagePickerSheet with selected photos">
 </div>
 
 ## Usage
