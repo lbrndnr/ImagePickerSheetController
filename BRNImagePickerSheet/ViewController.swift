@@ -41,7 +41,13 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
             else {
                 let controller = UIImagePickerController()
                 controller.delegate = self
-                controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
+                var sourceType: UIImagePickerControllerSourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
+                if (!UIImagePickerController.isSourceTypeAvailable(sourceType)) {
+                    sourceType = .PhotoLibrary
+                    println("Fallback to camera roll as a source since the simulator doesn't support taking pictures")
+                }
+                controller.sourceType = sourceType
+                
                 self.presentViewController(controller, animated: true, completion: nil)
             }
         }
