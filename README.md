@@ -44,7 +44,7 @@ BRNImagePickerSheet is available as a [Pod](http://cocoapods.org).
 
 To install add the following line to your Podfile:
 
-pod 'BRNImagePickerSheet'
+    pod 'BRNImagePickerSheet'
 
 (There is apparently an issue with Xcode6 and Swift static libs. Check out [this issue](https://github.com/CocoaPods/CocoaPods/issues/2226) for more. 
 
