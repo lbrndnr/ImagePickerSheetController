@@ -6,6 +6,9 @@ BRNImagePickerSheet is a duplicate of that shiny new custom action sheet seen in
 ![BackgroundImage](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about.png) 
 ![BackgroundImage](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png)
 
+## Author
+I'm Laurin Brandner, I'm on [Twitter](https://twitter.com/larcus94).
+
 ## Usage
 BRNImagePickerSheet's API is similar to the one of UIActionSheet so you should get along with it just well.
 
