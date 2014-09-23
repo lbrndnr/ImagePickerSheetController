@@ -43,11 +43,16 @@ func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButt
 
 ## Installation
 
-BRNImagePickerSheet is available as a [Pod](http://cocoapods.org).
+BRNImagePickerSheet will be available via [CocoaPods](http://cocoapods.org). However there's an [issue](https://github.com/CocoaPods/CocoaPods/issues/2226) with Swift compatibility that caused the build to fail. I will release it as soon as possible though. 
+
+<!---
+BRNImagePickerSheet is available via [CocoaPods](http://cocoapods.org).
 
 To install add the following line to your Podfile:
 
     pod 'BRNImagePickerSheet'
+
+-->
 
 (There is apparently an issue with Xcode6 and Swift static libs. Check out [this issue](https://github.com/CocoaPods/CocoaPods/issues/2226) for more. 
 
