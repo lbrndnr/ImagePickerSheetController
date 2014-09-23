@@ -3,8 +3,8 @@
 ## About
 BRNImagePickerSheet is a duplicate of that shiny new custom action sheet seen in iOS8's iMessage that Apple didn't make part of UIKit. It's the first project I've written in Swift. It works well but I might have coded something the Objective-C kind of way. Don't hesitate to open an issue/ pullrequest if you spotted something.
 
-<img style="margin:0 0 0 20px" src="https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about.png" alt="BRNImagePickerSheet">
-<img style="margin:0 0 0 20px" src="https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png" alt="BRNImagePickerSheet with selected photos">
+![BackgroundImage](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about.png)_
+![BackgroundImage](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png)
 
 ## Usage
 BRNImagePickerSheet's API is similar to the one of UIActionSheet so you should get along with it just well.
@@ -37,6 +37,16 @@ func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButt
     }
 }
 ```
+
+## Installation
+
+BRNImagePickerSheet is available as a [Pod](http://cocoapods.org).
+
+To install add the following line to your Podfile:
+
+pod 'BRNImagePickerSheet'
+
+(There is apparently an issue with Xcode6 and Swift static libs. Check out [this issue](https://github.com/CocoaPods/CocoaPods/issues/2226) for more. 
 
 ## Requirements
 BRNImagePickerSheet is written in Swift. It therefore runs on iOS 7 and 8.
