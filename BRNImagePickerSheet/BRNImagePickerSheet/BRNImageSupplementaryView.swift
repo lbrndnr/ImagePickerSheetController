@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BRNImageSupplementaryView : UICollectionReusableView {
+@objc public class BRNImageSupplementaryView : UICollectionReusableView {
     
     private let button = UIButton()
     
@@ -22,11 +22,11 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     }
     
     class var checkmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark").imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "BRNImagePickerSheet-checkmark")!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     class var selectedCheckmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark-selected").imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "BRNImagePickerSheet-checkmark-selected")!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     // MARK: Initialization
@@ -40,13 +40,13 @@ class BRNImageSupplementaryView : UICollectionReusableView {
         self.addSubview(self.button)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Other Methods
     
-    override func prepareForReuse() {
+    override public func prepareForReuse() {
         super.prepareForReuse()
         
         self.selected = false
@@ -54,7 +54,7 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     
     // MARK: - Layout
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         self.button.sizeToFit()

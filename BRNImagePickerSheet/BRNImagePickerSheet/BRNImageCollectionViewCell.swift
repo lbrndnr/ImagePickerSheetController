@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BRNImageCollectionViewCell : UICollectionViewCell {
+@objc public class BRNImageCollectionViewCell : UICollectionViewCell {
     
     let imageView = UIImageView()
     
@@ -20,13 +20,13 @@ class BRNImageCollectionViewCell : UICollectionViewCell {
         self.addSubview(imageView)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Layout
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         self.imageView.frame = self.bounds

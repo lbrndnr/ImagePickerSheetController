@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
+@objc public class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
     var invalidationCenteredIndexPath: NSIndexPath?
     var supplementaryViewBounds: CGSize?
@@ -27,13 +27,13 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         self.scrollDirection = .Horizontal
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Layout
     
-    override func collectionViewContentSize() -> CGSize {
+    override public func collectionViewContentSize() -> CGSize {
         if self.collectionView == nil {
             return CGSizeZero
         }
@@ -55,7 +55,7 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return CGSizeMake(width, collectionView.frame.height)
     }
     
-    override func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint) -> CGPoint {
+    override public func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint) -> CGPoint {
         var contentOffset = proposedContentOffset
         if let indexPath = self.invalidationCenteredIndexPath {
             if let collectionView = self.collectionView {
@@ -71,7 +71,7 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return super.targetContentOffsetForProposedContentOffset(contentOffset)
     }
     
-    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+    override public func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
         if (self.collectionView == nil) {
             return true
         }
@@ -79,7 +79,7 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return (self.collectionView!.bounds != newBounds)
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
+    override public func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
         if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
             return nil
         }
@@ -113,7 +113,7 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return allAttributes
     }
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+    override public func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
         return self.layoutAttributesForItemAtIndexPath(indexPath, frame: nil)
     }
     
@@ -156,7 +156,7 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return CGRectZero
     }
     
-    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+    override public func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
         return self.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath, itemFrame: nil)
     }
     
@@ -197,11 +197,11 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return CGRect(origin: CGPoint(x: originX, y: itemFrame.minY), size: size)
     }
     
-    override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+    override public func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
     }
     
-    override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+    override public func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
     }
     

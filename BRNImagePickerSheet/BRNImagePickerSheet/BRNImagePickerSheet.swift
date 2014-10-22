@@ -32,7 +32,7 @@ extension UIImageOrientation {
     }
 }
 
-@objc protocol BRNImagePickerSheetDelegate {
+@objc public protocol BRNImagePickerSheetDelegate {
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, clickedButtonAtIndex buttonIndex: Int)
     optional func imagePickerSheetCancel(imagePickerSheet: BRNImagePickerSheet)
     // TODO: Call cancel delegate method
@@ -47,14 +47,14 @@ extension UIImageOrientation {
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
 
-class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+@objc public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     private let overlayView = UIView()
     private let tableView = UITableView()
     private let collectionView: BRNImagePickerCollectionView
     
-    var enlargedPreviews = false
-    var delegate: BRNImagePickerSheetDelegate?
+    public var enlargedPreviews = false
+    public var delegate: BRNImagePickerSheetDelegate?
     private var photos = [UIImage]()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
@@ -62,12 +62,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     }
     private var supplementaryViews = [Int: BRNImageSupplementaryView]()
     
-    var cancelButtonIndex: Int {
+    public var cancelButtonIndex: Int {
         let lastRow = self.tableView.numberOfRowsInSection(0) - 1
         return self.buttonIndexForRow(lastRow)
     }
     
-    var selectedPhotos: [UIImage] {
+    public var selectedPhotos: [UIImage] {
         get {
             var selectedPhotos = [UIImage]()
             for index in self.selectedPhotoIndices {
@@ -78,18 +78,18 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    var numberOfButtons: Int {
+    public var numberOfButtons: Int {
         get {
            return self.titles.count
         }
     }
     
-    var showsSecondaryTitles: Bool {
+    public var showsSecondaryTitles: Bool {
         get {
             return (self.selectedPhotoIndices.count > 0)
         }
     }
-    var showsPluralSecondaryTitles: Bool {
+    public var showsPluralSecondaryTitles: Bool {
         get {
             return (self.selectedPhotoIndices.count > 1)
         }
@@ -97,7 +97,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [("Cancel", nil, nil)]
     
-    class var selectedPhotoCountPlaceholder: String {
+    class public var selectedPhotoCountPlaceholder: String {
         return "[ch.laurinbrandner.BRNImagePickerSheet.placeholder]"
     }
     
@@ -154,17 +154,22 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         self.collectionView.registerClass(BRNImageSupplementaryView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView")
     }
     
-    required init(coder aDecoder: NSCoder) {
+    convenience init(delegate: BRNImagePickerSheetDelegate) {
+        self.init()
+        self.delegate = delegate
+    }
+    
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let numberOfTitles = self.titles.count
         if self.previewsPhotos {
             return numberOfTitles + 1
@@ -173,7 +178,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return numberOfTitles
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if self.previewsPhotos {
             if indexPath.row == 0 {
                 if (self.enlargedPreviews) {
@@ -187,7 +192,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return BRNImagePickerSheet.tableViewRowHeight
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && self.previewsPhotos {
             let cell = BRNImagePreviewTableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
             cell.collectionView = self.collectionView
@@ -196,9 +201,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
         
         let cell = UITableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
-        cell.textLabel!.textAlignment = .Center
-        cell.textLabel!.textColor = self.tintColor
-        cell.textLabel!.font = UIFont.systemFontOfSize(21)
+        cell.textLabel.textAlignment = .Center
+        cell.textLabel.textColor = self.tintColor
+        cell.textLabel.font = UIFont.systemFontOfSize(21)
         
         let buttonIndex = self.buttonIndexForRow(indexPath.row)
         let (title, singularSecondaryTitle, pluralSecondaryTitle) = self.titles[buttonIndex]
@@ -219,18 +224,18 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             cellTitle = cellTitle.stringByReplacingOccurrencesOfString(BRNImagePickerSheet.selectedPhotoCountPlaceholder, withString: photoCountString, options: .LiteralSearch, range:nil)
         }
         
-        cell.textLabel!.text = cellTitle
+        cell.textLabel.text = cellTitle
         
         return cell
     }
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    public func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return !(self.previewsPhotos && indexPath.row == 0)
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    public func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         var handle = true
@@ -250,22 +255,22 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UICollectionViewDataSource
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return self.photos.count
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
         cell.imageView.image = self.photos[indexPath.section]
         
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let view: BRNImageSupplementaryView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView", forIndexPath: indexPath) as BRNImageSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewCheckmarkInset, BRNImagePickerSheet.collectionViewCheckmarkInset, 0.0)
@@ -278,7 +283,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let photo = self.photos[indexPath.section]
         let height = self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) - 2.0 * BRNImagePickerSheet.collectionViewInset
         let factor = height / photo.size.height
@@ -286,7 +291,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return CGSizeMake(factor * photo.size.width, height)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * BRNImagePickerSheet.collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
         return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
@@ -294,7 +299,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(self.selectedPhotoIndices, indexPath.section)
         
         if !selected {
@@ -343,7 +348,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - Presentation
     
-    func showInView(view: UIView) {
+    public func showInView(view: UIView) {
         if view.superview == nil {
             return
         }
@@ -353,7 +358,8 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         var show: () {
             self.frame = view.frame
             view.superview!.addSubview(self)
-                
+            self.layoutSubviews()
+            
             let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
             self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
             self.overlayView.alpha = 0.0
@@ -376,7 +382,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                         let representation: ALAssetRepresentation = asset.defaultRepresentation()
                         let orientation = UIImageOrientation(representation.orientation())
                         let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
-                        self.photos.insert(photo, atIndex: 0)
+                        self.photos.insert(photo!, atIndex: 0)
                     }
                 })
                 
@@ -388,7 +394,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
+    public func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
         self.delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
         
         let duration = (animated) ? BRNImagePickerSheet.presentationAnimationDuration : 0.0
@@ -403,7 +409,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - Other Methods
     
-    func buttonIndexForRow(row: Int) -> Int {
+    public func buttonIndexForRow(row: Int) -> Int {
         var buttonIndex = row
         if self.previewsPhotos {
             --buttonIndex
@@ -414,7 +420,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return self.titles.count - 1 - buttonIndex
     }
     
-    func reloadButtonTitles() {
+    public func reloadButtonTitles() {
         var indexPaths = [NSIndexPath]()
         for row in 0 ..< self.titles.count {
             indexPaths.append(NSIndexPath(forRow: self.buttonIndexForRow(row), inSection: 0))
@@ -423,23 +429,23 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
     }
     
-    func addButtonWithTitle(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?) -> Int {
+    public func addButtonWithTitle(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?) -> Int {
         self.titles.append(title: title, singularSecondaryTitle: singularSecondaryTitle, pluralSecondaryTitle: pluralSecondaryTitle)
         
         return self.titles.endIndex
     }
     
-    func buttonTitlesAtIndex(buttonIndex: Int) -> (String, String?, String?) {
+    public func buttonTitlesAtIndex(buttonIndex: Int) -> (String, String?, String?) {
         return self.titles[buttonIndex]
     }
     
-    func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {
+    public func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {
         self.dismissWithClickedButtonIndex(self.cancelButtonIndex, animated: true)
     }
     
     // MARK: - Layout
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         var bounds = self.bounds

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BRNImagePreviewTableViewCell : UITableViewCell {
+@objc public class BRNImagePreviewTableViewCell : UITableViewCell {
     
     var collectionView: UICollectionView? {
         willSet {
@@ -24,13 +24,13 @@ class BRNImagePreviewTableViewCell : UITableViewCell {
     
     // MARK: Other Methods
     
-    override func prepareForReuse() {
+    override public func prepareForReuse() {
         self.collectionView = nil
     }
     
     // MARK: - Layout
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         // Setting the frame of the collectionView this large avoids a small animation glitch when resizing the previews. You'll get a beer from @larcus94 if you'll get it to work without this workaround :)

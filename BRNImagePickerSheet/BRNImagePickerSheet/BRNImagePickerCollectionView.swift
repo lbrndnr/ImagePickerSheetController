@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BRNImagePickerCollectionView: UICollectionView {
+@objc public class BRNImagePickerCollectionView: UICollectionView {
     
     var bouncing: Bool {
         get {
@@ -28,7 +28,7 @@ class BRNImagePickerCollectionView: UICollectionView {
         self.panGestureRecognizer.addTarget(self, action: "handlePanGesture:")
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
