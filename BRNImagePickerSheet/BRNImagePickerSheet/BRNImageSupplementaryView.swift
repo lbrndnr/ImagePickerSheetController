@@ -22,11 +22,11 @@ import UIKit
     }
     
     class var checkmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark")!.imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "checkmark-empty")!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     class var selectedCheckmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark-selected")!.imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "checkmark-selected")!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     // MARK: Initialization

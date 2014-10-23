@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2DD5F90E-3A73-4ED6-B048-B369BF4B5E38</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BRNImagePickerSheet</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>64039C31436E74858E8CCC4A1B83C960906EAA26</key>
+		<string>git.appunite.com:newmedia/gistr-ios.git</string>
+		<key>81B80757B952CD09B96E04F606EF5F58B23F2659</key>
+		<string>https://github.com/appunite/BRNImagePickerSheet.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BRNImagePickerSheet.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>64039C31436E74858E8CCC4A1B83C960906EAA26</key>
+		<string>../../..</string>
+		<key>81B80757B952CD09B96E04F606EF5F58B23F2659</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/appunite/BRNImagePickerSheet.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>81B80757B952CD09B96E04F606EF5F58B23F2659</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>64039C31436E74858E8CCC4A1B83C960906EAA26</string>
+			<key>IDESourceControlWCCName</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>81B80757B952CD09B96E04F606EF5F58B23F2659</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BRNImagePickerSheet</string>
+		</dict>
+	</array>
+</dict>
+</plist>
