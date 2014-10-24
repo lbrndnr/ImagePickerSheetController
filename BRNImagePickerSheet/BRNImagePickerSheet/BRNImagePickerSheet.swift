@@ -53,9 +53,12 @@ extension UIImageOrientation {
     private let tableView = UITableView()
     private let collectionView: BRNImagePickerCollectionView
     
+    private let library = ALAssetsLibrary()
+    
     public var enlargedPreviews = false
     public var delegate: BRNImagePickerSheetDelegate?
-    private var photos = [UIImage]()
+    private var photos = [ALAssetRepresentation]()
+    private var photosCache = NSMutableArray()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
         return (self.photos.count > 0)
@@ -67,11 +70,11 @@ extension UIImageOrientation {
         return self.buttonIndexForRow(lastRow)
     }
     
-    public var selectedPhotos: [UIImage] {
+    public var selectedPhotos: [NSURL] {
         get {
-            var selectedPhotos = [UIImage]()
+            var selectedPhotos = [NSURL]()
             for index in self.selectedPhotoIndices {
-                selectedPhotos.append(self.photos[index])
+                selectedPhotos.append(self.photos[index].url())
             }
             
             return selectedPhotos
@@ -161,6 +164,55 @@ extension UIImageOrientation {
     
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Cache management
+    private func photoAtIndexPath(indexPath: NSIndexPath) -> UIImage {
+        if (self.photosCache.objectAtIndex(indexPath.section).isKindOfClass(NSNull)) {
+
+            // get photo representation
+            let representation = self.photos[indexPath.section]
+            
+            // get image from library
+            let orientation = UIImageOrientation(representation.orientation())
+            let photo = UIImage(CGImage: representation.fullScreenImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
+
+            // save photo for later use
+            self.photosCache.replaceObjectAtIndex(indexPath.section, withObject: photo!)
+            
+            return photo!
+        } else {
+            return self.photosCache.objectAtIndex(indexPath.section) as UIImage
+        }
+    }
+    
+    public func photoURLsForSelectedImages() -> [NSURL] {
+        var selectedPhotos = [NSURL]()
+        for index in self.selectedPhotoIndices {
+            let photo = self.photoAtIndexPath(NSIndexPath(index: index))
+            let url = self.saveImageOnDisk(photo)
+            if ((url) != nil) {
+                selectedPhotos.append(url!)
+            }
+        }
+        
+        return selectedPhotos
+    }
+    
+    public func saveImageOnDisk(image: UIImage) -> NSURL? {
+        let nsDocumentDirectory = NSSearchPathDirectory.DocumentDirectory
+        let nsUserDomainMask = NSSearchPathDomainMask.UserDomainMask
+        if let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true) {
+            if paths.count > 0 {
+                if let dirPath = paths[0] as? String {
+                    let writePath = dirPath.stringByAppendingPathComponent(NSProcessInfo.processInfo().globallyUniqueString)
+                    UIImagePNGRepresentation(image).writeToFile(writePath, atomically: true)
+                    
+                    return NSURL(string: writePath)
+                }
+            }
+        }
+        return nil
     }
     
     // MARK: - UITableViewDataSource
@@ -265,7 +317,7 @@ extension UIImageOrientation {
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
-        cell.imageView.image = self.photos[indexPath.section]
+        cell.imageView.image = self.photoAtIndexPath(indexPath)
         
         return cell
     }
@@ -284,17 +336,21 @@ extension UIImageOrientation {
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let photo = self.photos[indexPath.section]
+        let representation = self.photos[indexPath.section] as ALAssetRepresentation
         let height = self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) - 2.0 * BRNImagePickerSheet.collectionViewInset
-        let factor = height / photo.size.height
+        let factor = height / representation.dimensions().height
         
-        return CGSizeMake(factor * photo.size.width, height)
+        return CGSizeMake(factor * representation.dimensions().width, height)
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * BRNImagePickerSheet.collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
         return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
+    }
+    
+    public func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        self.photosCache.replaceObjectAtIndex(indexPath.section, withObject: NSNull())
     }
     
     // MARK: - UICollectionViewDelegate
@@ -373,16 +429,14 @@ extension UIImageOrientation {
             })
         }
         
-        let library = ALAssetsLibrary()
         library.enumerateGroupsWithTypes((1 << 4), usingBlock: { (group: ALAssetsGroup!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
             if group != nil {
                 group.setAssetsFilter(ALAssetsFilter.allPhotos())
                 group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
                     if asset != nil {
                         let representation: ALAssetRepresentation = asset.defaultRepresentation()
-                        let orientation = UIImageOrientation(representation.orientation())
-                        let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
-                        self.photos.insert(photo!, atIndex: 0)
+                        self.photos.insert(representation, atIndex: 0)
+                        self.photosCache.addObject(NSNull())
                     }
                 })
                 
