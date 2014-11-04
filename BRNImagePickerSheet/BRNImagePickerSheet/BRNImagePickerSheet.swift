@@ -362,8 +362,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 self.tableView.frame.origin.y = originalTableViewOffset
                 self.overlayView.alpha = 1.0
                 }, completion: { (finished: Bool) -> Void in
+                    // Known issue, closures require more than one line or an explicit return. Will fix this whenever possible
                     self.delegate?.didPresentImagePickerSheet?(self)
-                    println("finished")
+                    return
             })
         }
         
