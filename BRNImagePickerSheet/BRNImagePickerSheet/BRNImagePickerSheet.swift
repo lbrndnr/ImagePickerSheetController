@@ -47,6 +47,25 @@ extension UIImageOrientation {
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
 
+enum BRNImagePickerSheetItemSize {
+    case Normal, Enlarged
+    
+    static func itemSizeForType(type : BRNImagePickerSheetItemSize) -> CGSize {
+    
+        switch type {
+            
+        case .Normal:
+            return CGSize(width: 130.0, height: 130.0);
+            
+        case .Enlarged:
+            return CGSize(width: 220.0, height: 220.0);
+            
+        default:
+            return CGSize(width: 0, height: 0);
+        }
+    }
+}
+
 @objc public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     private let overlayView = UIView()
@@ -54,14 +73,15 @@ extension UIImageOrientation {
     private let collectionView: BRNImagePickerCollectionView
     
     private let library = ALAssetsLibrary()
+    private let libraryOperationQueue : NSOperationQueue;
     
     public var enlargedPreviews = false
     public var delegate: BRNImagePickerSheetDelegate?
-    private var photos = [ALAssetRepresentation]()
+    private var assets = [ALAsset]()
     private var photosCache = NSMutableArray()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
-        return (self.photos.count > 0)
+        return (self.assets.count > 0)
     }
     private var supplementaryViews = [Int: BRNImageSupplementaryView]()
     
@@ -74,7 +94,12 @@ extension UIImageOrientation {
         get {
             var selectedPhotos = [NSURL]()
             for index in self.selectedPhotoIndices {
-                selectedPhotos.append(self.photos[index].url())
+                
+                if let asset = assets[index] as ALAsset? {
+                    if let url : NSURL = asset.valueForProperty(ALAssetPropertyAssetURL) as NSURL? {
+                        selectedPhotos.append(url)
+                    }
+                }
             }
             
             return selectedPhotos
@@ -135,6 +160,10 @@ extension UIImageOrientation {
         layout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset)
         self.collectionView = BRNImagePickerCollectionView(frame: CGRectZero, collectionViewLayout: layout)
         
+        self.libraryOperationQueue = NSOperationQueue();
+        self.libraryOperationQueue.maxConcurrentOperationCount = 1;
+        self.libraryOperationQueue.name = "com.appunite.BRNImagePickerSheetAssetsQueue"
+        
         super.init(frame: CGRectZero)
         
         let tapRecognizer = UITapGestureRecognizer()
@@ -155,6 +184,7 @@ extension UIImageOrientation {
         self.collectionView.alwaysBounceHorizontal = true
         self.collectionView.registerClass(BRNImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "Cell")
         self.collectionView.registerClass(BRNImageSupplementaryView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView")
+        
     }
     
     convenience init(delegate: BRNImagePickerSheetDelegate) {
@@ -167,36 +197,30 @@ extension UIImageOrientation {
     }
     
     // MARK: - Cache management
-    private func photoAtIndexPath(indexPath: NSIndexPath) -> UIImage {
-        if (self.photosCache.objectAtIndex(indexPath.section).isKindOfClass(NSNull)) {
-
-            // get photo representation
-            let representation = self.photos[indexPath.section]
-            
-            // get image from library
-            let orientation = UIImageOrientation(representation.orientation())
-            let photo = UIImage(CGImage: representation.fullScreenImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
-
-            // save photo for later use
-            self.photosCache.replaceObjectAtIndex(indexPath.section, withObject: photo!)
-            
-            return photo!
-        } else {
-            return self.photosCache.objectAtIndex(indexPath.section) as UIImage
+    private func photoAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
+        // get photo representation
+    
+        if let asset = assets[indexPath.section] as ALAsset? {
+            return UIImage(CGImage: asset.thumbnail().takeUnretainedValue())
         }
+        
+        return nil;
     }
     
     public func photoURLsForSelectedImages() -> [NSURL] {
-        var selectedPhotos = [NSURL]()
+    
+        var urls = [NSURL]()
         for index in self.selectedPhotoIndices {
-            let photo = self.photoAtIndexPath(NSIndexPath(index: index))
-            let url = self.saveImageOnDisk(photo)
-            if ((url) != nil) {
-                selectedPhotos.append(url!)
+            
+            if let asset = assets[index] as ALAsset? {
+                let url : NSURL = asset.valueForProperty(ALAssetPropertyAssetURL) as NSURL
+                urls.append(url);
             }
+            
+// TODO: save on disk ?
         }
         
-        return selectedPhotos
+        return urls
     }
     
     public func saveImageOnDisk(image: UIImage) -> NSURL? {
@@ -227,25 +251,24 @@ extension UIImageOrientation {
             return numberOfTitles + 1
         }
         
-        return numberOfTitles
+        return numberOfTitles + 1
     }
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if self.previewsPhotos {
-            if indexPath.row == 0 {
-                if (self.enlargedPreviews) {
-                    return BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight
-                }
-                
-                return BRNImagePickerSheet.tableViewPreviewRowHeight
+
+        if indexPath.row == 0 {
+            if (self.enlargedPreviews) {
+                return BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight
             }
+            
+            return BRNImagePickerSheet.tableViewPreviewRowHeight
         }
         
         return BRNImagePickerSheet.tableViewRowHeight
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.row == 0 && self.previewsPhotos {
+        if indexPath.row == 0 {
             let cell = BRNImagePreviewTableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
             cell.collectionView = self.collectionView
             
@@ -308,7 +331,7 @@ extension UIImageOrientation {
     // MARK: - UICollectionViewDataSource
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.photos.count
+        return self.assets.count
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -336,21 +359,19 @@ extension UIImageOrientation {
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let representation = self.photos[indexPath.section] as ALAssetRepresentation
-        let height = self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) - 2.0 * BRNImagePickerSheet.collectionViewInset
-        let factor = height / representation.dimensions().height
-        
-        return CGSizeMake(factor * representation.dimensions().width, height)
+
+        if enlargedPreviews {
+            return BRNImagePickerSheetItemSize.itemSizeForType(BRNImagePickerSheetItemSize.Enlarged);
+        }
+    
+        return BRNImagePickerSheetItemSize.itemSizeForType(BRNImagePickerSheetItemSize.Normal);
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * BRNImagePickerSheet.collectionViewCheckmarkInset
-        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
-        return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
-    }
-    
-    public func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        self.photosCache.replaceObjectAtIndex(indexPath.section, withObject: NSNull())
+
+        let size = enlargedPreviews ? BRNImagePickerSheetItemSize.itemSizeForType(BRNImagePickerSheetItemSize.Enlarged) : BRNImagePickerSheetItemSize.itemSizeForType(BRNImagePickerSheetItemSize.Normal);
+        return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width, size.height)
     }
     
     // MARK: - UICollectionViewDelegate
@@ -411,7 +432,7 @@ extension UIImageOrientation {
         
         self.delegate?.willPresentImagePickerSheet?(self)
         
-        var show: () {
+        func show() {
             self.frame = view.frame
             view.superview!.addSubview(self)
             self.layoutSubviews()
@@ -428,23 +449,42 @@ extension UIImageOrientation {
                     println("finished")
             })
         }
+
+        show()
+        reloadAssets()
+    }
+    
+    func reloadAssets() {
         
-        library.enumerateGroupsWithTypes((1 << 4), usingBlock: { (group: ALAssetsGroup!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-            if group != nil {
-                group.setAssetsFilter(ALAssetsFilter.allPhotos())
-                group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                    if asset != nil {
-                        let representation: ALAssetRepresentation = asset.defaultRepresentation()
-                        self.photos.insert(representation, atIndex: 0)
-                        self.photosCache.addObject(NSNull())
-                    }
-                })
+        libraryOperationQueue.cancelAllOperations()
+        
+        libraryOperationQueue.addOperationWithBlock() { () -> Void in
+            
+            self.library.enumerateGroupsWithTypes(ALAssetsGroupSavedPhotos, usingBlock: { (group : ALAssetsGroup!, stop : UnsafeMutablePointer<ObjCBool>) -> Void in
                 
-                self.tableView.reloadData()
-            }
-            show
-        }) { (error) -> Void in
-            show
+                if group != nil {
+                    
+                    group.setAssetsFilter(ALAssetsFilter.allPhotos());
+                    group.enumerateAssetsUsingBlock({ (result : ALAsset!, index : Int, stop : UnsafeMutablePointer<ObjCBool>) -> Void in
+                        
+                        if result == nil {
+                            return
+                        }
+                        
+                        self.assets.append(result);
+                        self.photosCache.addObject(NSNull())
+                    })
+                    
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadData();
+                        self.collectionView.reloadData();
+                    })
+                }
+                
+                }, failureBlock: { (error : NSError!) -> Void in
+                    
+            })
         }
     }
     
@@ -465,9 +505,7 @@ extension UIImageOrientation {
     
     public func buttonIndexForRow(row: Int) -> Int {
         var buttonIndex = row
-        if self.previewsPhotos {
             --buttonIndex
-        }
         
         // TODO: Why is endIndex not working?
         
@@ -490,7 +528,7 @@ extension UIImageOrientation {
     }
     
     public func buttonTitlesAtIndex(buttonIndex: Int) -> (String, String?, String?) {
-        return self.titles[buttonIndex]
+        return titles[buttonIndex]
     }
     
     public func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {

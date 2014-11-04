@@ -193,10 +193,11 @@
 				TargetAttributes = {
 					49887F5C19B874A30020C938 = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = 5953RHWYWT;
+						DevelopmentTeam = 2T5235QVSD;
 					};
 					49887F6E19B874A40020C938 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 2T5235QVSD;
 						TestTargetID = 49887F5C19B874A30020C938;
 					};
 				};
