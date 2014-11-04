@@ -22,11 +22,11 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     }
     
     class var checkmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark").imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "BRNImagePickerSheet-checkmark")!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     class var selectedCheckmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark-selected").imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "BRNImagePickerSheet-checkmark-selected")!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     // MARK: Initialization
