@@ -196,9 +196,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
         
         let cell = UITableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
-        cell.textLabel!.textAlignment = .Center
-        cell.textLabel!.textColor = self.tintColor
-        cell.textLabel!.font = UIFont.systemFontOfSize(21)
+        cell.textLabel.textAlignment = .Center
+        cell.textLabel.textColor = self.tintColor
+        cell.textLabel.font = UIFont.systemFontOfSize(21)
         
         let buttonIndex = self.buttonIndexForRow(indexPath.row)
         let (title, singularSecondaryTitle, pluralSecondaryTitle) = self.titles[buttonIndex]
@@ -219,7 +219,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             cellTitle = cellTitle.stringByReplacingOccurrencesOfString(BRNImagePickerSheet.selectedPhotoCountPlaceholder, withString: photoCountString, options: .LiteralSearch, range:nil)
         }
         
-        cell.textLabel!.text = cellTitle
+        cell.textLabel.text = cellTitle
         
         return cell
     }
@@ -376,7 +376,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                         let representation: ALAssetRepresentation = asset.defaultRepresentation()
                         let orientation = UIImageOrientation(representation.orientation())
                         let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
-                        self.photos.insert(photo, atIndex: 0)
+                        self.photos.insert(photo!, atIndex: 0)
                     }
                 })
                 
