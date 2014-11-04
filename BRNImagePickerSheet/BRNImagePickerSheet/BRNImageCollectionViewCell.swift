@@ -17,11 +17,17 @@ class BRNImageCollectionViewCell : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.addSubview(imageView)
+        self.setup()
     }
     
     required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        
+        self.setup()
+    }
+    
+    private func setup() {
+        self.addSubview(self.imageView)
     }
     
     // MARK: - Layout

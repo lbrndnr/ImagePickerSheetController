@@ -128,6 +128,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     override init() {
         super.init(frame: CGRectZero)
         
+        self.setup()
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.setup()
+    }
+    
+    private func setup() {
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.addTarget(self, action: "overlayViewWasTapped:")
         self.overlayView.addGestureRecognizer(tapRecognizer)
@@ -149,10 +159,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         self.collectionView.alwaysBounceHorizontal = true
         self.collectionView.registerClass(BRNImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "Cell")
         self.collectionView.registerClass(BRNImageSupplementaryView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView")
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - UITableViewDataSource

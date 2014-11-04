@@ -34,14 +34,20 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.setup()
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.setup()
+    }
+    
+    private func setup() {
         self.button.tintColor = UIColor.whiteColor()
         self.button.setImage(BRNImageSupplementaryView.checkmarkImage, forState: .Normal)
         self.button.setImage(BRNImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)
         self.addSubview(self.button)
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Other Methods
