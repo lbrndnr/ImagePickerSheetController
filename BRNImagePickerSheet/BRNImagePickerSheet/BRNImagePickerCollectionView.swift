@@ -20,16 +20,24 @@ class BRNImagePickerCollectionView: UICollectionView {
         }
     }
     
+    var horizontalImagePreviewLayout: BRNHorizontalImagePreviewFlowLayout {
+        get {
+            return self.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
+        }
+    }
+    
     // MARK: Initialization
 
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(frame: frame, collectionViewLayout: layout)
+    override init() {
+        super.init(frame: CGRectZero, collectionViewLayout: BRNHorizontalImagePreviewFlowLayout())
         
         self.panGestureRecognizer.addTarget(self, action: "handlePanGesture:")
     }
 
     required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        
+        self.panGestureRecognizer.addTarget(self, action: "handlePanGesture:")
     }
     
     // MARK: - Panning

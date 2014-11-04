@@ -51,7 +51,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     private let overlayView = UIView()
     private let tableView = UITableView()
-    private let collectionView: BRNImagePickerCollectionView
+    private let collectionView = BRNImagePickerCollectionView()
     
     var enlargedPreviews = false
     var delegate: BRNImagePickerSheetDelegate?
@@ -126,12 +126,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     // MARK: Initialization
     
     override init() {
-        let inset = BRNImagePickerSheet.collectionViewInset
-        let layout = BRNHorizontalImagePreviewFlowLayout()
-        layout.showsSupplementaryViews = false
-        layout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset)
-        self.collectionView = BRNImagePickerCollectionView(frame: CGRectZero, collectionViewLayout: layout)
-        
         super.init(frame: CGRectZero)
         
         let tapRecognizer = UITapGestureRecognizer()
@@ -145,6 +139,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         self.tableView.alwaysBounceVertical = false
         self.addSubview(self.tableView)
         
+        let inset = BRNImagePickerSheet.collectionViewInset
+        self.collectionView.horizontalImagePreviewLayout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset)
+        self.collectionView.horizontalImagePreviewLayout.showsSupplementaryViews = false
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = UIColor.clearColor()

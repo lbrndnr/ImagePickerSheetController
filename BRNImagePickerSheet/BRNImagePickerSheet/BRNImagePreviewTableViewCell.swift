@@ -10,7 +10,7 @@ import UIKit
 
 class BRNImagePreviewTableViewCell : UITableViewCell {
     
-    var collectionView: UICollectionView? {
+    var collectionView: BRNImagePickerCollectionView? {
         willSet {
             if let collectionView = self.collectionView {
                 collectionView.removeFromSuperview()
@@ -36,8 +36,7 @@ class BRNImagePreviewTableViewCell : UITableViewCell {
         // Setting the frame of the collectionView this large avoids a small animation glitch when resizing the previews. You'll get a beer from @larcus94 if you'll get it to work without this workaround :)
         
         if let collectionView = self.collectionView {
-            let layout: BRNHorizontalImagePreviewFlowLayout = collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
-            layout.supplementaryViewBounds = self.bounds.size
+            collectionView.horizontalImagePreviewLayout.supplementaryViewBounds = self.bounds.size
             
             var collectionViewFrame = self.bounds
             collectionViewFrame.origin.x = -collectionViewFrame.width
