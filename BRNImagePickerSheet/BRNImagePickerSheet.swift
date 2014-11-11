@@ -78,7 +78,11 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return selectedPhotos
     }
     
-    var numberOfButtons = 1
+    var numberOfButtons: Int = 1 {
+        didSet {
+            numberOfButtons = max(numberOfButtons, 1)
+        }
+    }
     
     private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [("Cancel", nil, nil)]
     

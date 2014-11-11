@@ -76,10 +76,10 @@
 		491EC6301A123F5600181FA8 /* BRNImagePickerSheet */ = {
 			isa = PBXGroup;
 			children = (
+				491EC6341A123F5600181FA8 /* BRNImagePickerSheet.swift */,
 				491EC6311A123F5600181FA8 /* BRNHorizontalImagePreviewFlowLayout.swift */,
 				491EC6321A123F5600181FA8 /* BRNImageCollectionViewCell.swift */,
 				491EC6331A123F5600181FA8 /* BRNImagePickerCollectionView.swift */,
-				491EC6341A123F5600181FA8 /* BRNImagePickerSheet.swift */,
 				491EC6351A123F5600181FA8 /* BRNImagePreviewTableViewCell.swift */,
 				491EC6361A123F5600181FA8 /* BRNImageSupplementaryView.swift */,
 			);
