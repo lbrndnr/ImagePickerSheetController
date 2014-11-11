@@ -17,6 +17,8 @@
 		49887F6519B874A30020C938 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F6419B874A30020C938 /* ViewController.swift */; };
 		49887F6A19B874A40020C938 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49887F6919B874A40020C938 /* Images.xcassets */; };
 		49887F7619B874A40020C938 /* BRNImagePickerSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F7519B874A40020C938 /* BRNImagePickerSheetTests.swift */; };
+		49945C781A122C96008CADF5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49945C7A1A122C96008CADF5 /* Localizable.strings */; };
+		49945C7D1A123A9E008CADF5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 49945C7F1A123A9E008CADF5 /* Localizable.stringsdict */; };
 		49A0CF5319BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A0CF5219BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +47,8 @@
 		49887F6F19B874A40020C938 /* BRNImagePickerSheetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRNImagePickerSheetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49887F7419B874A40020C938 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49887F7519B874A40020C938 /* BRNImagePickerSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BRNImagePickerSheetTests.swift; sourceTree = "<group>"; };
+		49945C791A122C96008CADF5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		49945C7E1A123A9E008CADF5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		49A0CF5219BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,7 +126,9 @@
 		49887F6019B874A30020C938 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				49945C7F1A123A9E008CADF5 /* Localizable.stringsdict */,
 				49887F6119B874A30020C938 /* Info.plist */,
+				49945C7A1A122C96008CADF5 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -226,6 +232,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				49887F6A19B874A40020C938 /* Images.xcassets in Resources */,
+				49945C781A122C96008CADF5 /* Localizable.strings in Resources */,
+				49945C7D1A123A9E008CADF5 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +279,25 @@
 			targetProxy = 49887F7019B874A40020C938 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		49945C7A1A122C96008CADF5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49945C791A122C96008CADF5 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		49945C7F1A123A9E008CADF5 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49945C7E1A123A9E008CADF5 /* en */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		49887F7719B874A40020C938 /* Debug */ = {

@@ -22,20 +22,39 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     // MARK: Other Methods
     
     func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
-        let placeholder = BRNImagePickerSheet.selectedPhotoCountPlaceholder
-        
         var sheet = BRNImagePickerSheet()
-        sheet.addButtonWithTitle("Take Photo Or Video", singularSecondaryTitle: "Add Comment", pluralSecondaryTitle: nil)
-        sheet.addButtonWithTitle("Photo Library", singularSecondaryTitle: "Send \(placeholder) Photo", pluralSecondaryTitle: "Send \(placeholder) Photos")
+        sheet.numberOfButtons = 3
         sheet.delegate = self
         sheet.showInView(self.view)
     }
     
     // MARK: BRNImagePickerSheetDelegate
     
+    func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String {
+        let photosSelected = (imagePickerSheet.selectedPhotos.count > 0)
+        
+        if (buttonIndex == 0) {
+            if photosSelected {
+                return NSLocalizedString("Add comment", comment: "Add comment")
+            }
+            else {
+                return NSLocalizedString("Take Photo Or Video", comment: "Take Photo Or Video")
+            }
+        }
+        else {
+            if photosSelected {
+                println(imagePickerSheet.selectedPhotos.count)
+                return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.selectedPhotos.count)
+            }
+            else {
+                return NSLocalizedString("Photo Library", comment: "Photo Library")
+            }
+        }
+    }
+    
     func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex != imagePickerSheet.cancelButtonIndex {
-            if imagePickerSheet.showsSecondaryTitles {
+            if imagePickerSheet.selectedPhotos.count > 0 {
                 println(imagePickerSheet.selectedPhotos)
             }
             else {

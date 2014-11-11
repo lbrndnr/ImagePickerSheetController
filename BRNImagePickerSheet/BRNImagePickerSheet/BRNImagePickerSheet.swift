@@ -33,6 +33,8 @@ extension UIImageOrientation {
 }
 
 @objc protocol BRNImagePickerSheetDelegate {
+    func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String
+    
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, clickedButtonAtIndex buttonIndex: Int)
     optional func imagePickerSheetCancel(imagePickerSheet: BRNImagePickerSheet)
     // TODO: Call cancel delegate method
@@ -78,28 +80,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    var numberOfButtons: Int {
-        get {
-           return self.titles.count
-        }
-    }
-    
-    var showsSecondaryTitles: Bool {
-        get {
-            return (self.selectedPhotoIndices.count > 0)
-        }
-    }
-    var showsPluralSecondaryTitles: Bool {
-        get {
-            return (self.selectedPhotoIndices.count > 1)
-        }
-    }
+    var numberOfButtons = 1
     
     private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [("Cancel", nil, nil)]
-    
-    class var selectedPhotoCountPlaceholder: String {
-        return "[ch.laurinbrandner.BRNImagePickerSheet.placeholder]"
-    }
     
     private class var presentationAnimationDuration: Double {
         return 0.3
@@ -168,12 +151,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfTitles = self.titles.count
+        var numberOfRows = self.numberOfButtons
         if self.previewsPhotos {
-            return numberOfTitles + 1
+            numberOfRows += 1
         }
         
-        return numberOfTitles
+        return numberOfRows
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -204,25 +187,15 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         cell.textLabel.font = UIFont.systemFontOfSize(21)
         
         let buttonIndex = self.buttonIndexForRow(indexPath.row)
-        let (title, singularSecondaryTitle, pluralSecondaryTitle) = self.titles[buttonIndex]
-        var cellTitle = title
-        if self.showsSecondaryTitles {
-            let photoCountString = String(self.selectedPhotos.count)
-            if self.showsPluralSecondaryTitles && pluralSecondaryTitle != nil {
-                if let secondaryTitle = pluralSecondaryTitle {
-                    cellTitle = secondaryTitle
-                }
-            }
-            else {
-                if let secondaryTitle = singularSecondaryTitle {
-                    cellTitle = secondaryTitle
-                }
-            }
-            
-            cellTitle = cellTitle.stringByReplacingOccurrencesOfString(BRNImagePickerSheet.selectedPhotoCountPlaceholder, withString: photoCountString, options: .LiteralSearch, range:nil)
+        var buttonTitle: String?
+        if buttonIndex == self.cancelButtonIndex {
+            buttonTitle = NSLocalizedString("Cancel", comment: "Cancel")
+        }
+        else {
+            buttonTitle = self.delegate?.imagePickerSheet(self, titleForButtonAtIndex: buttonIndex)
         }
         
-        cell.textLabel.text = cellTitle
+        cell.textLabel.text = buttonTitle
         
         return cell
     }
@@ -413,28 +386,18 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             --buttonIndex
         }
         
-        // TODO: Why is endIndex not working?
-        
-        return self.titles.count - 1 - buttonIndex
+        return buttonIndex
     }
     
     func reloadButtonTitles() {
         var indexPaths = [NSIndexPath]()
-        for row in 0 ..< self.titles.count {
-            indexPaths.append(NSIndexPath(forRow: self.buttonIndexForRow(row), inSection: 0))
+        let startIndex = (self.previewsPhotos) ? 1 : 0
+        
+        for row in startIndex ..< self.numberOfButtons+startIndex-1 {
+            indexPaths.append(NSIndexPath(forRow: row, inSection: 0))
         }
         
         self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
-    }
-    
-    func addButtonWithTitle(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?) -> Int {
-        self.titles.append(title: title, singularSecondaryTitle: singularSecondaryTitle, pluralSecondaryTitle: pluralSecondaryTitle)
-        
-        return self.titles.endIndex
-    }
-    
-    func buttonTitlesAtIndex(buttonIndex: Int) -> (String, String?, String?) {
-        return self.titles[buttonIndex]
     }
     
     func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {
