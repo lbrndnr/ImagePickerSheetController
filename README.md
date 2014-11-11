@@ -20,7 +20,9 @@ var sheet = BRNImagePickerSheet()
 sheet.numberOfButtons = 3
 sheet.delegate = self
 sheet.showInView(self.view)
+```
 
+```swift
 func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String {
         let photosSelected = (imagePickerSheet.selectedPhotos.count > 0)
 
