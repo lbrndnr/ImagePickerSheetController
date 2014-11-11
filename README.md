@@ -24,41 +24,40 @@ sheet.showInView(self.view)
 
 ```swift
 func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String {
-        let photosSelected = (imagePickerSheet.selectedPhotos.count > 0)
+    let photosSelected = (imagePickerSheet.selectedPhotos.count > 0)
 
-        if (buttonIndex == 0) {
-            if photosSelected {
-                return NSLocalizedString("Add comment", comment: "Add comment")
-            }
-            else {
-                return NSLocalizedString("Take Photo Or Video", comment: "Take Photo Or Video")
-            }
+    if (buttonIndex == 0) {
+        if photosSelected {
+            return NSLocalizedString("Add comment", comment: "Add comment")
         }
         else {
-            if photosSelected {
-                return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.selectedPhotos.count)
-            }
-            else {
-                return NSLocalizedString("Photo Library", comment: "Photo Library")
-            }
+            return NSLocalizedString("Take Photo Or Video", comment: "Take Photo Or Video")
         }
     }
+    else {
+        if photosSelected {
+            return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.selectedPhotos.count)
+        }
+        else {
+            return NSLocalizedString("Photo Library", comment: "Photo Library")
+        }
+    }
+}
 
-    func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex != imagePickerSheet.cancelButtonIndex {
-            if imagePickerSheet.selectedPhotos.count > 0 {
+func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
+    if buttonIndex != imagePickerSheet.cancelButtonIndex {
+        if imagePickerSheet.selectedPhotos.count > 0 {
                 println(imagePickerSheet.selectedPhotos)
-            }
-            else {
-                let controller = UIImagePickerController()
-                controller.delegate = self
-                controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
-                self.presentViewController(controller, animated: true, completion: nil)
-                }
+        }
+        else {
+            let controller = UIImagePickerController()
+            controller.delegate = self
+            controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
+            self.presentViewController(controller, animated: true, completion: nil)
             }
         }
     }
-
+}
 ```
 BRNImagePickerSheet uses a delegate method, similar to UITableView's dataSource, to get the title of a button. In conjunction with [stringsdict](https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html), this allows for easy translation of various plural forms.
 
