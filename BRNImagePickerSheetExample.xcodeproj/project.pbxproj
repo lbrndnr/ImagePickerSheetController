@@ -16,21 +16,10 @@
 		49887F6319B874A30020C938 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F6219B874A30020C938 /* AppDelegate.swift */; };
 		49887F6519B874A30020C938 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F6419B874A30020C938 /* ViewController.swift */; };
 		49887F6A19B874A40020C938 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49887F6919B874A40020C938 /* Images.xcassets */; };
-		49887F7619B874A40020C938 /* BRNImagePickerSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49887F7519B874A40020C938 /* BRNImagePickerSheetTests.swift */; };
 		49945C781A122C96008CADF5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49945C7A1A122C96008CADF5 /* Localizable.strings */; };
 		49945C7D1A123A9E008CADF5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 49945C7F1A123A9E008CADF5 /* Localizable.stringsdict */; };
 		49A0CF5319BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A0CF5219BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		49887F7019B874A40020C938 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49887F5519B874A30020C938 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 49887F5C19B874A30020C938;
-			remoteInfo = BRNImagePickerSheet;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4907781119B9D5BF000A73D8 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -44,9 +33,6 @@
 		49887F6219B874A30020C938 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49887F6419B874A30020C938 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		49887F6919B874A40020C938 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		49887F6F19B874A40020C938 /* BRNImagePickerSheetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRNImagePickerSheetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		49887F7419B874A40020C938 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49887F7519B874A40020C938 /* BRNImagePickerSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BRNImagePickerSheetTests.swift; sourceTree = "<group>"; };
 		49945C791A122C96008CADF5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		49945C7E1A123A9E008CADF5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		49A0CF5219BCC10E006AFFF5 /* BRNImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerCollectionView.swift; sourceTree = "<group>"; };
@@ -58,13 +44,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4907781219B9D5BF000A73D8 /* AssetsLibrary.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		49887F6C19B874A40020C938 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +75,6 @@
 			isa = PBXGroup;
 			children = (
 				49887F5F19B874A30020C938 /* BRNImagePickerSheet */,
-				49887F7219B874A40020C938 /* BRNImagePickerSheetTests */,
 				49887F5E19B874A30020C938 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				49887F5D19B874A30020C938 /* BRNImagePickerSheet.app */,
-				49887F6F19B874A40020C938 /* BRNImagePickerSheetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -133,23 +110,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		49887F7219B874A40020C938 /* BRNImagePickerSheetTests */ = {
-			isa = PBXGroup;
-			children = (
-				49887F7519B874A40020C938 /* BRNImagePickerSheetTests.swift */,
-				49887F7319B874A40020C938 /* Supporting Files */,
-			);
-			path = BRNImagePickerSheetTests;
-			sourceTree = "<group>";
-		};
-		49887F7319B874A40020C938 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				49887F7419B874A40020C938 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -170,24 +130,6 @@
 			productReference = 49887F5D19B874A30020C938 /* BRNImagePickerSheet.app */;
 			productType = "com.apple.product-type.application";
 		};
-		49887F6E19B874A40020C938 /* BRNImagePickerSheetTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 49887F7C19B874A40020C938 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheetTests" */;
-			buildPhases = (
-				49887F6B19B874A40020C938 /* Sources */,
-				49887F6C19B874A40020C938 /* Frameworks */,
-				49887F6D19B874A40020C938 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				49887F7119B874A40020C938 /* PBXTargetDependency */,
-			);
-			name = BRNImagePickerSheetTests;
-			productName = BRNImagePickerSheetTests;
-			productReference = 49887F6F19B874A40020C938 /* BRNImagePickerSheetTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -201,13 +143,9 @@
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = 5953RHWYWT;
 					};
-					49887F6E19B874A40020C938 = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = 49887F5C19B874A30020C938;
-					};
 				};
 			};
-			buildConfigurationList = 49887F5819B874A30020C938 /* Build configuration list for PBXProject "BRNImagePickerSheet" */;
+			buildConfigurationList = 49887F5819B874A30020C938 /* Build configuration list for PBXProject "BRNImagePickerSheetExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -221,7 +159,6 @@
 			projectRoot = "";
 			targets = (
 				49887F5C19B874A30020C938 /* BRNImagePickerSheet */,
-				49887F6E19B874A40020C938 /* BRNImagePickerSheetTests */,
 			);
 		};
 /* End PBXProject section */
@@ -234,13 +171,6 @@
 				49887F6A19B874A40020C938 /* Images.xcassets in Resources */,
 				49945C781A122C96008CADF5 /* Localizable.strings in Resources */,
 				49945C7D1A123A9E008CADF5 /* Localizable.stringsdict in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		49887F6D19B874A40020C938 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,23 +192,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49887F6B19B874A40020C938 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				49887F7619B874A40020C938 /* BRNImagePickerSheetTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		49887F7119B874A40020C938 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 49887F5C19B874A30020C938 /* BRNImagePickerSheet */;
-			targetProxy = 49887F7019B874A40020C938 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		49945C7A1A122C96008CADF5 /* Localizable.strings */ = {
@@ -401,44 +315,10 @@
 			};
 			name = Release;
 		};
-		49887F7D19B874A40020C938 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = BRNImagePickerSheetTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BRNImagePickerSheet.app/BRNImagePickerSheet";
-			};
-			name = Debug;
-		};
-		49887F7E19B874A40020C938 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = BRNImagePickerSheetTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BRNImagePickerSheet.app/BRNImagePickerSheet";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		49887F5819B874A30020C938 /* Build configuration list for PBXProject "BRNImagePickerSheet" */ = {
+		49887F5819B874A30020C938 /* Build configuration list for PBXProject "BRNImagePickerSheetExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				49887F7719B874A40020C938 /* Debug */,
@@ -452,15 +332,6 @@
 			buildConfigurations = (
 				49887F7A19B874A40020C938 /* Debug */,
 				49887F7B19B874A40020C938 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		49887F7C19B874A40020C938 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheetTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				49887F7D19B874A40020C938 /* Debug */,
-				49887F7E19B874A40020C938 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
