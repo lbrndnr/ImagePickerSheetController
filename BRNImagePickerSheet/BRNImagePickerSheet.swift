@@ -70,14 +70,12 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     }
     
     var selectedPhotos: [UIImage] {
-        get {
-            var selectedPhotos = [UIImage]()
-            for index in self.selectedPhotoIndices {
-                selectedPhotos.append(self.photos[index])
-            }
-            
-            return selectedPhotos
+        var selectedPhotos = [UIImage]()
+        for index in self.selectedPhotoIndices {
+            selectedPhotos.append(self.photos[index])
         }
+        
+        return selectedPhotos
     }
     
     var numberOfButtons = 1

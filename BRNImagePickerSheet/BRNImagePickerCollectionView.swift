@@ -11,19 +11,15 @@ import UIKit
 class BRNImagePickerCollectionView: UICollectionView {
     
     var bouncing: Bool {
-        get {
-            let contentOffset = self.contentOffset
-            let contentSize = self.contentSize
-            let contentInset = self.contentInset
-            
-            return contentOffset.x < -contentInset.left || contentOffset.x + self.frame.width > contentSize.width + contentInset.right
-        }
+        let contentOffset = self.contentOffset
+        let contentSize = self.contentSize
+        let contentInset = self.contentInset
+        
+        return contentOffset.x < -contentInset.left || contentOffset.x + self.frame.width > contentSize.width + contentInset.right
     }
     
     var horizontalImagePreviewLayout: BRNHorizontalImagePreviewFlowLayout {
-        get {
-            return self.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
-        }
+        return self.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
     }
     
     // MARK: Initialization
