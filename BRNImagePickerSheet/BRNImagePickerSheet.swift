@@ -341,7 +341,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     private func fetchImages() {
         let options = PHFetchOptions()
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
         result.enumerateObjectsUsingBlock { (obj, _, _) -> Void in
             let asset = obj as? PHAsset
@@ -358,10 +358,13 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return CGSize(width: proportion*height, height: height)
     }
     
-    private func requestImageForAsset(asset: PHAsset, var size: CGSize, completion: (image: UIImage) -> Void) {
+    private func requestImageForAsset(asset: PHAsset, size: CGSize, completion: (image: UIImage) -> Void) {
         let manager = PHImageManager.defaultManager()
         
-        manager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFill, options: nil) { (image, _) -> Void in
+        let options = PHImageRequestOptions()
+        options.resizeMode = .None
+        
+        manager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFit, options: options) { (image, _) -> Void in
             completion(image: image)
         }
     }
