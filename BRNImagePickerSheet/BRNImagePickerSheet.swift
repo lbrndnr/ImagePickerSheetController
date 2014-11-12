@@ -49,15 +49,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     var numberOfSelectedPhotos: Int {
         return self.selectedPhotoIndices.count
     }
-    var selectedPhotos: [UIImage] {
-        var selectedPhotos = [UIImage]()
-        // TODO
-//        for index in self.selectedPhotoIndices {
-//            selectedPhotos.append(self.photos[index])
-//        }
-        
-        return selectedPhotos
-    }
     
     var numberOfButtons: Int = 1 {
         didSet {
@@ -367,11 +358,28 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return CGSize(width: proportion*height, height: height)
     }
     
-    private func requestImageForAsset(asset: PHAsset, var size: CGSize, completion: (image: UIImage?) -> Void) {
+    private func requestImageForAsset(asset: PHAsset, var size: CGSize, completion: (image: UIImage) -> Void) {
         let manager = PHImageManager.defaultManager()
         
         manager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFill, options: nil) { (image, _) -> Void in
             completion(image: image)
+        }
+    }
+    
+    func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
+        var images = [UIImage]()
+        var counter = self.selectedPhotoIndices.count
+        
+        for index in self.selectedPhotoIndices {
+            let asset = self.assets[index]
+            self.requestImageForAsset(asset, size: PHImageManagerMaximumSize, completion: { (image) -> Void in
+                images.append(image)
+                counter--
+                
+                if counter <= 0 {
+                    completion(images: images)
+                }
+            })
         }
     }
     

@@ -31,7 +31,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     // MARK: BRNImagePickerSheetDelegate
     
     func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String {
-        let photosSelected = (imagePickerSheet.selectedPhotos.count > 0)
+        let photosSelected = (imagePickerSheet.numberOfSelectedPhotos > 0)
         
         if (buttonIndex == 0) {
             if photosSelected {
@@ -43,7 +43,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
         }
         else {
             if photosSelected {
-                return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.selectedPhotos.count)
+                return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.numberOfSelectedPhotos)
             }
             else {
                 return NSLocalizedString("Photo Library", comment: "Photo Library")
@@ -53,8 +53,10 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     
     func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex != imagePickerSheet.cancelButtonIndex {
-            if imagePickerSheet.selectedPhotos.count > 0 {
-                println(imagePickerSheet.selectedPhotos)
+            if imagePickerSheet.numberOfSelectedPhotos > 0 {
+                imagePickerSheet.getSelectedImagesWithCompletion({ (images) -> Void in
+                    println(images)
+                })
             }
             else {
                 let controller = UIImagePickerController()
