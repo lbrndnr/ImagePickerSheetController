@@ -30,6 +30,14 @@ class BRNImageCollectionViewCell : UICollectionViewCell {
         self.addSubview(self.imageView)
     }
     
+    // MARK: - Other Methods
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.imageView.image = nil
+    }
+    
     // MARK: - Layout
     
     override func layoutSubviews() {

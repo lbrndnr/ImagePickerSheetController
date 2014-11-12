@@ -23,7 +23,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     
     func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
         var sheet = BRNImagePickerSheet()
-        sheet.numberOfButtons = 0
+        sheet.numberOfButtons = 3
         sheet.delegate = self
         sheet.showInView(self.view)
     }
