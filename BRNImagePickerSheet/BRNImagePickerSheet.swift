@@ -351,18 +351,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - Images
     
-    private func fetchAssets() {
-        let options = PHFetchOptions()
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
-        result.enumerateObjectsUsingBlock { (obj, _, _) -> Void in
-            let asset = obj as? PHAsset
-            if let asset = asset {
-                self.assets.append(asset)
-            }
-        }
-    }
-    
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
         
@@ -376,19 +364,38 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             }
             
             return rowHeight-2.0*BRNImagePickerSheet.collectionViewInset
-        }()
+            }()
         
         return CGSize(width: proportion*height, height: height)
     }
     
+    private func targetSizeForAssetOfSize(size: CGSize) -> CGSize {
+        let scale = UIScreen.mainScreen().scale
+        return CGSize(width: scale*size.width, height: scale*size.height)
+    }
+    
+    private func fetchAssets() {
+        let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        result.enumerateObjectsUsingBlock { (obj, _, _) -> Void in
+            let asset = obj as? PHAsset
+            if let asset = asset {
+                self.assets.append(asset)
+            }
+        }
+    }
+    
     private func requestImageForAsset(asset: PHAsset, size: CGSize, completion: (image: UIImage) -> Void) {
-        self.imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
+        let targetSize = self.targetSizeForAssetOfSize(size)
+        self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
             completion(image: image)
         }
     }
     
     private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
-        self.imageManager.startCachingImagesForAssets([asset], targetSize: size, contentMode: .AspectFit, options: nil)
+        let targetSize = self.targetSizeForAssetOfSize(size)
+        self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFit, options: nil)
     }
     
     func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
