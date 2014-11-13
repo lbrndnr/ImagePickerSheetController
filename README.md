@@ -77,7 +77,7 @@ To install add the following line to your Podfile:
 (There is apparently an issue with Xcode6 and Swift static libs. Check out [this issue](https://github.com/CocoaPods/CocoaPods/issues/2226) for more.
 
 ## Requirements
-BRNImagePickerSheet is written in Swift. It therefore runs on iOS 7 and 8.
+BRNImagePickerSheet is written in Swift and links agains `Photos.framework`. It therefore requires iOS 8 or later.
 
 ## License
 BRNImagePickerSheet is licensed under the [MIT License](http://opensource.org/licenses/mit-license.php).

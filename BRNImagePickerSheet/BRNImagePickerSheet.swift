@@ -7,30 +7,7 @@
 //
 
 import UIKit
-import AssetsLibrary
-
-extension UIImageOrientation {
-    init(_ value: ALAssetOrientation) {
-        switch value {
-        case .Up:
-            self = .Up
-        case .Down:
-            self = .Down
-        case .Left:
-            self = .Left
-        case .Right:
-            self = .Right
-        case .UpMirrored:
-            self = .UpMirrored
-        case .DownMirrored:
-            self = DownMirrored
-        case .LeftMirrored:
-            self = .LeftMirrored
-        case .RightMirrored:
-            self = .RightMirrored
-        }
-    }
-}
+import Photos
 
 @objc protocol BRNImagePickerSheetDelegate {
     func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String
@@ -57,10 +34,10 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     var enlargedPreviews = false
     var delegate: BRNImagePickerSheetDelegate?
-    private var photos = [UIImage]()
+    private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
-        return (self.photos.count > 0)
+        return (self.assets.count > 0)
     }
     private var supplementaryViews = [Int: BRNImageSupplementaryView]()
     
@@ -69,13 +46,8 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return self.buttonIndexForRow(lastRow)
     }
     
-    var selectedPhotos: [UIImage] {
-        var selectedPhotos = [UIImage]()
-        for index in self.selectedPhotoIndices {
-            selectedPhotos.append(self.photos[index])
-        }
-        
-        return selectedPhotos
+    var numberOfSelectedPhotos: Int {
+        return self.selectedPhotoIndices.count
     }
     
     var numberOfButtons: Int = 1 {
@@ -83,6 +55,8 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             numberOfButtons = max(numberOfButtons, 1)
         }
     }
+    
+    private var imageManager = PHCachingImageManager()
     
     private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [("Cancel", nil, nil)]
     
@@ -229,7 +203,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - UICollectionViewDataSource
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.photos.count
+        return self.assets.count
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -238,7 +212,13 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
-        cell.imageView.image = self.photos[indexPath.section]
+        
+        let asset = self.assets[indexPath.section]
+        let size = self.sizeForAsset(asset)
+        
+        self.requestImageForAsset(asset, size: size) { (image) -> Void in
+            cell.imageView.image = image
+        }
         
         return cell
     }
@@ -257,11 +237,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let photo = self.photos[indexPath.section]
-        let height = self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) - 2.0 * BRNImagePickerSheet.collectionViewInset
-        let factor = height / photo.size.height
+        let asset = self.assets[indexPath.section]
         
-        return CGSizeMake(factor * photo.size.width, height)
+        return self.sizeForAsset(asset)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -271,6 +249,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     }
     
     // MARK: - UICollectionViewDelegate
+    
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let nextIndex = indexPath.row+1
+        if nextIndex <= self.assets.endIndex {
+            let asset = self.assets[nextIndex]
+            let size = self.sizeForAsset(asset)
+            
+            self.prefetchImagesForAsset(asset, size: size)
+        }
+    }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(self.selectedPhotoIndices, indexPath.section)
@@ -326,45 +314,26 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             return
         }
         
+        self.fetchAssets()
+        self.tableView.reloadData()
+        
         self.delegate?.willPresentImagePickerSheet?(self)
         
-        var show: () {
-            self.frame = view.frame
-            view.superview!.addSubview(self)
-                
-            let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
-            self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
-            self.overlayView.alpha = 0.0
-            
-            UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
-                self.tableView.frame.origin.y = originalTableViewOffset
-                self.overlayView.alpha = 1.0
-                }, completion: { (finished: Bool) -> Void in
-                    // Known issue, closures require more than one line or an explicit return. Will fix this whenever possible
-                    self.delegate?.didPresentImagePickerSheet?(self)
-                    return
-            })
-        }
+        self.frame = view.frame
+        view.superview!.addSubview(self)
         
-        let library = ALAssetsLibrary()
-        library.enumerateGroupsWithTypes((1 << 4), usingBlock: { (group: ALAssetsGroup!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-            if group != nil {
-                group.setAssetsFilter(ALAssetsFilter.allPhotos())
-                group.enumerateAssetsUsingBlock({ (asset: ALAsset!, index: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                    if asset != nil {
-                        let representation: ALAssetRepresentation = asset.defaultRepresentation()
-                        let orientation = UIImageOrientation(representation.orientation())
-                        let photo = UIImage(CGImage: representation.fullResolutionImage().takeUnretainedValue(), scale: CGFloat(representation.scale()), orientation: orientation)
-                        self.photos.insert(photo!, atIndex: 0)
-                    }
-                })
-                
-                self.tableView.reloadData()
-            }
-            show
-        }) { (error) -> Void in
-            show
-        }
+        let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
+        self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
+        self.overlayView.alpha = 0.0
+        self.overlayView.userInteractionEnabled = false
+        
+        UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
+            self.tableView.frame.origin.y = originalTableViewOffset
+            self.overlayView.alpha = 1.0
+            }, completion: { (finished: Bool) -> Void in
+                self.delegate?.didPresentImagePickerSheet?(self)
+                self.overlayView.userInteractionEnabled = true
+        })
     }
     
     func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
@@ -378,6 +347,72 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
                 self.delegate?.imagePickerSheet?(self, didDismissWithButtonIndex: buttonIndex)
                 self.removeFromSuperview()
         })
+    }
+    
+    // MARK: - Images
+    
+    private func sizeForAsset(asset: PHAsset) -> CGSize {
+        let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
+        
+        let height: CGFloat = {
+            var rowHeight: CGFloat = 0.0
+            if (self.enlargedPreviews) {
+                rowHeight = BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight
+            }
+            else {
+                rowHeight = BRNImagePickerSheet.tableViewPreviewRowHeight
+            }
+            
+            return rowHeight-2.0*BRNImagePickerSheet.collectionViewInset
+            }()
+        
+        return CGSize(width: proportion*height, height: height)
+    }
+    
+    private func targetSizeForAssetOfSize(size: CGSize) -> CGSize {
+        let scale = UIScreen.mainScreen().scale
+        return CGSize(width: scale*size.width, height: scale*size.height)
+    }
+    
+    private func fetchAssets() {
+        let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        result.enumerateObjectsUsingBlock { (obj, _, _) -> Void in
+            let asset = obj as? PHAsset
+            if let asset = asset {
+                self.assets.append(asset)
+            }
+        }
+    }
+    
+    private func requestImageForAsset(asset: PHAsset, size: CGSize, completion: (image: UIImage) -> Void) {
+        let targetSize = self.targetSizeForAssetOfSize(size)
+        self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
+            completion(image: image)
+        }
+    }
+    
+    private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
+        let targetSize = self.targetSizeForAssetOfSize(size)
+        self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFit, options: nil)
+    }
+    
+    func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
+        var images = [UIImage]()
+        var counter = self.selectedPhotoIndices.count
+        
+        for index in self.selectedPhotoIndices {
+            let asset = self.assets[index]
+            self.requestImageForAsset(asset, size: PHImageManagerMaximumSize, completion: { (image) -> Void in
+                images.append(image)
+                counter--
+                
+                if counter <= 0 {
+                    completion(images: images)
+                }
+            })
+        }
     }
     
     // MARK: - Other Methods

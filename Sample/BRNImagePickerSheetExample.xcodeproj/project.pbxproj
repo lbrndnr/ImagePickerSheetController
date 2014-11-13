@@ -18,7 +18,7 @@
 		491EC63A1A123F5600181FA8 /* BRNImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491EC6341A123F5600181FA8 /* BRNImagePickerSheet.swift */; };
 		491EC63B1A123F5600181FA8 /* BRNImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491EC6351A123F5600181FA8 /* BRNImagePreviewTableViewCell.swift */; };
 		491EC63C1A123F5600181FA8 /* BRNImageSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491EC6361A123F5600181FA8 /* BRNImageSupplementaryView.swift */; };
-		491EC63E1A123F8B00181FA8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 491EC63D1A123F8B00181FA8 /* AssetsLibrary.framework */; };
+		49713F8D1A13B7E90062D1C4 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49713F8C1A13B7E90062D1C4 /* Photos.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +34,7 @@
 		491EC6341A123F5600181FA8 /* BRNImagePickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerSheet.swift; sourceTree = "<group>"; };
 		491EC6351A123F5600181FA8 /* BRNImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
 		491EC6361A123F5600181FA8 /* BRNImageSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImageSupplementaryView.swift; sourceTree = "<group>"; };
-		491EC63D1A123F8B00181FA8 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		49713F8C1A13B7E90062D1C4 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		49887F5D19B874A30020C938 /* BRNImagePickerSheetExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BRNImagePickerSheetExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -43,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				491EC63E1A123F8B00181FA8 /* AssetsLibrary.framework in Frameworks */,
+				49713F8D1A13B7E90062D1C4 /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,7 @@
 		491EC63F1A123F9200181FA8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				491EC63D1A123F8B00181FA8 /* AssetsLibrary.framework */,
+				49713F8C1A13B7E90062D1C4 /* Photos.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -232,6 +232,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Laurin Brandner (APG8LQ7CP2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -275,6 +276,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Laurin Brandner (APG8LQ7CP2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -299,6 +301,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/BRNImagePickerSheetExample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = BRNImagePickerSheetExample;
@@ -310,6 +314,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/BRNImagePickerSheetExample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = BRNImagePickerSheetExample;
