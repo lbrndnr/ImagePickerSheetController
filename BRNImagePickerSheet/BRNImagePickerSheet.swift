@@ -56,6 +56,8 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
+    private var imageManager = PHCachingImageManager()
+    
     private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [("Cancel", nil, nil)]
     
     private class var presentationAnimationDuration: Double {
@@ -248,6 +250,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UICollectionViewDelegate
     
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let nextIndex = indexPath.row+1
+        if nextIndex <= self.assets.endIndex {
+            let asset = self.assets[nextIndex]
+            let size = self.sizeForAsset(asset)
+            
+            self.prefetchImagesForAsset(asset, size: size)
+        }
+    }
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(self.selectedPhotoIndices, indexPath.section)
         
@@ -302,7 +314,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             return
         }
         
-        self.fetchImages()
+        self.fetchAssets()
         self.tableView.reloadData()
         
         self.delegate?.willPresentImagePickerSheet?(self)
@@ -339,7 +351,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - Images
     
-    private func fetchImages() {
+    private func fetchAssets() {
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
@@ -353,20 +365,36 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
-        let height = self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) - 2.0 * BRNImagePickerSheet.collectionViewInset
+        
+        let height: CGFloat = {
+            var rowHeight: CGFloat = 0.0
+            if (self.enlargedPreviews) {
+                rowHeight = BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight
+            }
+            else {
+                rowHeight = BRNImagePickerSheet.tableViewPreviewRowHeight
+            }
+            
+            return rowHeight-2.0*BRNImagePickerSheet.collectionViewInset
+        }()
         
         return CGSize(width: proportion*height, height: height)
     }
     
     private func requestImageForAsset(asset: PHAsset, size: CGSize, completion: (image: UIImage) -> Void) {
-        let manager = PHImageManager.defaultManager()
-        
         let options = PHImageRequestOptions()
         options.resizeMode = .None
         
-        manager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFit, options: options) { (image, _) -> Void in
+        self.imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFit, options: options) { (image, _) -> Void in
             completion(image: image)
         }
+    }
+    
+    private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
+        let options = PHImageRequestOptions()
+        options.resizeMode = .None
+        
+        self.imageManager.startCachingImagesForAssets([asset], targetSize: size, contentMode: .AspectFit, options: options)
     }
     
     func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
