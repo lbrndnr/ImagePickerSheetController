@@ -325,14 +325,14 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
         self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
         self.overlayView.alpha = 0.0
+        self.overlayView.userInteractionEnabled = false
         
         UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
             self.tableView.frame.origin.y = originalTableViewOffset
             self.overlayView.alpha = 1.0
             }, completion: { (finished: Bool) -> Void in
-                // Known issue, closures require more than one line or an explicit return. Will fix this whenever possible
                 self.delegate?.didPresentImagePickerSheet?(self)
-                return
+                self.overlayView.userInteractionEnabled = true
         })
     }
     
@@ -382,19 +382,13 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     }
     
     private func requestImageForAsset(asset: PHAsset, size: CGSize, completion: (image: UIImage) -> Void) {
-        let options = PHImageRequestOptions()
-        options.resizeMode = .None
-        
-        self.imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFit, options: options) { (image, _) -> Void in
+        self.imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
             completion(image: image)
         }
     }
     
     private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
-        let options = PHImageRequestOptions()
-        options.resizeMode = .None
-        
-        self.imageManager.startCachingImagesForAssets([asset], targetSize: size, contentMode: .AspectFit, options: options)
+        self.imageManager.startCachingImagesForAssets([asset], targetSize: size, contentMode: .AspectFit, options: nil)
     }
     
     func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
