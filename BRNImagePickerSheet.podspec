@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name      = 'BRNImagePickerSheet'
-    s.version   = '0.0.1'
+    s.version   = ‘0.0.2’
     s.summary   = 'A duplicate of that shiny new custom action sheet seen in iOS8\’s iMessage'
     s.screenshots  = 'https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about.png', 'https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png'
     s.author = {"Laurin Brandner" => "mail@laurinbrandner.ch"}
