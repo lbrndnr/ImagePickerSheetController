@@ -1,7 +1,8 @@
 # BRNImagePickerSheet
 
 ## About
-BRNImagePickerSheet is a duplicate of that shiny new custom action sheet seen in iOS8's iMessage that Apple didn't make part of UIKit. It's the first project I've written in Swift. It works well but I might have coded something the Objective-C kind of way. Don't hesitate to open an issue/ pullrequest if you spotted something.
+BRNImagePickerSheet is a duplicate of that shiny new custom action sheet seen in iOS8's iMessage that Apple didn't make part of UIKit. It's the first project I've written in Swift. It works well but I might have coded something the Objective-C kind of way. Don't hesitate to open an issue or pull request if you spotted something.
+And no, BRNImagePickerSheet does not have the glitches Apple's image picker has :)
 
 ![demo](Screenshots/BRNImagePickerSheet.gif)
 
