@@ -310,22 +310,6 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - Presentation
     
     func showInView(view: UIView) {
-        self.showInView(view, requestAuthorization: true)
-    }
-    
-    func showInView(view: UIView, requestAuthorization: Bool) {
-        let authorization = PHPhotoLibrary.authorizationStatus()
-        
-        if requestAuthorization && (authorization == .NotDetermined) {
-            PHPhotoLibrary.requestAuthorization({ (status) -> Void in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.showInView(view, requestAuthorization: false)
-                })
-            })
-            
-            return
-        }
-        
         self.fetchAssets()
         self.tableView.reloadData()
         
