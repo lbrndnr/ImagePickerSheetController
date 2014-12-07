@@ -18,11 +18,31 @@ BRNImagePickerSheet's API is similar to the one of UIActionSheet so you should g
 ### Example
 
 ```swift
-let placeholder = BRNImagePickerSheet.selectedPhotoCountPlaceholder
-var sheet = BRNImagePickerSheet()
-sheet.numberOfButtons = 3
-sheet.delegate = self
-sheet.showInView(self.view)
+func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
+    let authorization = PHPhotoLibrary.authorizationStatus()
+
+    if authorization == .NotDetermined {
+        PHPhotoLibrary.requestAuthorization({ (status) -> Void in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.presentImagePickerSheet(gestureRecognizer)
+                })
+            })
+
+            return
+        }
+
+        if authorization == .Authorized {
+            var sheet = BRNImagePickerSheet()
+            sheet.numberOfButtons = 3
+            sheet.delegate = self
+            sheet.showInView(self.view)
+        }
+        else {
+            let alertView = UIAlertView(title: NSLocalizedString("An error occurred", comment: "An error occurred"), message: NSLocalizedString("BRNImagePickerSheet needs access to the camera roll", comment: "BRNImagePickerSheet needs access to the camera roll"), delegate: nil, cancelButtonTitle: NSLocalizedString("OK", comment: "OK"))
+                alertView.show()
+        }
+    }
+}
 ```
 
 ```swift
