@@ -6,6 +6,9 @@ BRNImagePickerSheet is a duplicate of that shiny new custom action sheet seen in
 ![BackgroundImage](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about.png)
 ![BackgroundImage](https://raw.github.com/larcus94/BRNImagePickerSheet/master/Screenshots/BRNImagePickerSheet-about-selected.png)
 
+[![Twitter: @larcus94](https://img.shields.io/badge/contact-@larcus94-blue.svg?style=flat)](https://twitter.com/larcus94)
+[![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/larcus94/BRNImagePickerSheet/blob/master/LICENSE)
+
 ## Author
 I'm Laurin Brandner, I'm on [Twitter](https://twitter.com/larcus94).
 
