@@ -158,9 +158,9 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
         
         let cell = UITableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
-        cell.textLabel!.textAlignment = .Center
-        cell.textLabel!.textColor = self.tintColor
-        cell.textLabel!.font = UIFont.systemFontOfSize(21)
+        cell.textLabel?.textAlignment = .Center
+        cell.textLabel?.textColor = self.tintColor
+        cell.textLabel?.font = UIFont.systemFontOfSize(21)
         
         let buttonIndex = self.buttonIndexForRow(indexPath.row)
         var buttonTitle: String?
@@ -171,7 +171,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
             buttonTitle = self.delegate?.imagePickerSheet(self, titleForButtonAtIndex: buttonIndex)
         }
         
-        cell.textLabel!.text = buttonTitle
+        cell.textLabel?.text = buttonTitle
         
         return cell
     }
