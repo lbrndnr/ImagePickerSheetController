@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-@objc protocol BRNImagePickerSheetDelegate {
+@objc public protocol BRNImagePickerSheetDelegate {
     func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String
     
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, clickedButtonAtIndex buttonIndex: Int)
@@ -26,13 +26,13 @@ import Photos
     optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
 
-class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     private let overlayView = UIView()
     private let tableView = UITableView()
     private let collectionView = BRNImagePickerCollectionView()
     
-    var enlargedPreviews = false
+    private(set) var enlargedPreviews = false
     var delegate: BRNImagePickerSheetDelegate?
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
@@ -41,16 +41,16 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     }
     private var supplementaryViews = [Int: BRNImageSupplementaryView]()
     
-    var cancelButtonIndex: Int {
+    public var cancelButtonIndex: Int {
         let lastRow = self.tableView.numberOfRowsInSection(0) - 1
         return self.buttonIndexForRow(lastRow)
     }
     
-    var numberOfSelectedPhotos: Int {
+    public var numberOfSelectedPhotos: Int {
         return self.selectedPhotoIndices.count
     }
     
-    var numberOfButtons: Int = 1 {
+    public var numberOfButtons: Int = 1 {
         didSet {
             numberOfButtons = max(numberOfButtons, 1)
         }
@@ -90,7 +90,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         self.setup()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         self.setup()
@@ -122,11 +122,11 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numberOfRows = self.numberOfButtons
         if self.previewsPhotos {
             numberOfRows += 1
@@ -135,7 +135,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return numberOfRows
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if self.previewsPhotos {
             if indexPath.row == 0 {
                 if (self.enlargedPreviews) {
@@ -149,7 +149,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return BRNImagePickerSheet.tableViewRowHeight
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && self.previewsPhotos {
             let cell = BRNImagePreviewTableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
             cell.collectionView = self.collectionView
@@ -178,11 +178,11 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    public func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return !(self.previewsPhotos && indexPath.row == 0)
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    public func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         var handle = true
@@ -202,15 +202,15 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UICollectionViewDataSource
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return self.assets.count
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
         
         let asset = self.assets[indexPath.section]
@@ -223,7 +223,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let view: BRNImageSupplementaryView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView", forIndexPath: indexPath) as BRNImageSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewCheckmarkInset, BRNImagePickerSheet.collectionViewCheckmarkInset, 0.0)
@@ -236,13 +236,13 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let asset = self.assets[indexPath.section]
         
         return self.sizeForAsset(asset)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * BRNImagePickerSheet.collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
         return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
@@ -250,7 +250,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let nextIndex = indexPath.row+1
         if nextIndex <= self.assets.endIndex {
             let asset = self.assets[nextIndex]
@@ -260,7 +260,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(self.selectedPhotoIndices, indexPath.section)
         
         if !selected {
@@ -309,7 +309,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - Presentation
     
-    func showInView(view: UIView) {
+    public func showInView(view: UIView) {
         self.fetchAssets()
         self.tableView.reloadData()
         
@@ -332,7 +332,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         })
     }
     
-    func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
+    public func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
         self.delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
         
         let duration = (animated) ? BRNImagePickerSheet.presentationAnimationDuration : 0.0
@@ -394,7 +394,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFit, options: nil)
     }
     
-    func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
+    public func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
         var images = [UIImage]()
         var counter = self.selectedPhotoIndices.count
         
@@ -413,7 +413,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - Other Methods
     
-    func buttonIndexForRow(row: Int) -> Int {
+    public func buttonIndexForRow(row: Int) -> Int {
         var buttonIndex = row
         if self.previewsPhotos {
             --buttonIndex
@@ -422,7 +422,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
         return buttonIndex
     }
     
-    func reloadButtonTitles() {
+    private func reloadButtonTitles() {
         var indexPaths = [NSIndexPath]()
         let startIndex = (self.previewsPhotos) ? 1 : 0
         
@@ -439,7 +439,7 @@ class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, U
     
     // MARK: - Layout
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         var bounds = self.bounds
