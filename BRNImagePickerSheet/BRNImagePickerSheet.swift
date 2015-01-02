@@ -58,7 +58,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     private var imageManager = PHCachingImageManager()
     
-    private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [("Cancel", nil, nil)]
+    private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [(NSLocalizedString("Cancel", comment: "Cancel"), nil, nil)]
     
     private class var presentationAnimationDuration: Double {
         return 0.3
