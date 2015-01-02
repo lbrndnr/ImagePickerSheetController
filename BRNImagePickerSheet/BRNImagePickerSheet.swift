@@ -433,7 +433,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
     }
     
-    func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {
+    @objc private func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {
         self.dismissWithClickedButtonIndex(self.cancelButtonIndex, animated: true)
     }
     
