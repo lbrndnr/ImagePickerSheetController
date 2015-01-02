@@ -98,7 +98,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     private func setup() {
         let tapRecognizer = UITapGestureRecognizer()
-        tapRecognizer.addTarget(self, action: "overlayViewWasTapped:")
+        tapRecognizer.addTarget(self, action: Selector("overlayViewWasTapped:"))
         self.overlayView.addGestureRecognizer(tapRecognizer)
         self.overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
         self.addSubview(self.overlayView)
