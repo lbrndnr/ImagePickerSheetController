@@ -216,7 +216,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         let asset = self.assets[indexPath.section]
         let size = self.sizeForAsset(asset)
         
-        self.requestImageForAsset(asset, size: size) { (image) -> Void in
+        self.requestImageForAsset(asset, size: size) { image in
             cell.imageView.image = image
         }
         
