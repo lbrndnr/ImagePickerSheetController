@@ -359,14 +359,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
         
         let height: CGFloat = {
-            var rowHeight: CGFloat = 0.0
-            if (self.enlargedPreviews) {
-                rowHeight = BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight
-            }
-            else {
-                rowHeight = BRNImagePickerSheet.tableViewPreviewRowHeight
-            }
-            
+            let rowHeight = self.enlargedPreviews ? BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight : BRNImagePickerSheet.tableViewPreviewRowHeight
             return rowHeight-2.0*BRNImagePickerSheet.collectionViewInset
         }()
         
@@ -439,7 +432,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     override public func layoutSubviews() {
         super.layoutSubviews()
         
-        var bounds = self.bounds
+        let bounds = self.bounds
         
         self.overlayView.frame = bounds
         
