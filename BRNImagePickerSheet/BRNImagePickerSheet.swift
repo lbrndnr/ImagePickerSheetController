@@ -364,7 +364,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
             }
             
             return rowHeight-2.0*BRNImagePickerSheet.collectionViewInset
-            }()
+        }()
         
         return CGSize(width: proportion*height, height: height)
     }
@@ -378,9 +378,8 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
-        result.enumerateObjectsUsingBlock { (obj, _, _) -> Void in
-            let asset = obj as? PHAsset
-            if let asset = asset {
+        result.enumerateObjectsUsingBlock { obj, _, _ in
+            if let asset = obj as? PHAsset {
                 self.assets.append(asset)
             }
         }
