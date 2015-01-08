@@ -425,7 +425,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     private func reloadButtonTitles() {
-        let indexPaths = Array(self.firstButtonIndex ..< self.firstButtonIndex+self.numberOfButtons-1).map({ row in NSIndexPath(forRow: row, inSection: 0) })
+        let indexPaths = Array(self.firstButtonIndex ..< self.firstButtonIndex+self.numberOfButtons-1).map({ NSIndexPath(forRow: $0, inSection: 0) })
         
         self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
     }
@@ -443,9 +443,8 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         
         self.overlayView.frame = bounds
         
-        var tableViewHeight: CGFloat = 0.0
-        for var row = 0; row < self.tableView.numberOfRowsInSection(0); ++row {
-            tableViewHeight += self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
+        let tableViewHeight = Array(0..<self.tableView.numberOfRowsInSection(0)).reduce(0.0) { total, row in
+            total + self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
         }
         
         self.tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), tableViewHeight)
