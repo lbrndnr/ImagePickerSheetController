@@ -314,26 +314,28 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     // MARK: - Presentation
     
     public func showInView(view: UIView) {
-        self.fetchAssets()
-        self.tableView.reloadData()
-        
-        self.delegate?.willPresentImagePickerSheet?(self)
-        
-        self.frame = view.frame
-        view.superview!.addSubview(self)
-        
-        let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
-        self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
-        self.overlayView.alpha = 0.0
-        self.overlayView.userInteractionEnabled = false
-        
-        UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: {
-            self.tableView.frame.origin.y = originalTableViewOffset
-            self.overlayView.alpha = 1.0
-            }, completion: { finished in
-                self.delegate?.didPresentImagePickerSheet?(self)
-                self.overlayView.userInteractionEnabled = true
-        })
+        if let superview = view.superview {
+            self.fetchAssets()
+            self.tableView.reloadData()
+            
+            self.delegate?.willPresentImagePickerSheet?(self)
+            
+            self.frame = view.frame
+            superview.addSubview(self)
+            
+            let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
+            self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
+            self.overlayView.alpha = 0.0
+            self.overlayView.userInteractionEnabled = false
+            
+            UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: {
+                self.tableView.frame.origin.y = originalTableViewOffset
+                self.overlayView.alpha = 1.0
+                }, completion: { finished in
+                    self.delegate?.didPresentImagePickerSheet?(self)
+                    self.overlayView.userInteractionEnabled = true
+            })
+        }
     }
     
     public func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
