@@ -327,10 +327,10 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.overlayView.alpha = 0.0
         self.overlayView.userInteractionEnabled = false
         
-        UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
+        UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: {
             self.tableView.frame.origin.y = originalTableViewOffset
             self.overlayView.alpha = 1.0
-            }, completion: { (finished: Bool) -> Void in
+            }, completion: { finished in
                 self.delegate?.didPresentImagePickerSheet?(self)
                 self.overlayView.userInteractionEnabled = true
         })
@@ -340,10 +340,10 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
         
         let duration = (animated) ? BRNImagePickerSheet.presentationAnimationDuration : 0.0
-        UIView.animateWithDuration(duration, animations: { () -> Void in
+        UIView.animateWithDuration(duration, animations: {
             self.overlayView.alpha = 0.0
             self.tableView.frame.origin.y += CGRectGetHeight(self.tableView.frame)
-            }, completion: { (finished: Bool) -> Void in
+            }, completion: { finished in
                 self.delegate?.imagePickerSheet?(self, didDismissWithButtonIndex: buttonIndex)
                 self.removeFromSuperview()
         })
