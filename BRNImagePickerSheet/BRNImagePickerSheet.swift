@@ -55,6 +55,10 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
             numberOfButtons = max(numberOfButtons, 1)
         }
     }
+
+    private var firstButtonIndex: Int {
+        return self.previewsPhotos ? 1 : 0
+    }
     
     private var imageManager = PHCachingImageManager()
     
@@ -414,18 +418,11 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     // MARK: - Other Methods
     
     public func buttonIndexForRow(row: Int) -> Int {
-        var buttonIndex = row
-        if self.previewsPhotos {
-            --buttonIndex
-        }
-        
-        return buttonIndex
+        return row-self.firstButtonIndex
     }
     
     private func reloadButtonTitles() {
-        let startIndex = (self.previewsPhotos) ? 1 : 0
-
-        let indexPaths = Array(startIndex ..< self.numberOfButtons+startIndex-1).map({ row in NSIndexPath(forRow: row, inSection: 0) })
+        let indexPaths = Array(self.firstButtonIndex ..< self.firstButtonIndex+self.numberOfButtons-1).map({ row in NSIndexPath(forRow: row, inSection: 0) })
         
         self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
     }
