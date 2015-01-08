@@ -423,12 +423,9 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     private func reloadButtonTitles() {
-        var indexPaths = [NSIndexPath]()
         let startIndex = (self.previewsPhotos) ? 1 : 0
-        
-        for row in startIndex ..< self.numberOfButtons+startIndex-1 {
-            indexPaths.append(NSIndexPath(forRow: row, inSection: 0))
-        }
+
+        let indexPaths = Array(startIndex ..< self.numberOfButtons+startIndex-1).map({ row in NSIndexPath(forRow: row, inSection: 0) })
         
         self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
     }
