@@ -167,13 +167,14 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
         
         let buttonIndex = self.buttonIndexForRow(indexPath.row)
-        var buttonTitle: String?
-        if buttonIndex == self.cancelButtonIndex {
-            buttonTitle = NSLocalizedString("Cancel", comment: "Cancel")
-        }
-        else {
-            buttonTitle = self.delegate?.imagePickerSheet(self, titleForButtonAtIndex: buttonIndex)
-        }
+        let buttonTitle: String? = {
+            if buttonIndex == self.cancelButtonIndex {
+                return NSLocalizedString("Cancel", comment: "Cancel")
+            }
+            else {
+                return self.delegate?.imagePickerSheet(self, titleForButtonAtIndex: buttonIndex)
+            }
+        }()
         
         cell.textLabel?.text = buttonTitle
         
@@ -249,6 +250,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * BRNImagePickerSheet.collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
+        
         return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
     }
     
@@ -278,11 +280,11 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
                 layout.invalidationCenteredIndexPath = indexPath
                 
                 self.setNeedsLayout()
-                UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: { () -> Void in
+                UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: {
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
                     self.layoutIfNeeded()
-                    }, completion: { (finished) -> Void in
+                    }, completion: { finished in
                         self.reloadButtonTitles()
                         layout.showsSupplementaryViews = true
                         self.delegate?.imagePickerSheetDidEnlargePreviews?(self)
