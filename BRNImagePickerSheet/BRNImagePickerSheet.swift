@@ -394,13 +394,19 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFit, options: nil)
     }
     
+    private func requestOriginalImageForAsset(asset: PHAsset, completion: (image: UIImage) -> Void) {
+        self.imageManager.requestImageForAsset(asset, targetSize: PHImageManagerMaximumSize, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
+            completion(image: image)
+        }
+    }
+    
     public func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
         var images = [UIImage]()
         var counter = self.selectedPhotoIndices.count
         
         for index in self.selectedPhotoIndices {
             let asset = self.assets[index]
-            self.requestImageForAsset(asset, size: PHImageManagerMaximumSize, completion: { (image) -> Void in
+            self.requestOriginalImageForAsset(asset, completion: { (image) -> Void in
                 images.append(image)
                 counter--
                 
