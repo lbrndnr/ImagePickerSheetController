@@ -382,8 +382,12 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         }
     }
     
-    private func requestImageForAsset(asset: PHAsset, size: CGSize, completion: (image: UIImage) -> Void) {
-        let targetSize = self.targetSizeForAssetOfSize(size)
+    private func requestImageForAsset(asset: PHAsset, size: CGSize?, completion: (image: UIImage) -> Void) {
+        var targetSize = PHImageManagerMaximumSize
+        if let size = size {
+            targetSize = self.targetSizeForAssetOfSize(size)
+        }
+        
         self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
             completion(image: image)
         }
@@ -394,19 +398,13 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFit, options: nil)
     }
     
-    private func requestOriginalImageForAsset(asset: PHAsset, completion: (image: UIImage) -> Void) {
-        self.imageManager.requestImageForAsset(asset, targetSize: PHImageManagerMaximumSize, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
-            completion(image: image)
-        }
-    }
-    
     public func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
         var images = [UIImage]()
         var counter = self.selectedPhotoIndices.count
         
         for index in self.selectedPhotoIndices {
             let asset = self.assets[index]
-            self.requestOriginalImageForAsset(asset, completion: { (image) -> Void in
+            self.requestImageForAsset(asset, size: nil, completion: { (image) -> Void in
                 images.append(image)
                 counter--
                 
