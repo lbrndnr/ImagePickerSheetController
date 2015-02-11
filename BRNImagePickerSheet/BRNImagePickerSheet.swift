@@ -55,6 +55,10 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
             numberOfButtons = max(numberOfButtons, 1)
         }
     }
+
+    private var firstButtonIndex: Int {
+        return self.previewsPhotos ? 1 : 0
+    }
     
     private var imageManager = PHCachingImageManager()
     
@@ -163,13 +167,14 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
         
         let buttonIndex = self.buttonIndexForRow(indexPath.row)
-        var buttonTitle: String?
-        if buttonIndex == self.cancelButtonIndex {
-            buttonTitle = NSLocalizedString("Cancel", comment: "Cancel")
-        }
-        else {
-            buttonTitle = self.delegate?.imagePickerSheet(self, titleForButtonAtIndex: buttonIndex)
-        }
+        let buttonTitle: String? = {
+            if buttonIndex == self.cancelButtonIndex {
+                return NSLocalizedString("Cancel", comment: "Cancel")
+            }
+            else {
+                return self.delegate?.imagePickerSheet(self, titleForButtonAtIndex: buttonIndex)
+            }
+        }()
         
         cell.textLabel?.text = buttonTitle
         
@@ -245,6 +250,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * BRNImagePickerSheet.collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
+        
         return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
     }
     
@@ -274,11 +280,11 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
                 layout.invalidationCenteredIndexPath = indexPath
                 
                 self.setNeedsLayout()
-                UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: { () -> Void in
+                UIView.animateWithDuration(BRNImagePickerSheet.enlargementAnimationDuration, animations: {
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
                     self.layoutIfNeeded()
-                    }, completion: { (finished) -> Void in
+                    }, completion: { finished in
                         self.reloadButtonTitles()
                         layout.showsSupplementaryViews = true
                         self.delegate?.imagePickerSheetDidEnlargePreviews?(self)
@@ -310,36 +316,38 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     // MARK: - Presentation
     
     public func showInView(view: UIView) {
-        self.fetchAssets()
-        self.tableView.reloadData()
-        
-        self.delegate?.willPresentImagePickerSheet?(self)
-        
-        self.frame = view.frame
-        view.superview!.addSubview(self)
-        
-        let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
-        self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
-        self.overlayView.alpha = 0.0
-        self.overlayView.userInteractionEnabled = false
-        
-        UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: { () -> Void in
-            self.tableView.frame.origin.y = originalTableViewOffset
-            self.overlayView.alpha = 1.0
-            }, completion: { (finished: Bool) -> Void in
-                self.delegate?.didPresentImagePickerSheet?(self)
-                self.overlayView.userInteractionEnabled = true
-        })
+        if let superview = view.superview {
+            self.fetchAssets()
+            self.tableView.reloadData()
+            
+            self.delegate?.willPresentImagePickerSheet?(self)
+            
+            self.frame = view.frame
+            superview.addSubview(self)
+            
+            let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
+            self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
+            self.overlayView.alpha = 0.0
+            self.overlayView.userInteractionEnabled = false
+            
+            UIView.animateWithDuration(BRNImagePickerSheet.presentationAnimationDuration, animations: {
+                self.tableView.frame.origin.y = originalTableViewOffset
+                self.overlayView.alpha = 1.0
+                }, completion: { finished in
+                    self.delegate?.didPresentImagePickerSheet?(self)
+                    self.overlayView.userInteractionEnabled = true
+            })
+        }
     }
     
     public func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
         self.delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
         
         let duration = (animated) ? BRNImagePickerSheet.presentationAnimationDuration : 0.0
-        UIView.animateWithDuration(duration, animations: { () -> Void in
+        UIView.animateWithDuration(duration, animations: {
             self.overlayView.alpha = 0.0
             self.tableView.frame.origin.y += CGRectGetHeight(self.tableView.frame)
-            }, completion: { (finished: Bool) -> Void in
+            }, completion: { finished in
                 self.delegate?.imagePickerSheet?(self, didDismissWithButtonIndex: buttonIndex)
                 self.removeFromSuperview()
         })
@@ -351,16 +359,9 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
         
         let height: CGFloat = {
-            var rowHeight: CGFloat = 0.0
-            if (self.enlargedPreviews) {
-                rowHeight = BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight
-            }
-            else {
-                rowHeight = BRNImagePickerSheet.tableViewPreviewRowHeight
-            }
-            
+            let rowHeight = self.enlargedPreviews ? BRNImagePickerSheet.tableViewEnlargedPreviewRowHeight : BRNImagePickerSheet.tableViewPreviewRowHeight
             return rowHeight-2.0*BRNImagePickerSheet.collectionViewInset
-            }()
+        }()
         
         return CGSize(width: proportion*height, height: height)
     }
@@ -374,16 +375,19 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
-        result.enumerateObjectsUsingBlock { (obj, _, _) -> Void in
-            let asset = obj as? PHAsset
-            if let asset = asset {
+        result.enumerateObjectsUsingBlock { obj, _, _ in
+            if let asset = obj as? PHAsset {
                 self.assets.append(asset)
             }
         }
     }
     
-    private func requestImageForAsset(asset: PHAsset, size: CGSize, completion: (image: UIImage) -> Void) {
-        let targetSize = self.targetSizeForAssetOfSize(size)
+    private func requestImageForAsset(asset: PHAsset, size: CGSize?, completion: (image: UIImage) -> Void) {
+        var targetSize = PHImageManagerMaximumSize
+        if let size = size {
+            targetSize = self.targetSizeForAssetOfSize(size)
+        }
+        
         self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
             completion(image: image)
         }
@@ -400,7 +404,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         
         for index in self.selectedPhotoIndices {
             let asset = self.assets[index]
-            self.requestImageForAsset(asset, size: PHImageManagerMaximumSize, completion: { (image) -> Void in
+            self.requestImageForAsset(asset, size: nil, completion: { (image) -> Void in
                 images.append(image)
                 counter--
                 
@@ -414,21 +418,11 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     // MARK: - Other Methods
     
     public func buttonIndexForRow(row: Int) -> Int {
-        var buttonIndex = row
-        if self.previewsPhotos {
-            --buttonIndex
-        }
-        
-        return buttonIndex
+        return row-self.firstButtonIndex
     }
     
     private func reloadButtonTitles() {
-        var indexPaths = [NSIndexPath]()
-        let startIndex = (self.previewsPhotos) ? 1 : 0
-        
-        for row in startIndex ..< self.numberOfButtons+startIndex-1 {
-            indexPaths.append(NSIndexPath(forRow: row, inSection: 0))
-        }
+        let indexPaths = Array(self.firstButtonIndex ..< self.firstButtonIndex+self.numberOfButtons-1).map({ NSIndexPath(forRow: $0, inSection: 0) })
         
         self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
     }
@@ -442,13 +436,12 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     override public func layoutSubviews() {
         super.layoutSubviews()
         
-        var bounds = self.bounds
+        let bounds = self.bounds
         
         self.overlayView.frame = bounds
         
-        var tableViewHeight: CGFloat = 0.0
-        for var row = 0; row < self.tableView.numberOfRowsInSection(0); ++row {
-            tableViewHeight += self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
+        let tableViewHeight = Array(0..<self.tableView.numberOfRowsInSection(0)).reduce(0.0) { total, row in
+            total + self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
         }
         
         self.tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), tableViewHeight)
