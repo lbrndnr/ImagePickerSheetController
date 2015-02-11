@@ -252,7 +252,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let nextIndex = indexPath.row+1
-        if nextIndex <= self.assets.endIndex {
+        if nextIndex < self.assets.count {
             let asset = self.assets[nextIndex]
             let size = self.sizeForAsset(asset)
             
