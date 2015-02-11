@@ -85,19 +85,7 @@ func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButt
 BRNImagePickerSheet uses a delegate method, similar to UITableView's dataSource, to get the title of a button. In conjunction with [stringsdict](https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html), this allows for easy translation of various plural forms.
 
 ## Installation
-
-BRNImagePickerSheet will be available via [CocoaPods](http://cocoapods.org). However there's an [issue](https://github.com/CocoaPods/CocoaPods/issues/2226) with Swift compatibility that caused the build to fail. I will release it as soon as possible though.
-
-<!---
-BRNImagePickerSheet is available via [CocoaPods](http://cocoapods.org).
-
-To install add the following line to your Podfile:
-
-    pod 'BRNImagePickerSheet'
-
--->
-
-(There is apparently an issue with Xcode6 and Swift static libs. Check out [this issue](https://github.com/CocoaPods/CocoaPods/issues/2226) for more.
+If you don’t use [Carthage](https://github.com/Carthage/Carthage) (although you really should) you can simply drag the files into your project.
 
 ## Requirements
 BRNImagePickerSheet is written in Swift and links agains `Photos.framework`. It therefore requires iOS 8 or later.
