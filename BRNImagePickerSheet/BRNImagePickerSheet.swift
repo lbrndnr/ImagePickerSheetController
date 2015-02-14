@@ -9,6 +9,11 @@
 import UIKit
 import Photos
 
+private let SheetCellIdentifier = "SheetCell"
+private let PreviewCellIdentifier = "PreviewCell"
+private let ImageCellIdentifier = "ImageCell"
+private let ImageSupplementaryViewIdentifier = "ImageSupplementaryView"
+
 @objc public protocol BRNImagePickerSheetDelegate {
     func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String
     
@@ -110,6 +115,8 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.alwaysBounceVertical = false
+        self.tableView.registerClass(BRNImagePreviewTableViewCell.self, forCellReuseIdentifier: PreviewCellIdentifier)
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: SheetCellIdentifier)
         self.addSubview(self.tableView)
         
         let inset = BRNImagePickerSheet.collectionViewInset
@@ -120,8 +127,8 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.collectionView.backgroundColor = UIColor.clearColor()
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.alwaysBounceHorizontal = true
-        self.collectionView.registerClass(BRNImageCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: "Cell")
-        self.collectionView.registerClass(BRNImageSupplementaryView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView")
+        self.collectionView.registerClass(BRNImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCellIdentifier)
+        self.collectionView.registerClass(BRNImageSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ImageSupplementaryViewIdentifier)
     }
     
     // MARK: - UITableViewDataSource
@@ -155,13 +162,13 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && self.previewsPhotos {
-            let cell = BRNImagePreviewTableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
+            let cell = tableView.dequeueReusableCellWithIdentifier(PreviewCellIdentifier, forIndexPath: indexPath) as BRNImagePreviewTableViewCell
             cell.collectionView = self.collectionView
             
             return cell
         }
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default , reuseIdentifier: "Cell")
+        let cell = tableView.dequeueReusableCellWithIdentifier(SheetCellIdentifier, forIndexPath: indexPath) as UITableViewCell
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = self.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
@@ -216,7 +223,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell: BRNImageCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as BRNImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ImageCellIdentifier, forIndexPath: indexPath) as BRNImageCollectionViewCell
         
         let asset = self.assets[indexPath.section]
         let size = self.sizeForAsset(asset)
@@ -229,7 +236,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view: BRNImageSupplementaryView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "SupplementaryView", forIndexPath: indexPath) as BRNImageSupplementaryView
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: ImageSupplementaryViewIdentifier, forIndexPath: indexPath) as BRNImageSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, BRNImagePickerSheet.collectionViewCheckmarkInset, BRNImagePickerSheet.collectionViewCheckmarkInset, 0.0)
         view.selected = contains(self.selectedPhotoIndices, indexPath.section)
