@@ -22,11 +22,17 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     }
     
     class var checkmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark")!.imageWithRenderingMode(.AlwaysTemplate)
+        let bundle = NSBundle(forClass: BRNImagePickerSheet.self)
+        let image = UIImage(named: "BRNImagePickerSheet-checkmark", inBundle: bundle, compatibleWithTraitCollection: nil)
+        
+        return image!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     class var selectedCheckmarkImage: UIImage {
-        return UIImage(named: "BRNImagePickerSheet-checkmark-selected")!.imageWithRenderingMode(.AlwaysTemplate)
+        let bundle = NSBundle(forClass: BRNImagePickerSheet.self)
+        let image = UIImage(named: "BRNImagePickerSheet-checkmark-selected", inBundle: bundle, compatibleWithTraitCollection: nil)
+        
+        return image!.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     // MARK: Initialization

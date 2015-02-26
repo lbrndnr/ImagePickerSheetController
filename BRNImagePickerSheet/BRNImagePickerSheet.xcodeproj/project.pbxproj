@@ -19,7 +19,18 @@
 		494E50201A9F4FBF009B5742 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 494E50181A9F4FBF009B5742 /* Localizable.strings */; };
 		494E50211A9F4FBF009B5742 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 494E501A1A9F4FBF009B5742 /* Localizable.stringsdict */; };
 		494E50231A9F4FBF009B5742 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E501D1A9F4FBF009B5742 /* ViewController.swift */; };
+		49C668B31A9F608000868486 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C668B21A9F608000868486 /* Images.xcassets */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		49C668AC1A9F5CBB00868486 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 494E4F541A9F4773009B5742 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 494E4FA31A9F4AC4009B5742;
+			remoteInfo = BRNImagePickerSheet;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		494E4F5C1A9F4773009B5742 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +50,7 @@
 		494E501C1A9F4FBF009B5742 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		494E501D1A9F4FBF009B5742 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		494E50251A9F4FF1009B5742 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49C668B21A9F608000868486 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				494E4FA71A9F4AC4009B5742 /* Info.plist */,
+				49C668B21A9F608000868486 /* Images.xcassets */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -148,6 +161,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				49C668AD1A9F5CBB00868486 /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = BRNImagePickerSheet;
@@ -222,6 +236,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C668B31A9F608000868486 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +266,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		49C668AD1A9F5CBB00868486 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 494E4FA31A9F4AC4009B5742 /* BRNImagePickerSheet */;
+			targetProxy = 49C668AC1A9F5CBB00868486 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		494E50161A9F4FBF009B5742 /* LaunchScreen.xib */ = {
@@ -363,7 +386,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = BRNImagePickerSheet/Info.plist;
+				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -373,7 +396,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = BRNImagePickerSheet/Info.plist;
+				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
