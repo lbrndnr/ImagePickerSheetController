@@ -27,16 +27,16 @@ class BRNImagePickerCollectionView: UICollectionView {
     override init() {
         super.init(frame: CGRectZero, collectionViewLayout: BRNHorizontalImagePreviewFlowLayout())
         
-        self.setup()
+        self.initialize()
     }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.setup()
+        self.initialize()
     }
     
-    private func setup() {
+    private func initialize() {
         self.panGestureRecognizer.addTarget(self, action: "handlePanGesture:")
     }
     

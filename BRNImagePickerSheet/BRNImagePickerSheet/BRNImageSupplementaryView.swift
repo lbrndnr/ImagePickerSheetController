@@ -40,16 +40,16 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.setup()
+        self.initialize()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.setup()
+        self.initialize()
     }
     
-    private func setup() {
+    private func initialize() {
         self.button.tintColor = UIColor.whiteColor()
         self.button.setImage(BRNImageSupplementaryView.checkmarkImage, forState: .Normal)
         self.button.setImage(BRNImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)

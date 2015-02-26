@@ -24,16 +24,16 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     override init() {
         super.init()
         
-        self.setup()
+        self.initialize()
     }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.setup()
+        self.initialize()
     }
     
-    private func setup() {
+    private func initialize() {
         self.scrollDirection = .Horizontal
     }
 

@@ -82,16 +82,16 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     public override init() {
         super.init(frame: CGRectZero)
         
-        self.setup()
+        self.initialize()
     }
     
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.setup()
+        self.initialize()
     }
     
-    private func setup() {
+    private func initialize() {
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.addTarget(self, action: Selector("overlayViewWasTapped:"))
         self.overlayView.addGestureRecognizer(tapRecognizer)
