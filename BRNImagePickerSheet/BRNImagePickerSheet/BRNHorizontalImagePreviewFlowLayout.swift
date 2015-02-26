@@ -11,7 +11,9 @@ import UIKit
 class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
     var invalidationCenteredIndexPath: NSIndexPath?
-    var supplementaryViewBounds: CGSize?
+    
+    var layoutAttributes = [UICollectionViewLayoutAttributes]()
+    var contentSize = CGSizeZero
     
     var showsSupplementaryViews: Bool = true {
         didSet {
@@ -39,33 +41,51 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
 
     // MARK: - Layout
     
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        self.layoutAttributes.removeAll(keepCapacity: false)
+        self.contentSize = CGSizeZero
+        
+        // Could use swift 1.2 here
+        if let collectionView = self.collectionView {
+            if let dataSource = collectionView.dataSource {
+                if let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+                    var origin = CGPoint(x: self.sectionInset.left, y: self.sectionInset.top)
+                    let numberOfSections = dataSource.numberOfSectionsInCollectionView?(collectionView) ?? 0
+                    
+                    for s in 0 ..< numberOfSections {
+                        let indexPath = NSIndexPath(forRow: 0, inSection: s)
+                        let size = delegate.collectionView?(collectionView, layout: self, sizeForItemAtIndexPath: indexPath) ?? CGSizeZero
+                        
+                        let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+                        attributes.frame = CGRect(origin: origin, size: size)
+                        attributes.zIndex = 0
+                    
+                        self.layoutAttributes.append(attributes)
+                        
+                        origin.x = attributes.frame.maxX + self.sectionInset.right
+                    }
+                    
+                    self.contentSize = CGSize(width: origin.x, height: collectionView.frame.height)
+                }
+            }
+        }
+    }
+    
+    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        return true
+    }
+    
     override func collectionViewContentSize() -> CGSize {
-        if self.collectionView == nil {
-            return CGSizeZero
-        }
-        
-        let collectionView = self.collectionView!
-        let dataSource = collectionView.dataSource!
-        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
-        
-        // TODO: really necessary to have to dataSources?
-        
-        var width: CGFloat = self.sectionInset.left
-        for section in 0 ..< dataSource.numberOfSectionsInCollectionView!(collectionView) {
-            let indexPath = NSIndexPath(forRow: 0, inSection: section)
-            let size = layoutDataSource.collectionView!(collectionView, layout: self, sizeForItemAtIndexPath: indexPath)
-            
-            width += size.width + self.sectionInset.right
-        }
-        
-        return CGSizeMake(width, collectionView.frame.height)
+        return self.contentSize
     }
     
     override func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint) -> CGPoint {
         var contentOffset = proposedContentOffset
         if let indexPath = self.invalidationCenteredIndexPath {
             if let collectionView = self.collectionView {
-                let frame = self.frameAttributeForItemAtIndexPath(indexPath)
+                let frame = self.layoutAttributes[indexPath.section].frame
                 contentOffset.x = frame.midX - collectionView.frame.width / 2.0
                 
                 contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
@@ -77,130 +97,55 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return super.targetContentOffsetForProposedContentOffset(contentOffset)
     }
     
-    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
-        if (self.collectionView == nil) {
-            return true
-        }
-        
-        return (self.collectionView!.bounds != newBounds)
-    }
-    
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-        if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
-            return nil
-        }
-        
-        let collectionView = self.collectionView!
-        let dataSource = collectionView.dataSource!
-        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
-        
-        // TODO: really necessary to have to dataSources?
-        
-        let contentOffset = collectionView.contentOffset
-        let collectionViewSize = collectionView.frame.size
-        let visibleFrame = CGRect(origin: contentOffset, size: collectionViewSize)
-        
-        var allAttributes = [UICollectionViewLayoutAttributes]()
-        var itemOrigin = CGPoint(x: self.sectionInset.left, y: self.sectionInset.top)
-        for section in 0 ..< dataSource.numberOfSectionsInCollectionView!(collectionView) {
-            let indexPath = NSIndexPath(forRow: 0, inSection: section)
-            let itemSize = layoutDataSource.collectionView!(collectionView, layout: self, sizeForItemAtIndexPath: indexPath)
-            let itemFrame = CGRect(origin: itemOrigin, size: itemSize)
-            if visibleFrame.intersects(itemFrame) {
-                let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath, frame: itemFrame)
-                let headerAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: indexPath, itemFrame: itemFrame)
-                
-                allAttributes += [itemAttributes, headerAttributes]
-            }
-
-            itemOrigin.x = itemFrame.maxX + self.sectionInset.right
-        }
-
-        return allAttributes
+        return self.layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }.reduce([UICollectionViewLayoutAttributes](), combine: { memo, attributes in
+            let supplementaryAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath)
+            return memo + [attributes, supplementaryAttributes]
+        })
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
-        return self.layoutAttributesForItemAtIndexPath(indexPath, frame: nil)
-    }
-    
-    func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath, var frame: CGRect?) -> UICollectionViewLayoutAttributes! {
-        let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
-        attributes.zIndex = 0
-        
-        if frame == nil {
-            frame = self.frameAttributeForItemAtIndexPath(indexPath)
-        }
-        attributes.frame = frame!
-        
-        return attributes
-    }
-    
-    func frameAttributeForItemAtIndexPath(indexPath: NSIndexPath) -> CGRect {
-        if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
-            return CGRectZero
-        }
-        
-        let collectionView = self.collectionView!
-        let dataSource = collectionView.dataSource!
-        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
-        
-        // TODO: really necessary to have to dataSources?
-        
-        var origin = CGPoint(x: self.sectionInset.left, y: self.sectionInset.top)
-        for section in 0 ..< dataSource.numberOfSectionsInCollectionView!(collectionView) {
-            let currentIndexPath = NSIndexPath(forRow: 0, inSection: section)
-            let size = layoutDataSource.collectionView!(collectionView, layout: self, sizeForItemAtIndexPath: currentIndexPath)
-            let frame = CGRect(origin: origin, size: size)
-            
-            if currentIndexPath == indexPath {
-                return frame
-            }
-            
-            origin.x = frame.maxX + self.sectionInset.right
-        }
-        
-        return CGRectZero
+        return self.layoutAttributes[indexPath.section]
     }
     
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
-        return self.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath, itemFrame: nil)
-    }
-    
-    func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath, var itemFrame: CGRect?) -> UICollectionViewLayoutAttributes! {
-        let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
-        attributes.zIndex = 1
-        attributes.hidden = !self.showsSupplementaryViews
-        
-        if itemFrame == nil {
-            itemFrame = self.frameAttributeForItemAtIndexPath(indexPath)
+        // swift 1.2
+        if let collectionView = self.collectionView {
+            if let dataSource = collectionView.dataSource {
+                if let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+                    let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath)
+                    
+                    let inset = collectionView.contentInset
+                    let bounds = collectionView.bounds
+                    let contentOffset: CGPoint = {
+                        var contentOffset = collectionView.contentOffset
+                        contentOffset.x += inset.left
+                        contentOffset.y += inset.top
+                        
+                        return contentOffset
+                    }()
+                    let visibleSize: CGSize = {
+                        var size = bounds.size
+                        size.width -= (inset.left+inset.right)
+                        
+                        return size
+                    }()
+                    let visibleFrame = CGRect(origin: contentOffset, size: visibleSize)
+                    
+                    let size = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section) ?? CGSizeZero
+                    let originX = max(itemAttributes.frame.minX, min(itemAttributes.frame.maxX - size.width, visibleFrame.maxX - size.width))
+                    
+                    let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
+                    attributes.zIndex = 1
+                    attributes.hidden = !self.showsSupplementaryViews
+                    attributes.frame = CGRect(origin: CGPoint(x: originX, y: itemAttributes.frame.minY), size: size)
+                    
+                    return attributes
+                }
+            }
         }
         
-        attributes.frame = self.frameAttributeForSupplementaryViewAtIndexPath(indexPath, itemFrame: itemFrame!)
-        
-        return attributes
-    }
-    
-    func frameAttributeForSupplementaryViewAtIndexPath(indexPath: NSIndexPath, itemFrame: CGRect) -> CGRect {
-        if (self.collectionView == nil || self.collectionView?.dataSource == nil) {
-            return CGRectZero
-        }
-        
-        let collectionView = self.collectionView!
-        let layoutDataSource: UICollectionViewDelegateFlowLayout = collectionView.dataSource! as UICollectionViewDelegateFlowLayout
-        
-        var contentOffset = collectionView.contentOffset
-        contentOffset.x += collectionView.contentInset.left
-        var collectionViewSize = collectionView.frame.size
-        if let size = self.supplementaryViewBounds {
-            collectionViewSize = size
-        }
-        
-        let visibleFrame = CGRect(origin: contentOffset, size: collectionViewSize)
-        
-        let size = layoutDataSource.collectionView!(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section)
-        let originX = max(itemFrame.minX, min(itemFrame.maxX - size.width, visibleFrame.maxX - size.width))
-        
-        return CGRect(origin: CGPoint(x: originX, y: itemFrame.minY), size: size)
+        return nil
     }
     
     override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
