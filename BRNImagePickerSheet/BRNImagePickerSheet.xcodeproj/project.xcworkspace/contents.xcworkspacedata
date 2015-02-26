@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:BRNImagePickerSheetExample.xcodeproj">
+      location = "self:BRNImagePickerSheet.xcodeproj">
    </FileRef>
 </Workspace>

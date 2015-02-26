@@ -97,5 +97,5 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
+    
 }
