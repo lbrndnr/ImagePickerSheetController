@@ -12,14 +12,14 @@ class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
     var invalidationCenteredIndexPath: NSIndexPath?
     
-    var layoutAttributes = [UICollectionViewLayoutAttributes]()
-    var contentSize = CGSizeZero
-    
     var showsSupplementaryViews: Bool = true {
         didSet {
             self.invalidateLayout()
         }
     }
+    
+    private var layoutAttributes = [UICollectionViewLayoutAttributes]()
+    private var contentSize = CGSizeZero
     
     // MARK: Initialization
     
