@@ -22,6 +22,7 @@
 		494E4FD01A9F4B94009B5742 /* BRNImageSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4FCA1A9F4B94009B5742 /* BRNImageSupplementaryView.swift */; };
 		494E4FD31A9F4CD2009B5742 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4FD21A9F4CD2009B5742 /* Photos.framework */; };
 		494E4FD51A9F4D5D009B5742 /* BRNImagePickerSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */; };
+		494E4FD91A9F4ED0009B5742 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 494E4FD81A9F4ED0009B5742 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		494E4FC91A9F4B94009B5742 /* BRNImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
 		494E4FCA1A9F4B94009B5742 /* BRNImageSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImageSupplementaryView.swift; sourceTree = "<group>"; };
 		494E4FD21A9F4CD2009B5742 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		494E4FD81A9F4ED0009B5742 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 		494E4F531A9F4773009B5742 = {
 			isa = PBXGroup;
 			children = (
+				494E4FD81A9F4ED0009B5742 /* Default-568h@2x.png */,
 				494E4F5E1A9F4773009B5742 /* Example */,
 				494E4FA51A9F4AC4009B5742 /* BRNImagePickerSheet */,
 				494E4F5D1A9F4773009B5742 /* Products */,
@@ -240,6 +243,7 @@
 				494E4F6C1A9F4773009B5742 /* LaunchScreen.xib in Resources */,
 				494E4F9D1A9F4A6E009B5742 /* Localizable.stringsdict in Resources */,
 				494E4F9B1A9F4A6E009B5742 /* Localizable.strings in Resources */,
+				494E4FD91A9F4ED0009B5742 /* Default-568h@2x.png in Resources */,
 				494E4F691A9F4773009B5742 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
