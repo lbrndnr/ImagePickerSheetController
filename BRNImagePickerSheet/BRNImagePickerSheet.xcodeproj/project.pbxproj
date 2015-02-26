@@ -11,55 +11,38 @@
 		494E4F641A9F4773009B5742 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F631A9F4773009B5742 /* ViewController.swift */; };
 		494E4F691A9F4773009B5742 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 494E4F681A9F4773009B5742 /* Images.xcassets */; };
 		494E4F6C1A9F4773009B5742 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 494E4F6A1A9F4773009B5742 /* LaunchScreen.xib */; };
-		494E4F781A9F4773009B5742 /* BRNImagePickerSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F771A9F4773009B5742 /* BRNImagePickerSheetTests.swift */; };
-		494E4F881A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F821A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */; };
-		494E4F891A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F821A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */; };
-		494E4F8A1A9F4889009B5742 /* BRNImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F831A9F4889009B5742 /* BRNImageCollectionViewCell.swift */; };
-		494E4F8B1A9F4889009B5742 /* BRNImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F831A9F4889009B5742 /* BRNImageCollectionViewCell.swift */; };
-		494E4F8C1A9F4889009B5742 /* BRNImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F841A9F4889009B5742 /* BRNImagePickerCollectionView.swift */; };
-		494E4F8D1A9F4889009B5742 /* BRNImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F841A9F4889009B5742 /* BRNImagePickerCollectionView.swift */; };
-		494E4F8E1A9F4889009B5742 /* BRNImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F851A9F4889009B5742 /* BRNImagePickerSheet.swift */; };
-		494E4F8F1A9F4889009B5742 /* BRNImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F851A9F4889009B5742 /* BRNImagePickerSheet.swift */; };
-		494E4F901A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F861A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift */; };
-		494E4F911A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F861A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift */; };
-		494E4F921A9F4889009B5742 /* BRNImageSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F871A9F4889009B5742 /* BRNImageSupplementaryView.swift */; };
-		494E4F931A9F4889009B5742 /* BRNImageSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4F871A9F4889009B5742 /* BRNImageSupplementaryView.swift */; };
-		494E4F951A9F4A31009B5742 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4F941A9F4A31009B5742 /* Photos.framework */; };
 		494E4F9B1A9F4A6E009B5742 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 494E4F971A9F4A6E009B5742 /* Localizable.strings */; };
-		494E4F9C1A9F4A6E009B5742 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 494E4F971A9F4A6E009B5742 /* Localizable.strings */; };
 		494E4F9D1A9F4A6E009B5742 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 494E4F991A9F4A6E009B5742 /* Localizable.stringsdict */; };
-		494E4F9E1A9F4A6E009B5742 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 494E4F991A9F4A6E009B5742 /* Localizable.stringsdict */; };
+		494E4FA91A9F4AC4009B5742 /* BRNImagePickerSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 494E4FA81A9F4AC4009B5742 /* BRNImagePickerSheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		494E4FCB1A9F4B94009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4FC51A9F4B94009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */; };
+		494E4FCC1A9F4B94009B5742 /* BRNImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4FC61A9F4B94009B5742 /* BRNImageCollectionViewCell.swift */; };
+		494E4FCD1A9F4B94009B5742 /* BRNImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4FC71A9F4B94009B5742 /* BRNImagePickerCollectionView.swift */; };
+		494E4FCE1A9F4B94009B5742 /* BRNImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4FC81A9F4B94009B5742 /* BRNImagePickerSheet.swift */; };
+		494E4FCF1A9F4B94009B5742 /* BRNImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4FC91A9F4B94009B5742 /* BRNImagePreviewTableViewCell.swift */; };
+		494E4FD01A9F4B94009B5742 /* BRNImageSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E4FCA1A9F4B94009B5742 /* BRNImageSupplementaryView.swift */; };
+		494E4FD31A9F4CD2009B5742 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4FD21A9F4CD2009B5742 /* Photos.framework */; };
+		494E4FD51A9F4D5D009B5742 /* BRNImagePickerSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		494E4F721A9F4773009B5742 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 494E4F541A9F4773009B5742 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 494E4F5B1A9F4773009B5742;
-			remoteInfo = BRNImagePickerSheet;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		494E4F5C1A9F4773009B5742 /* BRNImagePickerSheet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BRNImagePickerSheet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		494E4F5C1A9F4773009B5742 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		494E4F601A9F4773009B5742 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		494E4F611A9F4773009B5742 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		494E4F631A9F4773009B5742 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		494E4F681A9F4773009B5742 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		494E4F6B1A9F4773009B5742 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		494E4F711A9F4773009B5742 /* BRNImagePickerSheetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRNImagePickerSheetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		494E4F761A9F4773009B5742 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		494E4F771A9F4773009B5742 /* BRNImagePickerSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BRNImagePickerSheetTests.swift; sourceTree = "<group>"; };
-		494E4F821A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNHorizontalImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
-		494E4F831A9F4889009B5742 /* BRNImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		494E4F841A9F4889009B5742 /* BRNImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerCollectionView.swift; sourceTree = "<group>"; };
-		494E4F851A9F4889009B5742 /* BRNImagePickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerSheet.swift; sourceTree = "<group>"; };
-		494E4F861A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
-		494E4F871A9F4889009B5742 /* BRNImageSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImageSupplementaryView.swift; sourceTree = "<group>"; };
-		494E4F941A9F4A31009B5742 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		494E4F981A9F4A6E009B5742 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		494E4F9A1A9F4A6E009B5742 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BRNImagePickerSheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		494E4FA71A9F4AC4009B5742 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		494E4FA81A9F4AC4009B5742 /* BRNImagePickerSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRNImagePickerSheet.h; sourceTree = "<group>"; };
+		494E4FC51A9F4B94009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNHorizontalImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
+		494E4FC61A9F4B94009B5742 /* BRNImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		494E4FC71A9F4B94009B5742 /* BRNImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerCollectionView.swift; sourceTree = "<group>"; };
+		494E4FC81A9F4B94009B5742 /* BRNImagePickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePickerSheet.swift; sourceTree = "<group>"; };
+		494E4FC91A9F4B94009B5742 /* BRNImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
+		494E4FCA1A9F4B94009B5742 /* BRNImageSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRNImageSupplementaryView.swift; sourceTree = "<group>"; };
+		494E4FD21A9F4CD2009B5742 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,11 +50,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				494E4F951A9F4A31009B5742 /* Photos.framework in Frameworks */,
+				494E4FD51A9F4D5D009B5742 /* BRNImagePickerSheet.framework in Frameworks */,
+				494E4FD31A9F4CD2009B5742 /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		494E4F6E1A9F4773009B5742 /* Frameworks */ = {
+		494E4FA01A9F4AC4009B5742 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -84,8 +68,8 @@
 		494E4F531A9F4773009B5742 = {
 			isa = PBXGroup;
 			children = (
-				494E4F5E1A9F4773009B5742 /* BRNImagePickerSheet */,
-				494E4F741A9F4773009B5742 /* BRNImagePickerSheetTests */,
+				494E4F5E1A9F4773009B5742 /* Example */,
+				494E4FA51A9F4AC4009B5742 /* BRNImagePickerSheet */,
 				494E4F5D1A9F4773009B5742 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,21 +77,21 @@
 		494E4F5D1A9F4773009B5742 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				494E4F5C1A9F4773009B5742 /* BRNImagePickerSheet.app */,
-				494E4F711A9F4773009B5742 /* BRNImagePickerSheetTests.xctest */,
+				494E4F5C1A9F4773009B5742 /* Example.app */,
+				494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		494E4F5E1A9F4773009B5742 /* BRNImagePickerSheet */ = {
+		494E4F5E1A9F4773009B5742 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				494E4F811A9F4889009B5742 /* BRNImagePickerSheet */,
 				494E4F611A9F4773009B5742 /* AppDelegate.swift */,
 				494E4F631A9F4773009B5742 /* ViewController.swift */,
-				494E4F961A9F4A38009B5742 /* Frameworks */,
+				494E4FD41A9F4CDA009B5742 /* Frameworks */,
 				494E4F5F1A9F4773009B5742 /* Supporting Files */,
 			);
+			name = Example;
 			path = BRNImagePickerSheet;
 			sourceTree = "<group>";
 		};
@@ -123,40 +107,41 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		494E4F741A9F4773009B5742 /* BRNImagePickerSheetTests */ = {
+		494E4FA51A9F4AC4009B5742 /* BRNImagePickerSheet */ = {
 			isa = PBXGroup;
 			children = (
-				494E4F771A9F4773009B5742 /* BRNImagePickerSheetTests.swift */,
-				494E4F751A9F4773009B5742 /* Supporting Files */,
-			);
-			path = BRNImagePickerSheetTests;
-			sourceTree = "<group>";
-		};
-		494E4F751A9F4773009B5742 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				494E4F761A9F4773009B5742 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		494E4F811A9F4889009B5742 /* BRNImagePickerSheet */ = {
-			isa = PBXGroup;
-			children = (
-				494E4F851A9F4889009B5742 /* BRNImagePickerSheet.swift */,
-				494E4F821A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */,
-				494E4F831A9F4889009B5742 /* BRNImageCollectionViewCell.swift */,
-				494E4F841A9F4889009B5742 /* BRNImagePickerCollectionView.swift */,
-				494E4F861A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift */,
-				494E4F871A9F4889009B5742 /* BRNImageSupplementaryView.swift */,
+				494E4FC41A9F4B94009B5742 /* BRNImagePickerSheet */,
+				494E4FA81A9F4AC4009B5742 /* BRNImagePickerSheet.h */,
+				494E4FA61A9F4AC4009B5742 /* Supporting Files */,
 			);
 			path = BRNImagePickerSheet;
 			sourceTree = "<group>";
 		};
-		494E4F961A9F4A38009B5742 /* Frameworks */ = {
+		494E4FA61A9F4AC4009B5742 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				494E4F941A9F4A31009B5742 /* Photos.framework */,
+				494E4FA71A9F4AC4009B5742 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		494E4FC41A9F4B94009B5742 /* BRNImagePickerSheet */ = {
+			isa = PBXGroup;
+			children = (
+				494E4FC81A9F4B94009B5742 /* BRNImagePickerSheet.swift */,
+				494E4FC51A9F4B94009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */,
+				494E4FC61A9F4B94009B5742 /* BRNImageCollectionViewCell.swift */,
+				494E4FC71A9F4B94009B5742 /* BRNImagePickerCollectionView.swift */,
+				494E4FC91A9F4B94009B5742 /* BRNImagePreviewTableViewCell.swift */,
+				494E4FCA1A9F4B94009B5742 /* BRNImageSupplementaryView.swift */,
+			);
+			path = BRNImagePickerSheet;
+			sourceTree = "<group>";
+		};
+		494E4FD41A9F4CDA009B5742 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				494E4FD21A9F4CD2009B5742 /* Photos.framework */,
 			);
 			name = Frameworks;
 			path = ..;
@@ -164,10 +149,21 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		494E4FA11A9F4AC4009B5742 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				494E4FA91A9F4AC4009B5742 /* BRNImagePickerSheet.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		494E4F5B1A9F4773009B5742 /* BRNImagePickerSheet */ = {
+		494E4F5B1A9F4773009B5742 /* Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 494E4F7B1A9F4773009B5742 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheet" */;
+			buildConfigurationList = 494E4F7B1A9F4773009B5742 /* Build configuration list for PBXNativeTarget "Example" */;
 			buildPhases = (
 				494E4F581A9F4773009B5742 /* Sources */,
 				494E4F591A9F4773009B5742 /* Frameworks */,
@@ -177,28 +173,28 @@
 			);
 			dependencies = (
 			);
-			name = BRNImagePickerSheet;
+			name = Example;
 			productName = BRNImagePickerSheet;
-			productReference = 494E4F5C1A9F4773009B5742 /* BRNImagePickerSheet.app */;
+			productReference = 494E4F5C1A9F4773009B5742 /* Example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		494E4F701A9F4773009B5742 /* BRNImagePickerSheetTests */ = {
+		494E4FA31A9F4AC4009B5742 /* BRNImagePickerSheet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 494E4F7E1A9F4773009B5742 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheetTests" */;
+			buildConfigurationList = 494E4FBD1A9F4AC4009B5742 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheet" */;
 			buildPhases = (
-				494E4F6D1A9F4773009B5742 /* Sources */,
-				494E4F6E1A9F4773009B5742 /* Frameworks */,
-				494E4F6F1A9F4773009B5742 /* Resources */,
+				494E4F9F1A9F4AC4009B5742 /* Sources */,
+				494E4FA01A9F4AC4009B5742 /* Frameworks */,
+				494E4FA11A9F4AC4009B5742 /* Headers */,
+				494E4FA21A9F4AC4009B5742 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				494E4F731A9F4773009B5742 /* PBXTargetDependency */,
 			);
-			name = BRNImagePickerSheetTests;
-			productName = BRNImagePickerSheetTests;
-			productReference = 494E4F711A9F4773009B5742 /* BRNImagePickerSheetTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
+			name = BRNImagePickerSheet;
+			productName = BRNImagePickerSheet;
+			productReference = 494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -212,9 +208,8 @@
 					494E4F5B1A9F4773009B5742 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
-					494E4F701A9F4773009B5742 = {
+					494E4FA31A9F4AC4009B5742 = {
 						CreatedOnToolsVersion = 6.1.1;
-						TestTargetID = 494E4F5B1A9F4773009B5742;
 					};
 				};
 			};
@@ -231,8 +226,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				494E4F5B1A9F4773009B5742 /* BRNImagePickerSheet */,
-				494E4F701A9F4773009B5742 /* BRNImagePickerSheetTests */,
+				494E4F5B1A9F4773009B5742 /* Example */,
+				494E4FA31A9F4AC4009B5742 /* BRNImagePickerSheet */,
 			);
 		};
 /* End PBXProject section */
@@ -249,12 +244,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		494E4F6F1A9F4773009B5742 /* Resources */ = {
+		494E4FA21A9F4AC4009B5742 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				494E4F9C1A9F4A6E009B5742 /* Localizable.strings in Resources */,
-				494E4F9E1A9F4A6E009B5742 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,40 +258,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				494E4F901A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift in Sources */,
-				494E4F8E1A9F4889009B5742 /* BRNImagePickerSheet.swift in Sources */,
 				494E4F641A9F4773009B5742 /* ViewController.swift in Sources */,
-				494E4F921A9F4889009B5742 /* BRNImageSupplementaryView.swift in Sources */,
-				494E4F8C1A9F4889009B5742 /* BRNImagePickerCollectionView.swift in Sources */,
-				494E4F881A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */,
-				494E4F8A1A9F4889009B5742 /* BRNImageCollectionViewCell.swift in Sources */,
 				494E4F621A9F4773009B5742 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		494E4F6D1A9F4773009B5742 /* Sources */ = {
+		494E4F9F1A9F4AC4009B5742 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				494E4F781A9F4773009B5742 /* BRNImagePickerSheetTests.swift in Sources */,
-				494E4F911A9F4889009B5742 /* BRNImagePreviewTableViewCell.swift in Sources */,
-				494E4F891A9F4889009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */,
-				494E4F931A9F4889009B5742 /* BRNImageSupplementaryView.swift in Sources */,
-				494E4F8B1A9F4889009B5742 /* BRNImageCollectionViewCell.swift in Sources */,
-				494E4F8F1A9F4889009B5742 /* BRNImagePickerSheet.swift in Sources */,
-				494E4F8D1A9F4889009B5742 /* BRNImagePickerCollectionView.swift in Sources */,
+				494E4FCF1A9F4B94009B5742 /* BRNImagePreviewTableViewCell.swift in Sources */,
+				494E4FCE1A9F4B94009B5742 /* BRNImagePickerSheet.swift in Sources */,
+				494E4FCC1A9F4B94009B5742 /* BRNImageCollectionViewCell.swift in Sources */,
+				494E4FD01A9F4B94009B5742 /* BRNImageSupplementaryView.swift in Sources */,
+				494E4FCD1A9F4B94009B5742 /* BRNImagePickerCollectionView.swift in Sources */,
+				494E4FCB1A9F4B94009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		494E4F731A9F4773009B5742 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 494E4F5B1A9F4773009B5742 /* BRNImagePickerSheet */;
-			targetProxy = 494E4F721A9F4773009B5742 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		494E4F6A1A9F4773009B5742 /* LaunchScreen.xib */ = {
@@ -427,37 +405,43 @@
 			};
 			name = Release;
 		};
-		494E4F7F1A9F4773009B5742 /* Debug */ = {
+		494E4FBE1A9F4AC4009B5742 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = BRNImagePickerSheetTests/Info.plist;
+				INFOPLIST_FILE = BRNImagePickerSheet/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BRNImagePickerSheet.app/BRNImagePickerSheet";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		494E4F801A9F4773009B5742 /* Release */ = {
+		494E4FBF1A9F4AC4009B5742 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = BRNImagePickerSheetTests/Info.plist;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BRNImagePickerSheet/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BRNImagePickerSheet.app/BRNImagePickerSheet";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -473,21 +457,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		494E4F7B1A9F4773009B5742 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheet" */ = {
+		494E4F7B1A9F4773009B5742 /* Build configuration list for PBXNativeTarget "Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				494E4F7C1A9F4773009B5742 /* Debug */,
 				494E4F7D1A9F4773009B5742 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		494E4F7E1A9F4773009B5742 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheetTests" */ = {
+		494E4FBD1A9F4AC4009B5742 /* Build configuration list for PBXNativeTarget "BRNImagePickerSheet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				494E4F7F1A9F4773009B5742 /* Debug */,
-				494E4F801A9F4773009B5742 /* Release */,
+				494E4FBE1A9F4AC4009B5742 /* Debug */,
+				494E4FBF1A9F4AC4009B5742 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

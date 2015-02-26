@@ -46,7 +46,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     private let collectionView = BRNImagePickerCollectionView()
     
     private(set) var enlargedPreviews = false
-    var delegate: BRNImagePickerSheetDelegate?
+    public var delegate: BRNImagePickerSheetDelegate?
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
@@ -79,13 +79,13 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     // MARK: Initialization
     
-    override init() {
+    public override init() {
         super.init(frame: CGRectZero)
         
         self.setup()
     }
     
-    required public init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         self.setup()

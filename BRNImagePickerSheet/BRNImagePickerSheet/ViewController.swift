@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import BRNImagePickerSheet
 
 class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
