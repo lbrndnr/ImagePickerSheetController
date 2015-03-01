@@ -10,7 +10,15 @@ import UIKit
 
 class BRNImageSupplementaryView : UICollectionReusableView {
     
-    private let button = UIButton()
+    private let button: UIButton = {
+        let button = UIButton()
+        button.tintColor = UIColor.whiteColor()
+        button.userInteractionEnabled = false
+        button.setImage(BRNImageSupplementaryView.checkmarkImage, forState: .Normal)
+        button.setImage(BRNImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)
+        
+        return button
+    }()
     
     var buttonInset = UIEdgeInsetsZero
     
@@ -21,18 +29,18 @@ class BRNImageSupplementaryView : UICollectionReusableView {
         }
     }
     
-    class var checkmarkImage: UIImage {
+    class var checkmarkImage: UIImage? {
         let bundle = NSBundle(forClass: BRNImagePickerSheet.self)
         let image = UIImage(named: "BRNImagePickerSheet-checkmark", inBundle: bundle, compatibleWithTraitCollection: nil)
         
-        return image!.imageWithRenderingMode(.AlwaysTemplate)
+        return image?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
-    class var selectedCheckmarkImage: UIImage {
+    class var selectedCheckmarkImage: UIImage? {
         let bundle = NSBundle(forClass: BRNImagePickerSheet.self)
         let image = UIImage(named: "BRNImagePickerSheet-checkmark-selected", inBundle: bundle, compatibleWithTraitCollection: nil)
         
-        return image!.imageWithRenderingMode(.AlwaysTemplate)
+        return image?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     // MARK: Initialization
@@ -50,9 +58,6 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     }
     
     private func initialize() {
-        self.button.tintColor = UIColor.whiteColor()
-        self.button.setImage(BRNImageSupplementaryView.checkmarkImage, forState: .Normal)
-        self.button.setImage(BRNImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)
         self.addSubview(self.button)
     }
     

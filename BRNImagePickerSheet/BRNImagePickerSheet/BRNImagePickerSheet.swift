@@ -242,8 +242,9 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
+        let imageWidth = BRNImageSupplementaryView.checkmarkImage?.size.width ?? 0
         
-        return CGSizeMake(BRNImageSupplementaryView.checkmarkImage.size.width + inset, size.height)
+        return CGSizeMake(imageWidth  + inset, size.height)
     }
     
     // MARK: - UICollectionViewDelegate
