@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		494E4FA91A9F4AC4009B5742 /* BRNImagePickerSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 494E4FA81A9F4AC4009B5742 /* BRNImagePickerSheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		494E4FD51A9F4D5D009B5742 /* BRNImagePickerSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */; };
 		494E500E1A9F4FA6009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E50081A9F4FA6009B5742 /* BRNHorizontalImagePreviewFlowLayout.swift */; };
 		494E500F1A9F4FA6009B5742 /* BRNImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E50091A9F4FA6009B5742 /* BRNImageCollectionViewCell.swift */; };
 		494E50101A9F4FA6009B5742 /* BRNImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E500A1A9F4FA6009B5742 /* BRNImagePickerCollectionView.swift */; };
@@ -19,11 +18,13 @@
 		494E50201A9F4FBF009B5742 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 494E50181A9F4FBF009B5742 /* Localizable.strings */; };
 		494E50211A9F4FBF009B5742 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 494E501A1A9F4FBF009B5742 /* Localizable.stringsdict */; };
 		494E50231A9F4FBF009B5742 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E501D1A9F4FBF009B5742 /* ViewController.swift */; };
+		49C0DDCB1ABC4FE500818517 /* BRNImagePickerSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */; };
+		49C0DDCC1ABC4FE500818517 /* BRNImagePickerSheet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 494E4FA41A9F4AC4009B5742 /* BRNImagePickerSheet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49C668B31A9F608000868486 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C668B21A9F608000868486 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		49C668AC1A9F5CBB00868486 /* PBXContainerItemProxy */ = {
+		49C0DDCD1ABC4FE500818517 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 494E4F541A9F4773009B5742 /* Project object */;
 			proxyType = 1;
@@ -31,6 +32,20 @@
 			remoteInfo = BRNImagePickerSheet;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		49C0DDCF1ABC4FE500818517 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				49C0DDCC1ABC4FE500818517 /* BRNImagePickerSheet.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		494E4F5C1A9F4773009B5742 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				494E4FD51A9F4D5D009B5742 /* BRNImagePickerSheet.framework in Frameworks */,
+				49C0DDCB1ABC4FE500818517 /* BRNImagePickerSheet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,11 +172,12 @@
 				494E4F581A9F4773009B5742 /* Sources */,
 				494E4F591A9F4773009B5742 /* Frameworks */,
 				494E4F5A1A9F4773009B5742 /* Resources */,
+				49C0DDCF1ABC4FE500818517 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				49C668AD1A9F5CBB00868486 /* PBXTargetDependency */,
+				49C0DDCE1ABC4FE500818517 /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = BRNImagePickerSheet;
@@ -197,9 +213,11 @@
 				TargetAttributes = {
 					494E4F5B1A9F4773009B5742 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 5953RHWYWT;
 					};
 					494E4FA31A9F4AC4009B5742 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 5953RHWYWT;
 					};
 				};
 			};
@@ -268,10 +286,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		49C668AD1A9F5CBB00868486 /* PBXTargetDependency */ = {
+		49C0DDCE1ABC4FE500818517 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 494E4FA31A9F4AC4009B5742 /* BRNImagePickerSheet */;
-			targetProxy = 49C668AC1A9F5CBB00868486 /* PBXContainerItemProxy */;
+			targetProxy = 49C0DDCD1ABC4FE500818517 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -386,9 +404,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -396,15 +418,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
 		494E4FBE1A9F4AC4009B5742 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -427,6 +455,8 @@
 		494E4FBF1A9F4AC4009B5742 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
