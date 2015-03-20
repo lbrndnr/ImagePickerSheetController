@@ -10,7 +10,12 @@ import UIKit
 
 class BRNImageCollectionViewCell : UICollectionViewCell {
     
-    let imageView = UIImageView()
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .ScaleAspectFill
+        
+        return imageView
+    }()
     
     // MARK: Initialization
     

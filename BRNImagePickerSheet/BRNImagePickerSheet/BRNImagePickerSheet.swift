@@ -356,7 +356,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
             return rowHeight-2.0*collectionViewInset
         }()
         
-        return CGSize(width: proportion*height, height: height)
+        return CGSize(width: CGFloat(floorf(Float(proportion*height))), height: height)
     }
     
     private func targetSizeForAssetOfSize(size: CGSize) -> CGSize {
@@ -380,15 +380,15 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         if let size = size {
             targetSize = self.targetSizeForAssetOfSize(size)
         }
-        
-        self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFit, options: nil) { (image, _) -> Void in
+
+        self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: nil) { image, _ in
             completion(image: image)
         }
     }
     
     private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
         let targetSize = self.targetSizeForAssetOfSize(size)
-        self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFit, options: nil)
+        self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: nil)
     }
     
     public func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
@@ -397,7 +397,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         
         for index in self.selectedPhotoIndices {
             let asset = self.assets[index]
-            self.requestImageForAsset(asset, size: nil, completion: { (image) -> Void in
+            self.requestImageForAsset(asset, size: nil, completion: { image in
                 images.append(image)
                 counter--
                 
