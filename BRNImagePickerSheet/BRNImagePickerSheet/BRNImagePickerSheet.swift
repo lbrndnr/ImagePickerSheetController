@@ -375,24 +375,36 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         }
     }
     
-    private func requestImageForAsset(asset: PHAsset, size: CGSize?, completion: (image: UIImage) -> Void) {
+    private func requestImageForAsset(asset: PHAsset, size: CGSize?, completion: (image: UIImage?) -> Void) {
         var targetSize = PHImageManagerMaximumSize
         if let size = size {
             targetSize = self.targetSizeForAssetOfSize(size)
         }
 
-        self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: nil) { image, _ in
-            completion(image: image)
+        // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
+        if asset.representsBurst {
+            self.imageManager.requestImageDataForAsset(asset, options: nil) { data, _, _, _ in
+                let image = UIImage(data: data)
+                completion(image: image)
+            }
+        }
+        else {
+            self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: nil) { image, _ in
+                completion(image: image)
+            }
         }
     }
     
     private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
-        let targetSize = self.targetSizeForAssetOfSize(size)
-        self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: nil)
+        // Not necessary to cache image because PHImageManager won't return burst images
+        if !asset.representsBurst {
+            let targetSize = self.targetSizeForAssetOfSize(size)
+            self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: nil)
+        }
     }
     
-    public func getSelectedImagesWithCompletion(completion: (images:[UIImage]) -> Void) {
-        var images = [UIImage]()
+    public func getSelectedImagesWithCompletion(completion: (images:[UIImage?]) -> Void) {
+        var images = [UIImage?]()
         var counter = self.selectedPhotoIndices.count
         
         for index in self.selectedPhotoIndices {
