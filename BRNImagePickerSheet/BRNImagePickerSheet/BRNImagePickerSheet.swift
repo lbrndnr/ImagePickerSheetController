@@ -79,7 +79,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     // MARK: Initialization
     
-    public override init() {
+    public init() {
         super.init(frame: CGRectZero)
         
         self.initialize()
@@ -147,13 +147,13 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && self.previewsPhotos {
-            let cell = tableView.dequeueReusableCellWithIdentifier(previewCellIdentifier, forIndexPath: indexPath) as BRNImagePreviewTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(previewCellIdentifier, forIndexPath: indexPath) as! BRNImagePreviewTableViewCell
             cell.collectionView = self.collectionView
             
             return cell
         }
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(sheetCellIdentifier, forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(sheetCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = self.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
@@ -179,7 +179,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         return !(self.previewsPhotos && indexPath.row == 0)
     }
     
-    public func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         var handle = true
@@ -208,7 +208,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCellIdentifier, forIndexPath: indexPath) as BRNImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCellIdentifier, forIndexPath: indexPath) as! BRNImageCollectionViewCell
         
         let asset = self.assets[indexPath.section]
         let size = self.sizeForAsset(asset)
@@ -221,7 +221,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier, forIndexPath: indexPath) as BRNImageSupplementaryView
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier, forIndexPath: indexPath) as! BRNImageSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
         view.selected = contains(self.selectedPhotoIndices, indexPath.section)
@@ -269,8 +269,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
                 self.delegate?.imagePickerSheetWillEnlargePreviews?(self)
                 self.enlargedPreviews = true
                 
-                let layout: BRNHorizontalImagePreviewFlowLayout = self.collectionView.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
-                layout.invalidationCenteredIndexPath = indexPath
+                self.collectionView.horizontalImagePreviewLayout.invalidationCenteredIndexPath = indexPath
                 
                 self.setNeedsLayout()
                 UIView.animateWithDuration(enlargementAnimationDuration, animations: {
@@ -279,7 +278,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
                     self.layoutIfNeeded()
                     }, completion: { finished in
                         self.reloadButtonTitles()
-                        layout.showsSupplementaryViews = true
+                        self.collectionView.horizontalImagePreviewLayout.showsSupplementaryViews = true
                         self.delegate?.imagePickerSheetDidEnlargePreviews?(self)
                 })
             }

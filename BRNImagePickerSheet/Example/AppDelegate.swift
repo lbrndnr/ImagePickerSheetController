@@ -11,7 +11,7 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let window: UIWindow = {
+    var window: UIWindow? = {
         let window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window.backgroundColor = UIColor.whiteColor()
         
@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-        self.window.rootViewController = ViewController()
-        self.window.makeKeyAndVisible()
+        self.window?.rootViewController = ViewController()
+        self.window?.makeKeyAndVisible()
         
         return true
     }

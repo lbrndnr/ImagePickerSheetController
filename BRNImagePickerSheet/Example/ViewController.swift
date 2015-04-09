@@ -63,7 +63,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
         }
         else {
             if photosSelected {
-                return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.numberOfSelectedPhotos)
+                return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.numberOfSelectedPhotos) as String
             }
             else {
                 return NSLocalizedString("Photo Library", comment: "Photo Library")

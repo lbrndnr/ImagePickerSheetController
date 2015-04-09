@@ -19,12 +19,12 @@ class BRNImagePickerCollectionView: UICollectionView {
     }
     
     var horizontalImagePreviewLayout: BRNHorizontalImagePreviewFlowLayout {
-        return self.collectionViewLayout as BRNHorizontalImagePreviewFlowLayout
+        return self.collectionViewLayout as! BRNHorizontalImagePreviewFlowLayout
     }
     
     // MARK: Initialization
 
-    override init() {
+    init() {
         super.init(frame: CGRectZero, collectionViewLayout: BRNHorizontalImagePreviewFlowLayout())
         
         self.initialize()
