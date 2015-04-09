@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  BRNImagePickerSheet
+//  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 04/09/14.
 //  Copyright (c) 2014 Laurin Brandner. All rights reserved.
@@ -8,9 +8,9 @@
 
 import UIKit
 import Photos
-import BRNImagePickerSheet
+import ImagePickerSheet
 
-class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: View Lifecycle
     
@@ -37,20 +37,20 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
         }
         
         if authorization == .Authorized {
-            var sheet = BRNImagePickerSheet()
+            var sheet = ImagePickerSheet()
             sheet.numberOfButtons = 3
             sheet.delegate = self
             sheet.showInView(self.view)
         }
         else {
-            let alertView = UIAlertView(title: NSLocalizedString("An error occurred", comment: "An error occurred"), message: NSLocalizedString("BRNImagePickerSheet needs access to the camera roll", comment: "BRNImagePickerSheet needs access to the camera roll"), delegate: nil, cancelButtonTitle: NSLocalizedString("OK", comment: "OK"))
+            let alertView = UIAlertView(title: NSLocalizedString("An error occurred", comment: "An error occurred"), message: NSLocalizedString("ImagePickerSheet needs access to the camera roll", comment: "ImagePickerSheet needs access to the camera roll"), delegate: nil, cancelButtonTitle: NSLocalizedString("OK", comment: "OK"))
             alertView.show()
         }
     }
     
-    // MARK: BRNImagePickerSheetDelegate
+    // MARK: ImagePickerSheetDelegate
     
-    func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String {
+    func imagePickerSheet(imagePickerSheet: ImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String {
         let photosSelected = (imagePickerSheet.numberOfSelectedPhotos > 0)
         
         if (buttonIndex == 0) {
@@ -63,7 +63,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
         }
         else {
             if photosSelected {
-                return NSString.localizedStringWithFormat(NSLocalizedString("BRNImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.numberOfSelectedPhotos) as String
+                return NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.numberOfSelectedPhotos) as String
             }
             else {
                 return NSLocalizedString("Photo Library", comment: "Photo Library")
@@ -71,7 +71,7 @@ class ViewController: UIViewController, BRNImagePickerSheetDelegate, UIImagePick
         }
     }
     
-    func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
+    func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex != imagePickerSheet.cancelButtonIndex {
             if imagePickerSheet.numberOfSelectedPhotos > 0 {
                 imagePickerSheet.getSelectedImagesWithCompletion({ (images) -> Void in

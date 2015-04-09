@@ -1,6 +1,6 @@
 //
-//  BRNImageSupplementaryView.swift
-//  BRNImagePickerSheet
+//  ImageSupplementaryView.swift
+//  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 06/09/14.
 //  Copyright (c) 2014 Laurin Brandner. All rights reserved.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class BRNImageSupplementaryView : UICollectionReusableView {
+class ImageSupplementaryView : UICollectionReusableView {
     
     private let button: UIButton = {
         let button = UIButton()
         button.tintColor = UIColor.whiteColor()
         button.userInteractionEnabled = false
-        button.setImage(BRNImageSupplementaryView.checkmarkImage, forState: .Normal)
-        button.setImage(BRNImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)
+        button.setImage(ImageSupplementaryView.checkmarkImage, forState: .Normal)
+        button.setImage(ImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)
         
         return button
     }()
@@ -30,15 +30,15 @@ class BRNImageSupplementaryView : UICollectionReusableView {
     }
     
     class var checkmarkImage: UIImage? {
-        let bundle = NSBundle(forClass: BRNImagePickerSheet.self)
-        let image = UIImage(named: "BRNImagePickerSheet-checkmark", inBundle: bundle, compatibleWithTraitCollection: nil)
+        let bundle = NSBundle(forClass: ImagePickerSheet.self)
+        let image = UIImage(named: "ImagePickerSheet-checkmark", inBundle: bundle, compatibleWithTraitCollection: nil)
         
         return image?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     class var selectedCheckmarkImage: UIImage? {
-        let bundle = NSBundle(forClass: BRNImagePickerSheet.self)
-        let image = UIImage(named: "BRNImagePickerSheet-checkmark-selected", inBundle: bundle, compatibleWithTraitCollection: nil)
+        let bundle = NSBundle(forClass: ImagePickerSheet.self)
+        let image = UIImage(named: "ImagePickerSheet-checkmark-selected", inBundle: bundle, compatibleWithTraitCollection: nil)
         
         return image?.imageWithRenderingMode(.AlwaysTemplate)
     }

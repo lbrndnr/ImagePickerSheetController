@@ -1,6 +1,6 @@
 //
-//  BRNImagePickerSheet.swift
-//  BRNImagePickerSheet
+//  ImagePickerSheet.swift
+//  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 04/09/14.
 //  Copyright (c) 2014 Laurin Brandner. All rights reserved.
@@ -22,37 +22,37 @@ private let tableViewEnlargedPreviewRowHeight: CGFloat = 243.0
 private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
-@objc public protocol BRNImagePickerSheetDelegate {
-    func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String
+@objc public protocol ImagePickerSheetDelegate {
+    func imagePickerSheet(imagePickerSheet: ImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String
     
-    optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, clickedButtonAtIndex buttonIndex: Int)
-    optional func imagePickerSheetCancel(imagePickerSheet: BRNImagePickerSheet)
+    optional func imagePickerSheet(imagePickerSheet: ImagePickerSheet, clickedButtonAtIndex buttonIndex: Int)
+    optional func imagePickerSheetCancel(imagePickerSheet: ImagePickerSheet)
     // TODO: Call cancel delegate method
     
-    optional func willPresentImagePickerSheet(imagePickerSheet: BRNImagePickerSheet)
-    optional func didPresentImagePickerSheet(imagePickerSheet: BRNImagePickerSheet)
+    optional func willPresentImagePickerSheet(imagePickerSheet: ImagePickerSheet)
+    optional func didPresentImagePickerSheet(imagePickerSheet: ImagePickerSheet)
     
-    optional func imagePickerSheetWillEnlargePreviews(imagePickerSheet: BRNImagePickerSheet)
-    optional func imagePickerSheetDidEnlargePreviews(imagePickerSheet: BRNImagePickerSheet)
+    optional func imagePickerSheetWillEnlargePreviews(imagePickerSheet: ImagePickerSheet)
+    optional func imagePickerSheetDidEnlargePreviews(imagePickerSheet: ImagePickerSheet)
     
-    optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int)
-    optional func imagePickerSheet(imagePickerSheet: BRNImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
+    optional func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int)
+    optional func imagePickerSheet(imagePickerSheet: ImagePickerSheet, didDismissWithButtonIndex buttonIndex: Int)
 }
 
-public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     private let overlayView = UIView()
     private let tableView = UITableView()
-    private let collectionView = BRNImagePickerCollectionView()
+    private let collectionView = ImagePickerCollectionView()
     
     private(set) var enlargedPreviews = false
-    public var delegate: BRNImagePickerSheetDelegate?
+    public var delegate: ImagePickerSheetDelegate?
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
         return (self.assets.count > 0)
     }
-    private var supplementaryViews = [Int: BRNImageSupplementaryView]()
+    private var supplementaryViews = [Int: ImageSupplementaryView]()
     
     public var cancelButtonIndex: Int {
         let lastRow = self.tableView.numberOfRowsInSection(0) - 1
@@ -101,7 +101,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.alwaysBounceVertical = false
-        self.tableView.registerClass(BRNImagePreviewTableViewCell.self, forCellReuseIdentifier: previewCellIdentifier)
+        self.tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: previewCellIdentifier)
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: sheetCellIdentifier)
         self.addSubview(self.tableView)
         
@@ -112,8 +112,8 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         self.collectionView.backgroundColor = UIColor.clearColor()
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.alwaysBounceHorizontal = true
-        self.collectionView.registerClass(BRNImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellIdentifier)
-        self.collectionView.registerClass(BRNImageSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier)
+        self.collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellIdentifier)
+        self.collectionView.registerClass(ImageSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier)
     }
     
     // MARK: - UITableViewDataSource
@@ -147,7 +147,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && self.previewsPhotos {
-            let cell = tableView.dequeueReusableCellWithIdentifier(previewCellIdentifier, forIndexPath: indexPath) as! BRNImagePreviewTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(previewCellIdentifier, forIndexPath: indexPath) as! ImagePreviewTableViewCell
             cell.collectionView = self.collectionView
             
             return cell
@@ -208,7 +208,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCellIdentifier, forIndexPath: indexPath) as! BRNImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
         
         let asset = self.assets[indexPath.section]
         let size = self.sizeForAsset(asset)
@@ -221,7 +221,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     }
     
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier, forIndexPath: indexPath) as! BRNImageSupplementaryView
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier, forIndexPath: indexPath) as! ImageSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
         view.selected = contains(self.selectedPhotoIndices, indexPath.section)
@@ -242,7 +242,7 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
-        let imageWidth = BRNImageSupplementaryView.checkmarkImage?.size.width ?? 0
+        let imageWidth = ImageSupplementaryView.checkmarkImage?.size.width ?? 0
         
         return CGSizeMake(imageWidth  + inset, size.height)
     }

@@ -1,6 +1,6 @@
 //
-//  BRNImagePreviewTableViewCell.swift
-//  BRNImagePickerSheet
+//  ImagePreviewTableViewCell.swift
+//  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 06/09/14.
 //  Copyright (c) 2014 Laurin Brandner. All rights reserved.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class BRNImagePreviewTableViewCell : UITableViewCell {
+class ImagePreviewTableViewCell : UITableViewCell {
     
-    var collectionView: BRNImagePickerCollectionView? {
+    var collectionView: ImagePickerCollectionView? {
         willSet {
             if let collectionView = self.collectionView {
                 collectionView.removeFromSuperview()

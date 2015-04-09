@@ -1,6 +1,6 @@
 //
-//  BRNImagePreviewFlowLayout.swift
-//  BRNImagePickerSheet
+//  ImagePreviewFlowLayout.swift
+//  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 06/09/14.
 //  Copyright (c) 2014 Laurin Brandner. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BRNHorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
+class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
     var invalidationCenteredIndexPath: NSIndexPath?
     

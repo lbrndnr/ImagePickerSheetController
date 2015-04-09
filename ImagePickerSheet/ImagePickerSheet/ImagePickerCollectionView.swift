@@ -1,6 +1,6 @@
 //
-//  BRNImagePickerCollectionView.swift
-//  BRNImagePickerSheet
+//  ImagePickerCollectionView.swift
+//  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 07/09/14.
 //  Copyright (c) 2014 Laurin Brandner. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BRNImagePickerCollectionView: UICollectionView {
+class ImagePickerCollectionView: UICollectionView {
     
     var bouncing: Bool {
         let contentOffset = self.contentOffset
@@ -18,14 +18,14 @@ class BRNImagePickerCollectionView: UICollectionView {
         return contentOffset.x < -contentInset.left || contentOffset.x + self.frame.width > contentSize.width + contentInset.right
     }
     
-    var horizontalImagePreviewLayout: BRNHorizontalImagePreviewFlowLayout {
-        return self.collectionViewLayout as! BRNHorizontalImagePreviewFlowLayout
+    var horizontalImagePreviewLayout: HorizontalImagePreviewFlowLayout {
+        return self.collectionViewLayout as! HorizontalImagePreviewFlowLayout
     }
     
     // MARK: Initialization
 
     init() {
-        super.init(frame: CGRectZero, collectionViewLayout: BRNHorizontalImagePreviewFlowLayout())
+        super.init(frame: CGRectZero, collectionViewLayout: HorizontalImagePreviewFlowLayout())
         
         self.initialize()
     }
