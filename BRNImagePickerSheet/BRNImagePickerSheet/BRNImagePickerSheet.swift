@@ -374,21 +374,24 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         }
     }
     
-    private func requestImageForAsset(asset: PHAsset, size: CGSize?, completion: (image: UIImage?) -> Void) {
+    private func requestImageForAsset(asset: PHAsset, size: CGSize? = nil, deliveryMode: PHImageRequestOptionsDeliveryMode = .Opportunistic, completion: (image: UIImage?) -> Void) {
         var targetSize = PHImageManagerMaximumSize
         if let size = size {
             targetSize = self.targetSizeForAssetOfSize(size)
         }
+        
+        let options = PHImageRequestOptions()
+        options.deliveryMode = deliveryMode;
 
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
-            self.imageManager.requestImageDataForAsset(asset, options: nil) { data, _, _, _ in
+            self.imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
                 let image = UIImage(data: data)
                 completion(image: image)
             }
         }
         else {
-            self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: nil) { image, _ in
+            self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: options) { image, _ in
                 completion(image: image)
             }
         }
@@ -408,14 +411,15 @@ public class BRNImagePickerSheet: UIView, UITableViewDataSource, UITableViewDele
         
         for index in self.selectedPhotoIndices {
             let asset = self.assets[index]
-            self.requestImageForAsset(asset, size: nil, completion: { image in
+            
+            self.requestImageForAsset(asset, deliveryMode: .HighQualityFormat) { image in
                 images.append(image)
                 counter--
                 
                 if counter <= 0 {
                     completion(images: images)
                 }
-            })
+            }
         }
     }
     
