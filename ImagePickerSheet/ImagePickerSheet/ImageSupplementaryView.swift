@@ -43,7 +43,7 @@ class ImageSupplementaryView : UICollectionReusableView {
         return image?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
-    // MARK: Initialization
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)

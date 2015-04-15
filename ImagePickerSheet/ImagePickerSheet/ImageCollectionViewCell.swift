@@ -17,7 +17,7 @@ class ImageCollectionViewCell : UICollectionViewCell {
         return imageView
     }()
     
-    // MARK: Initialization
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)

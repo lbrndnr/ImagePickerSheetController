@@ -22,7 +22,7 @@ class ImagePickerCollectionView: UICollectionView {
         return self.collectionViewLayout as! HorizontalImagePreviewFlowLayout
     }
     
-    // MARK: Initialization
+    // MARK: - Initialization
 
     init() {
         super.init(frame: CGRectZero, collectionViewLayout: HorizontalImagePreviewFlowLayout())

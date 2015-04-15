@@ -21,7 +21,7 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     private var layoutAttributes = [UICollectionViewLayoutAttributes]()
     private var contentSize = CGSizeZero
     
-    // MARK: Initialization
+    // MARK: - Initialization
     
     override init() {
         super.init()
@@ -47,7 +47,9 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
         self.layoutAttributes.removeAll(keepCapacity: false)
         self.contentSize = CGSizeZero
 
-        if let collectionView = self.collectionView, let dataSource = collectionView.dataSource, let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+        if let collectionView = self.collectionView,
+               dataSource = collectionView.dataSource,
+               delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
             var origin = CGPoint(x: self.sectionInset.left, y: self.sectionInset.top)
             let numberOfSections = dataSource.numberOfSectionsInCollectionView?(collectionView) ?? 0
             
@@ -93,10 +95,10 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-        return self.layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }.reduce([UICollectionViewLayoutAttributes](), combine: { memo, attributes in
+        return self.layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }.reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
             let supplementaryAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath)
             return memo + [attributes, supplementaryAttributes]
-        })
+        }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
@@ -104,7 +106,9 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
-        if let collectionView = self.collectionView, let dataSource = collectionView.dataSource, let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+        if let collectionView = self.collectionView,
+            dataSource = collectionView.dataSource,
+            delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
             let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath)
             
             let inset = collectionView.contentInset

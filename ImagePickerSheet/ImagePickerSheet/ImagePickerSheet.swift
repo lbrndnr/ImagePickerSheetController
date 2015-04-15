@@ -77,7 +77,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     
     private var titles: [(title: String, singularSecondaryTitle: String?, pluralSecondaryTitle: String?)] = [(NSLocalizedString("Cancel", comment: "Cancel"), nil, nil)]
     
-    // MARK: Initialization
+    // MARK: - Initialization
     
     public init() {
         super.init(frame: CGRectZero)

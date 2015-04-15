@@ -22,7 +22,7 @@ class ImagePreviewTableViewCell : UITableViewCell {
         }
     }
     
-    // MARK: Other Methods
+    // MARK: - Other Methods
     
     override func prepareForReuse() {
         self.collectionView = nil
