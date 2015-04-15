@@ -12,12 +12,12 @@ class ImagePreviewTableViewCell : UITableViewCell {
     
     var collectionView: ImagePickerCollectionView? {
         willSet {
-            if let collectionView = self.collectionView {
+            if let collectionView = collectionView {
                 collectionView.removeFromSuperview()
             }
             
             if let collectionView = newValue {
-                self.addSubview(collectionView)
+                addSubview(collectionView)
             }
         }
     }
@@ -25,7 +25,7 @@ class ImagePreviewTableViewCell : UITableViewCell {
     // MARK: - Other Methods
     
     override func prepareForReuse() {
-        self.collectionView = nil
+        collectionView = nil
     }
     
     // MARK: - Layout
@@ -35,12 +35,12 @@ class ImagePreviewTableViewCell : UITableViewCell {
         
         // Setting the frame of the collectionView this large avoids a small animation glitch when resizing the previews. You'll get a beer from @larcus94 if you'll get it to work without this workaround :)
         
-        if let collectionView = self.collectionView {
-            var collectionViewFrame = self.bounds
+        if let collectionView = collectionView {
+            var collectionViewFrame = bounds
             collectionViewFrame.origin.x = -collectionViewFrame.width
             collectionViewFrame.size.width *= 3.0
             collectionView.frame = collectionViewFrame
-            collectionView.contentInset = UIEdgeInsetsMake(0.0, self.bounds.width, 0.0, self.bounds.width)
+            collectionView.contentInset = UIEdgeInsetsMake(0.0, bounds.width, 0.0, bounds.width)
         }
     }
     

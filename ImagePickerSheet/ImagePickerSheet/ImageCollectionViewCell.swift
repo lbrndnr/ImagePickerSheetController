@@ -22,17 +22,17 @@ class ImageCollectionViewCell : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.initialize()
+        initialize()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.initialize()
+        initialize()
     }
     
     private func initialize() {
-        self.addSubview(self.imageView)
+        addSubview(imageView)
     }
     
     // MARK: - Other Methods
@@ -40,7 +40,7 @@ class ImageCollectionViewCell : UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.imageView.image = nil
+        imageView.image = nil
     }
     
     // MARK: - Layout
@@ -48,6 +48,6 @@ class ImageCollectionViewCell : UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.imageView.frame = self.bounds
+        imageView.frame = bounds
     }
 }

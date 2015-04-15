@@ -14,7 +14,7 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     
     var showsSupplementaryViews: Bool = true {
         didSet {
-            self.invalidateLayout()
+            invalidateLayout()
         }
     }
     
@@ -26,17 +26,17 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     override init() {
         super.init()
         
-        self.initialize()
+        initialize()
     }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.initialize()
+        initialize()
     }
     
     private func initialize() {
-        self.scrollDirection = .Horizontal
+        scrollDirection = .Horizontal
     }
 
     // MARK: - Layout
@@ -44,13 +44,13 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     override func prepareLayout() {
         super.prepareLayout()
         
-        self.layoutAttributes.removeAll(keepCapacity: false)
-        self.contentSize = CGSizeZero
+        layoutAttributes.removeAll(keepCapacity: false)
+        contentSize = CGSizeZero
 
-        if let collectionView = self.collectionView,
+        if let collectionView = collectionView,
                dataSource = collectionView.dataSource,
                delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-            var origin = CGPoint(x: self.sectionInset.left, y: self.sectionInset.top)
+            var origin = CGPoint(x: sectionInset.left, y: sectionInset.top)
             let numberOfSections = dataSource.numberOfSectionsInCollectionView?(collectionView) ?? 0
             
             for s in 0 ..< numberOfSections {
@@ -61,12 +61,12 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
                 attributes.frame = CGRect(origin: origin, size: size)
                 attributes.zIndex = 0
                 
-                self.layoutAttributes.append(attributes)
+                layoutAttributes.append(attributes)
                 
-                origin.x = attributes.frame.maxX + self.sectionInset.right
+                origin.x = attributes.frame.maxX + sectionInset.right
             }
             
-            self.contentSize = CGSize(width: origin.x, height: collectionView.frame.height)
+            contentSize = CGSize(width: origin.x, height: collectionView.frame.height)
         }
     }
     
@@ -75,41 +75,41 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func collectionViewContentSize() -> CGSize {
-        return self.contentSize
+        return contentSize
     }
     
     override func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint) -> CGPoint {
         var contentOffset = proposedContentOffset
-        if let indexPath = self.invalidationCenteredIndexPath {
-            if let collectionView = self.collectionView {
-                let frame = self.layoutAttributes[indexPath.section].frame
+        if let indexPath = invalidationCenteredIndexPath {
+            if let collectionView = collectionView {
+                let frame = layoutAttributes[indexPath.section].frame
                 contentOffset.x = frame.midX - collectionView.frame.width / 2.0
                 
                 contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
-                contentOffset.x = min(contentOffset.x, self.collectionViewContentSize().width - collectionView.frame.width + collectionView.contentInset.right)
+                contentOffset.x = min(contentOffset.x, collectionViewContentSize().width - collectionView.frame.width + collectionView.contentInset.right)
             }
-            self.invalidationCenteredIndexPath = nil
+            invalidationCenteredIndexPath = nil
         }
         
         return super.targetContentOffsetForProposedContentOffset(contentOffset)
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-        return self.layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }.reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
-            let supplementaryAttributes = self.layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath)
+        return layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }.reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
+            let supplementaryAttributes = layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath)
             return memo + [attributes, supplementaryAttributes]
         }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
-        return self.layoutAttributes[indexPath.section]
+        return layoutAttributes[indexPath.section]
     }
     
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
-        if let collectionView = self.collectionView,
+        if let collectionView = collectionView,
             dataSource = collectionView.dataSource,
             delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-            let itemAttributes = self.layoutAttributesForItemAtIndexPath(indexPath)
+            let itemAttributes = layoutAttributesForItemAtIndexPath(indexPath)
             
             let inset = collectionView.contentInset
             let bounds = collectionView.bounds
@@ -133,7 +133,7 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
             
             let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
             attributes.zIndex = 1
-            attributes.hidden = !self.showsSupplementaryViews
+            attributes.hidden = !showsSupplementaryViews
             attributes.frame = CGRect(origin: CGPoint(x: originX, y: itemAttributes.frame.minY), size: size)
             
             return attributes
@@ -143,11 +143,11 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
+        return layoutAttributesForItemAtIndexPath(itemIndexPath)
     }
     
     override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return self.layoutAttributesForItemAtIndexPath(itemIndexPath)
+        return layoutAttributesForItemAtIndexPath(itemIndexPath)
     }
     
 }

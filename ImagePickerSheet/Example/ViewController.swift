@@ -18,7 +18,7 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
         super.viewDidLoad()
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "presentImagePickerSheet:")
-        self.view.addGestureRecognizer(tapRecognizer)
+        view.addGestureRecognizer(tapRecognizer)
     }
     
     // MARK: Other Methods
@@ -28,10 +28,10 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
         
         if authorization == .NotDetermined {
             PHPhotoLibrary.requestAuthorization() { status in
-                dispatch_async(dispatch_get_main_queue() {
+                dispatch_async(dispatch_get_main_queue()) {
                     self.presentImagePickerSheet(gestureRecognizer)
                 }
-            })
+            }
             
             return
         }
@@ -40,7 +40,7 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
             let sheet = ImagePickerSheet()
             sheet.numberOfButtons = 3
             sheet.delegate = self
-            sheet.showInView(self.view)
+            sheet.showInView(view)
         }
         else {
             let alertView = UIAlertView(title: NSLocalizedString("An error occurred", comment: "An error occurred"), message: NSLocalizedString("ImagePickerSheet needs access to the camera roll", comment: "ImagePickerSheet needs access to the camera roll"), delegate: nil, cancelButtonTitle: NSLocalizedString("OK", comment: "OK"))
@@ -88,7 +88,7 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
                 }
                 controller.sourceType = sourceType
                 
-                self.presentViewController(controller, animated: true, completion: nil)
+                presentViewController(controller, animated: true, completion: nil)
             }
         }
     }
@@ -96,7 +96,7 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
     // MARK: UIImagePickerControllerDelegate
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
 }

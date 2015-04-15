@@ -24,8 +24,8 @@ class ImageSupplementaryView : UICollectionReusableView {
     
     var selected: Bool = false {
         didSet {
-            self.button.selected = self.selected
-            self.button.backgroundColor = (self.selected) ? self.tintColor : nil
+            button.selected = selected
+            button.backgroundColor = (selected) ? tintColor : nil
         }
     }
     
@@ -48,17 +48,17 @@ class ImageSupplementaryView : UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.initialize()
+        initialize()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.initialize()
+        initialize()
     }
     
     private func initialize() {
-        self.addSubview(self.button)
+        addSubview(button)
     }
     
     // MARK: - Other Methods
@@ -66,7 +66,7 @@ class ImageSupplementaryView : UICollectionReusableView {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.selected = false
+        selected = false
     }
     
     // MARK: - Layout
@@ -74,9 +74,9 @@ class ImageSupplementaryView : UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.button.sizeToFit()
-        self.button.frame.origin = CGPointMake(self.buttonInset.left, CGRectGetHeight(self.bounds)-CGRectGetHeight(self.button.frame)-self.buttonInset.bottom)
-        self.button.layer.cornerRadius = CGRectGetHeight(self.button.frame) / 2.0
+        button.sizeToFit()
+        button.frame.origin = CGPointMake(buttonInset.left, CGRectGetHeight(bounds)-CGRectGetHeight(button.frame)-buttonInset.bottom)
+        button.layer.cornerRadius = CGRectGetHeight(button.frame) / 2.0
     }
     
 }

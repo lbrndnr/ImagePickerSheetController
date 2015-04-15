@@ -50,17 +50,17 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
-        return (self.assets.count > 0)
+        return (assets.count > 0)
     }
     private var supplementaryViews = [Int: ImageSupplementaryView]()
     
     public var cancelButtonIndex: Int {
-        let lastRow = self.tableView.numberOfRowsInSection(0) - 1
-        return self.buttonIndexForRow(lastRow)
+        let lastRow = tableView.numberOfRowsInSection(0) - 1
+        return buttonIndexForRow(lastRow)
     }
     
     public var numberOfSelectedPhotos: Int {
-        return self.selectedPhotoIndices.count
+        return selectedPhotoIndices.count
     }
     
     public var numberOfButtons: Int = 1 {
@@ -70,7 +70,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     }
 
     private var firstButtonIndex: Int {
-        return self.previewsPhotos ? 1 : 0
+        return previewsPhotos ? 1 : 0
     }
     
     private let imageManager = PHCachingImageManager()
@@ -82,38 +82,38 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     public init() {
         super.init(frame: CGRectZero)
         
-        self.initialize()
+        initialize()
     }
     
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.initialize()
+        initialize()
     }
     
     private func initialize() {
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.addTarget(self, action: Selector("overlayViewWasTapped:"))
-        self.overlayView.addGestureRecognizer(tapRecognizer)
-        self.overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
-        self.addSubview(self.overlayView)
+        overlayView.addGestureRecognizer(tapRecognizer)
+        overlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
+        addSubview(overlayView)
         
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.alwaysBounceVertical = false
-        self.tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: previewCellIdentifier)
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: sheetCellIdentifier)
-        self.addSubview(self.tableView)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.alwaysBounceVertical = false
+        tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: previewCellIdentifier)
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: sheetCellIdentifier)
+        addSubview(tableView)
         
-        self.collectionView.horizontalImagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
-        self.collectionView.horizontalImagePreviewLayout.showsSupplementaryViews = false
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.backgroundColor = UIColor.clearColor()
-        self.collectionView.showsHorizontalScrollIndicator = false
-        self.collectionView.alwaysBounceHorizontal = true
-        self.collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellIdentifier)
-        self.collectionView.registerClass(ImageSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier)
+        collectionView.horizontalImagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
+        collectionView.horizontalImagePreviewLayout.showsSupplementaryViews = false
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = UIColor.clearColor()
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellIdentifier)
+        collectionView.registerClass(ImageSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier)
     }
     
     // MARK: - UITableViewDataSource
@@ -123,8 +123,8 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var numberOfRows = self.numberOfButtons
-        if self.previewsPhotos {
+        var numberOfRows = numberOfButtons
+        if previewsPhotos {
             numberOfRows += 1
         }
         
@@ -132,9 +132,9 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     }
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if self.previewsPhotos {
+        if previewsPhotos {
             if indexPath.row == 0 {
-                if (self.enlargedPreviews) {
+                if (enlargedPreviews) {
                     return tableViewEnlargedPreviewRowHeight
                 }
                 
@@ -146,19 +146,19 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.row == 0 && self.previewsPhotos {
+        if indexPath.row == 0 && previewsPhotos {
             let cell = tableView.dequeueReusableCellWithIdentifier(previewCellIdentifier, forIndexPath: indexPath) as! ImagePreviewTableViewCell
-            cell.collectionView = self.collectionView
+            cell.collectionView = collectionView
             
             return cell
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(sheetCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.textAlignment = .Center
-        cell.textLabel?.textColor = self.tintColor
+        cell.textLabel?.textColor = tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
         
-        let buttonIndex = self.buttonIndexForRow(indexPath.row)
+        let buttonIndex = buttonIndexForRow(indexPath.row)
         let buttonTitle: String? = {
             if buttonIndex == self.cancelButtonIndex {
                 return NSLocalizedString("Cancel", comment: "Cancel")
@@ -176,31 +176,31 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     // MARK: - UITableViewDelegate
     
     public func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return !(self.previewsPhotos && indexPath.row == 0)
+        return !(previewsPhotos && indexPath.row == 0)
     }
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         var handle = true
-        if self.previewsPhotos {
+        if previewsPhotos {
             if indexPath.row == 0 {
                 handle = false
             }
         }
         
         if handle {
-            let buttonIndex = self.buttonIndexForRow(indexPath.row)
+            let buttonIndex = buttonIndexForRow(indexPath.row)
             
-            self.delegate?.imagePickerSheet?(self, clickedButtonAtIndex: buttonIndex)
-            self.dismissWithClickedButtonIndex(buttonIndex, animated: true)
+            delegate?.imagePickerSheet?(self, clickedButtonAtIndex: buttonIndex)
+            dismissWithClickedButtonIndex(buttonIndex, animated: true)
         }
     }
     
     // MARK: - UICollectionViewDataSource
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.assets.count
+        return assets.count
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -210,10 +210,10 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
         
-        let asset = self.assets[indexPath.section]
-        let size = self.sizeForAsset(asset)
+        let asset = assets[indexPath.section]
+        let size = sizeForAsset(asset)
         
-        self.requestImageForAsset(asset, size: size) { image in
+        requestImageForAsset(asset, size: size) { image in
             cell.imageView.image = image
         }
         
@@ -224,9 +224,9 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
         let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier, forIndexPath: indexPath) as! ImageSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
-        view.selected = contains(self.selectedPhotoIndices, indexPath.section)
+        view.selected = contains(selectedPhotoIndices, indexPath.section)
         
-        self.supplementaryViews[indexPath.section] = view
+        supplementaryViews[indexPath.section] = view
         
         return view
     }
@@ -234,9 +234,9 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let asset = self.assets[indexPath.section]
+        let asset = assets[indexPath.section]
         
-        return self.sizeForAsset(asset)
+        return sizeForAsset(asset)
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -251,27 +251,27 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let nextIndex = indexPath.row+1
-        if nextIndex < self.assets.count {
-            let asset = self.assets[nextIndex]
-            let size = self.sizeForAsset(asset)
+        if nextIndex < assets.count {
+            let asset = assets[nextIndex]
+            let size = sizeForAsset(asset)
             
             self.prefetchImagesForAsset(asset, size: size)
         }
     }
     
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let selected = contains(self.selectedPhotoIndices, indexPath.section)
+        let selected = contains(selectedPhotoIndices, indexPath.section)
         
         if !selected {
-            self.selectedPhotoIndices.append(indexPath.section)
+            selectedPhotoIndices.append(indexPath.section)
             
-            if !self.enlargedPreviews {
-                self.delegate?.imagePickerSheetWillEnlargePreviews?(self)
-                self.enlargedPreviews = true
+            if !enlargedPreviews {
+                delegate?.imagePickerSheetWillEnlargePreviews?(self)
+                enlargedPreviews = true
                 
                 self.collectionView.horizontalImagePreviewLayout.invalidationCenteredIndexPath = indexPath
                 
-                self.setNeedsLayout()
+                setNeedsLayout()
                 UIView.animateWithDuration(enlargementAnimationDuration, animations: {
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
@@ -292,15 +292,15 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
                     collectionView.setContentOffset(contentOffset, animated: true)
                 }
                 
-                self.reloadButtonTitles()
+                reloadButtonTitles()
             }
         }
         else {
-            self.selectedPhotoIndices.removeAtIndex(find(self.selectedPhotoIndices, indexPath.section)!)
-            self.reloadButtonTitles()
+            selectedPhotoIndices.removeAtIndex(find(selectedPhotoIndices, indexPath.section)!)
+            reloadButtonTitles()
         }
         
-        if let sectionView = self.supplementaryViews[indexPath.section] {
+        if let sectionView = supplementaryViews[indexPath.section] {
             sectionView.selected = !selected
         }
     }
@@ -309,18 +309,18 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     
     public func showInView(view: UIView) {
         if let superview = view.superview {
-            self.fetchAssets()
-            self.tableView.reloadData()
+            fetchAssets()
+            tableView.reloadData()
             
-            self.delegate?.willPresentImagePickerSheet?(self)
+            delegate?.willPresentImagePickerSheet?(self)
             
-            self.frame = view.frame
+            frame = view.frame
             superview.addSubview(self)
             
-            let originalTableViewOffset = CGRectGetMinY(self.tableView.frame)
-            self.tableView.frame.origin.y = CGRectGetHeight(self.bounds)
-            self.overlayView.alpha = 0.0
-            self.overlayView.userInteractionEnabled = false
+            let originalTableViewOffset = CGRectGetMinY(tableView.frame)
+            tableView.frame.origin.y = CGRectGetHeight(bounds)
+            overlayView.alpha = 0.0
+            overlayView.userInteractionEnabled = false
             
             UIView.animateWithDuration(presentationAnimationDuration, animations: {
                 self.tableView.frame.origin.y = originalTableViewOffset
@@ -333,7 +333,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     }
     
     public func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
-        self.delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
+        delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
         
         let duration = (animated) ? presentationAnimationDuration : 0.0
         UIView.animateWithDuration(duration, animations: {
@@ -377,7 +377,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     private func requestImageForAsset(asset: PHAsset, size: CGSize? = nil, deliveryMode: PHImageRequestOptionsDeliveryMode = .Opportunistic, completion: (image: UIImage?) -> Void) {
         var targetSize = PHImageManagerMaximumSize
         if let size = size {
-            targetSize = self.targetSizeForAssetOfSize(size)
+            targetSize = targetSizeForAssetOfSize(size)
         }
         
         let options = PHImageRequestOptions()
@@ -385,13 +385,13 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
 
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
-            self.imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
+            imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
                 let image = UIImage(data: data)
                 completion(image: image)
             }
         }
         else {
-            self.imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: options) { image, _ in
+            imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: options) { image, _ in
                 completion(image: image)
             }
         }
@@ -400,19 +400,19 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
         // Not necessary to cache image because PHImageManager won't return burst images
         if !asset.representsBurst {
-            let targetSize = self.targetSizeForAssetOfSize(size)
-            self.imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: nil)
+            let targetSize = targetSizeForAssetOfSize(size)
+            imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: nil)
         }
     }
     
     public func getSelectedImagesWithCompletion(completion: (images:[UIImage?]) -> Void) {
         var images = [UIImage?]()
-        var counter = self.selectedPhotoIndices.count
+        var counter = selectedPhotoIndices.count
         
-        for index in self.selectedPhotoIndices {
-            let asset = self.assets[index]
+        for index in selectedPhotoIndices {
+            let asset = assets[index]
             
-            self.requestImageForAsset(asset, deliveryMode: .HighQualityFormat) { image in
+            requestImageForAsset(asset, deliveryMode: .HighQualityFormat) { image in
                 images.append(image)
                 counter--
                 
@@ -426,17 +426,17 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     // MARK: - Other Methods
     
     public func buttonIndexForRow(row: Int) -> Int {
-        return row-self.firstButtonIndex
+        return row-firstButtonIndex
     }
     
     private func reloadButtonTitles() {
-        let indexPaths = Array(self.firstButtonIndex ..< self.firstButtonIndex+self.numberOfButtons-1).map({ NSIndexPath(forRow: $0, inSection: 0) })
+        let indexPaths = Array(firstButtonIndex ..< firstButtonIndex+numberOfButtons-1).map({ NSIndexPath(forRow: $0, inSection: 0) })
         
-        self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+        tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
     }
     
     @objc private func overlayViewWasTapped(gestureRecognizer: UITapGestureRecognizer) {
-        self.dismissWithClickedButtonIndex(self.cancelButtonIndex, animated: true)
+        dismissWithClickedButtonIndex(cancelButtonIndex, animated: true)
     }
     
     // MARK: - Layout
@@ -444,16 +444,14 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     override public func layoutSubviews() {
         super.layoutSubviews()
         
-        let bounds = self.bounds
+        overlayView.frame = bounds
         
-        self.overlayView.frame = bounds
-        
-        let tableViewHeight = Array(0..<self.tableView.numberOfRowsInSection(0)).reduce(0.0) { total, row in
-            total + self.tableView(self.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
+        let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(0)).reduce(0.0) { total, row in
+            total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
         }
         
-        self.tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), tableViewHeight)
-        self.tableView.frame.origin.y = CGRectGetMaxY(bounds)-CGRectGetHeight(self.tableView.frame)
+        tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), tableViewHeight)
+        tableView.frame.origin.y = CGRectGetMaxY(bounds)-CGRectGetHeight(tableView.frame)
     }
     
 }
