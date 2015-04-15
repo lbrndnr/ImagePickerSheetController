@@ -27,17 +27,17 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
         let authorization = PHPhotoLibrary.authorizationStatus()
         
         if authorization == .NotDetermined {
-            PHPhotoLibrary.requestAuthorization({ (status) -> Void in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            PHPhotoLibrary.requestAuthorization() { status in
+                dispatch_async(dispatch_get_main_queue() {
                     self.presentImagePickerSheet(gestureRecognizer)
-                })
+                }
             })
             
             return
         }
         
         if authorization == .Authorized {
-            var sheet = ImagePickerSheet()
+            let sheet = ImagePickerSheet()
             sheet.numberOfButtons = 3
             sheet.delegate = self
             sheet.showInView(self.view)
@@ -74,9 +74,9 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
     func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex != imagePickerSheet.cancelButtonIndex {
             if imagePickerSheet.numberOfSelectedPhotos > 0 {
-                imagePickerSheet.getSelectedImagesWithCompletion({ (images) -> Void in
+                imagePickerSheet.getSelectedImagesWithCompletion() { images in
                     println(images)
-                })
+                }
             }
             else {
                 let controller = UIImagePickerController()
