@@ -19,31 +19,10 @@ ImagePickerSheet's API is similar to the one of UIActionSheet so you should get 
 ### Example
 
 ```swift
-func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
-    let authorization = PHPhotoLibrary.authorizationStatus()
-
-    if authorization == .NotDetermined {
-        PHPhotoLibrary.requestAuthorization({ (status) -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.presentImagePickerSheet(gestureRecognizer)
-                })
-            })
-
-            return
-        }
-
-        if authorization == .Authorized {
-            var sheet = ImagePickerSheet()
-            sheet.numberOfButtons = 3
-            sheet.delegate = self
-            sheet.showInView(self.view)
-        }
-        else {
-            let alertView = UIAlertView(title: NSLocalizedString("An error occurred", comment: "An error occurred"), message: NSLocalizedString("ImagePickerSheet needs access to the camera roll", comment: "ImagePickerSheet needs access to the camera roll"), delegate: nil, cancelButtonTitle: NSLocalizedString("OK", comment: "OK"))
-                alertView.show()
-        }
-    }
-}
+let sheet = ImagePickerSheet()
+sheet.numberOfButtons = 3
+sheet.delegate = self
+sheet.showInView(view)
 ```
 
 ```swift
@@ -77,8 +56,7 @@ func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonI
             let controller = UIImagePickerController()
             controller.delegate = self
             controller.sourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
-            self.presentViewController(controller, animated: true, completion: nil)
-            }
+            presentViewController(controller, animated: true, completion: nil)
         }
     }
 }
