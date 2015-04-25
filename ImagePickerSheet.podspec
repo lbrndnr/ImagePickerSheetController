@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ImagePickerSheet"
-  s.version      = "0.0.6"
+  s.version      = "0.0.7"
   s.summary      = "A duplicate of that shiny new custom action sheet seen in iOS8's iMessage"
 
   s.description  = <<-DESC
