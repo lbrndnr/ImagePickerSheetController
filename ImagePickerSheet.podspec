@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ImagePickerSheet"
-  s.version      = "0.0.7"
+  s.version      = "0.0.8"
   s.summary      = "A duplicate of that shiny new custom action sheet seen in iOS8's iMessage"
 
   s.description  = <<-DESC
@@ -93,6 +93,7 @@ Pod::Spec.new do |s|
 
   # s.resource  = "icon.png"
   # s.resources = "Resources/*.png"
+  s.resource_bundle = {"Images" => ["ImagePickerSheet/ImagePickerSheet/Images.xcassets"]}
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
