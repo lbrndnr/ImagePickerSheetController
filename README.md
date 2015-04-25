@@ -64,7 +64,17 @@ func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonI
 ImagePickerSheet uses a delegate method, similar to UITableView's dataSource, to get the title of a button. In conjunction with [stringsdict](https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html), this allows for easy translation of various plural forms.
 
 ## Installation
-If you don’t use [Carthage](https://github.com/Carthage/Carthage) (although you really should) you can simply drag the files into your project.
+
+### CocoaPods
+```ruby
+pod "ImagePickerSheet", "~> 0.0.8"
+```
+
+###Carthage
+```objc
+github "larcus94/ImagePickerSheet" ~> 0.0.8
+```
+
 
 ## Requirements
 ImagePickerSheet is written in Swift and links agains `Photos.framework`. It therefore requires iOS 8 or later.
