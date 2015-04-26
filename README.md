@@ -77,7 +77,7 @@ github "larcus94/ImagePickerSheet" ~> 0.0.8
 
 
 ## Requirements
-ImagePickerSheet is written in Swift and links agains `Photos.framework`. It therefore requires iOS 8 or later.
+ImagePickerSheet is written in Swift and links against `Photos.framework`. It therefore requires iOS 8 or later.
 
 ## License
 ImagePickerSheet is licensed under the [MIT License](http://opensource.org/licenses/mit-license.php).
