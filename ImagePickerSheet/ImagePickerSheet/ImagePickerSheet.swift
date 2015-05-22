@@ -425,6 +425,12 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     
     // MARK: - Other Methods
     
+    public override func tintColorDidChange() {
+        super.tintColorDidChange()
+        
+        reloadButtonTitles()
+    }
+    
     public func buttonIndexForRow(row: Int) -> Int {
         return row-firstButtonIndex
     }

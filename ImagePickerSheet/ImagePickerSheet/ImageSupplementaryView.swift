@@ -25,7 +25,7 @@ class ImageSupplementaryView : UICollectionReusableView {
     var selected: Bool = false {
         didSet {
             button.selected = selected
-            button.backgroundColor = (selected) ? tintColor : nil
+            reloadButtonBackgroundColor()
         }
     }
     
@@ -67,6 +67,16 @@ class ImageSupplementaryView : UICollectionReusableView {
         super.prepareForReuse()
         
         selected = false
+    }
+    
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+        
+        reloadButtonBackgroundColor()
+    }
+    
+    private func reloadButtonBackgroundColor() {
+        button.backgroundColor = (selected) ? tintColor : nil
     }
     
     // MARK: - Layout
