@@ -119,13 +119,13 @@ class HorizontalImagePreviewFlowLayout: UICollectionViewFlowLayout {
                 contentOffset.y += inset.top
                 
                 return contentOffset
-                }()
+            }()
             let visibleSize: CGSize = {
                 var size = bounds.size
                 size.width -= (inset.left+inset.right)
                 
                 return size
-                }()
+            }()
             let visibleFrame = CGRect(origin: contentOffset, size: visibleSize)
             
             let size = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section) ?? CGSizeZero
