@@ -68,7 +68,18 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
             numberOfButtons = max(numberOfButtons, 1)
         }
     }
-
+    
+    /**
+    Describes how many items can be selected. If it is set to 0 or any negative integer then selection is not limited.
+    */
+    public var selectionCount: Int = Int.max {
+        didSet {
+            if selectionCount <= 0 {
+                selectionCount = Int.max
+            }
+        }
+    }
+    
     private var firstButtonIndex: Int {
         return previewsPhotos ? 1 : 0
     }
@@ -166,7 +177,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
             else {
                 return self.delegate?.imagePickerSheet(self, titleForButtonAtIndex: buttonIndex)
             }
-        }()
+            }()
         
         cell.textLabel?.text = buttonTitle
         
@@ -262,7 +273,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(selectedPhotoIndices, indexPath.section)
         
-        if !selected {
+        if !selected && selectedPhotoIndices.count < selectionCount {
             selectedPhotoIndices.append(indexPath.section)
             
             if !enlargedPreviews {
@@ -294,13 +305,14 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
                 
                 reloadButtonTitles()
             }
-        }
-        else {
-            selectedPhotoIndices.removeAtIndex(find(selectedPhotoIndices, indexPath.section)!)
-            reloadButtonTitles()
+        } else {
+            if let index = find(selectedPhotoIndices, indexPath.section) {
+                selectedPhotoIndices.removeAtIndex(index)
+                reloadButtonTitles()
+            }
         }
         
-        if let sectionView = supplementaryViews[indexPath.section] {
+        if let sectionView = supplementaryViews[indexPath.section] where selectedPhotoIndices.count < selectionCount || find(selectedPhotoIndices, indexPath.section) != nil {
             sectionView.selected = !selected
         }
     }
@@ -353,7 +365,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
         let height: CGFloat = {
             let rowHeight = self.enlargedPreviews ? tableViewEnlargedPreviewRowHeight : tableViewPreviewRowHeight
             return rowHeight-2.0*collectionViewInset
-        }()
+            }()
         
         return CGSize(width: CGFloat(floorf(Float(proportion*height))), height: height)
     }
@@ -382,7 +394,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
         
         let options = PHImageRequestOptions()
         options.deliveryMode = deliveryMode;
-
+        
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
             imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
@@ -459,5 +471,4 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
         tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), tableViewHeight)
         tableView.frame.origin.y = CGRectGetMaxY(bounds)-CGRectGetHeight(tableView.frame)
     }
-    
 }
