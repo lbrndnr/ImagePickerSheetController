@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		494722B01AD6E89700400013 /* ImagePickerSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 494722AF1AD6E89700400013 /* ImagePickerSheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4950D2341B12395F006361D8 /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950D2331B12395F006361D8 /* ImagePickerController.swift */; };
-		496CB4191AD6E908006171B6 /* HorizontalImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4121AD6E908006171B6 /* HorizontalImagePreviewFlowLayout.swift */; };
+		496CB4191AD6E908006171B6 /* ImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4121AD6E908006171B6 /* ImagePreviewFlowLayout.swift */; };
 		496CB41A1AD6E908006171B6 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4131AD6E908006171B6 /* ImageCollectionViewCell.swift */; };
 		496CB41B1AD6E908006171B6 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4141AD6E908006171B6 /* ImagePickerCollectionView.swift */; };
 		496CB41C1AD6E908006171B6 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4151AD6E908006171B6 /* ImagePickerSheet.swift */; };
 		496CB41D1AD6E908006171B6 /* ImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4161AD6E908006171B6 /* ImagePreviewTableViewCell.swift */; };
-		496CB41E1AD6E908006171B6 /* ImageSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4171AD6E908006171B6 /* ImageSupplementaryView.swift */; };
+		496CB41E1AD6E908006171B6 /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4171AD6E908006171B6 /* SupplementaryView.swift */; };
 		496CB41F1AD6E908006171B6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 496CB4181AD6E908006171B6 /* Images.xcassets */; };
 		496CB4291AD6E994006171B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4281AD6E994006171B6 /* AppDelegate.swift */; };
 		496CB42B1AD6E994006171B6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB42A1AD6E994006171B6 /* ViewController.swift */; };
@@ -56,12 +56,12 @@
 		494722AE1AD6E89700400013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		494722AF1AD6E89700400013 /* ImagePickerSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheet.h; sourceTree = "<group>"; };
 		4950D2331B12395F006361D8 /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
-		496CB4121AD6E908006171B6 /* HorizontalImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
+		496CB4121AD6E908006171B6 /* ImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
 		496CB4131AD6E908006171B6 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		496CB4141AD6E908006171B6 /* ImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionView.swift; sourceTree = "<group>"; };
 		496CB4151AD6E908006171B6 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		496CB4161AD6E908006171B6 /* ImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
-		496CB4171AD6E908006171B6 /* ImageSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSupplementaryView.swift; sourceTree = "<group>"; };
+		496CB4171AD6E908006171B6 /* SupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		496CB4181AD6E908006171B6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		496CB4241AD6E994006171B6 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		496CB4271AD6E994006171B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,13 +115,13 @@
 		494722AC1AD6E89700400013 /* ImagePickerSheet */ = {
 			isa = PBXGroup;
 			children = (
-				496CB4121AD6E908006171B6 /* HorizontalImagePreviewFlowLayout.swift */,
+				496CB4121AD6E908006171B6 /* ImagePreviewFlowLayout.swift */,
 				496CB4131AD6E908006171B6 /* ImageCollectionViewCell.swift */,
 				496CB4141AD6E908006171B6 /* ImagePickerCollectionView.swift */,
 				496CB4151AD6E908006171B6 /* ImagePickerSheet.swift */,
 				4950D2331B12395F006361D8 /* ImagePickerController.swift */,
 				496CB4161AD6E908006171B6 /* ImagePreviewTableViewCell.swift */,
-				496CB4171AD6E908006171B6 /* ImageSupplementaryView.swift */,
+				496CB4171AD6E908006171B6 /* SupplementaryView.swift */,
 				496CB4181AD6E908006171B6 /* Images.xcassets */,
 				4978E7AB1AE042F900BEBED9 /* Frameworks */,
 				494722AD1AD6E89700400013 /* Supporting Files */,
@@ -285,10 +285,10 @@
 				496CB41D1AD6E908006171B6 /* ImagePreviewTableViewCell.swift in Sources */,
 				496CB41C1AD6E908006171B6 /* ImagePickerSheet.swift in Sources */,
 				496CB41A1AD6E908006171B6 /* ImageCollectionViewCell.swift in Sources */,
-				496CB41E1AD6E908006171B6 /* ImageSupplementaryView.swift in Sources */,
+				496CB41E1AD6E908006171B6 /* SupplementaryView.swift in Sources */,
 				496CB41B1AD6E908006171B6 /* ImagePickerCollectionView.swift in Sources */,
 				4950D2341B12395F006361D8 /* ImagePickerController.swift in Sources */,
-				496CB4191AD6E908006171B6 /* HorizontalImagePreviewFlowLayout.swift in Sources */,
+				496CB4191AD6E908006171B6 /* ImagePreviewFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

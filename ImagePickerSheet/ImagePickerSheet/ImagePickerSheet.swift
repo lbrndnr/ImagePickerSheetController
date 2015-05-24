@@ -12,7 +12,6 @@ import Photos
 private let sheetCellIdentifier = "SheetCell"
 private let previewCellIdentifier = "PreviewCell"
 private let imageCellIdentifier = "ImageCell"
-private let imageSupplementaryViewIdentifier = "ImageSupplementaryView"
 
 private let presentationAnimationDuration = 0.3
 private let enlargementAnimationDuration = 0.3
@@ -52,7 +51,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     private var previewsPhotos: Bool {
         return (assets.count > 0)
     }
-    private var supplementaryViews = [Int: ImageSupplementaryView]()
+    private var supplementaryViews = [Int: SupplementaryView]()
     
     public var cancelButtonIndex: Int {
         let lastRow = tableView.numberOfRowsInSection(0) - 1
@@ -113,7 +112,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
         collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellIdentifier)
-        collectionView.registerClass(ImageSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier)
+        collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self))
     }
     
     // MARK: - UITableViewDataSource
@@ -221,7 +220,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     }
     
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: imageSupplementaryViewIdentifier, forIndexPath: indexPath) as! ImageSupplementaryView
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self), forIndexPath: indexPath) as! SupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
         view.selected = contains(selectedPhotoIndices, indexPath.section)
@@ -242,7 +241,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
-        let imageWidth = ImageSupplementaryView.checkmarkImage?.size.width ?? 0
+        let imageWidth = SupplementaryView.checkmarkImage?.size.width ?? 0
         
         return CGSizeMake(imageWidth  + inset, size.height)
     }

@@ -14,14 +14,14 @@ class ImagePickerCollectionView: UICollectionView {
         return contentOffset.x < -contentInset.left || contentOffset.x + frame.width > contentSize.width + contentInset.right
     }
     
-    var horizontalImagePreviewLayout: HorizontalImagePreviewFlowLayout {
-        return collectionViewLayout as! HorizontalImagePreviewFlowLayout
+    var horizontalImagePreviewLayout: ImagePreviewFlowLayout {
+        return collectionViewLayout as! ImagePreviewFlowLayout
     }
     
     // MARK: - Initialization
 
     init() {
-        super.init(frame: CGRectZero, collectionViewLayout: HorizontalImagePreviewFlowLayout())
+        super.init(frame: CGRectZero, collectionViewLayout: ImagePreviewFlowLayout())
         
         initialize()
     }

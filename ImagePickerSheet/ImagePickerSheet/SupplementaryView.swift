@@ -1,5 +1,5 @@
 //
-//  ImageSupplementaryView.swift
+//  SupplementaryView.swift
 //  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 06/09/14.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class ImageSupplementaryView : UICollectionReusableView {
+class SupplementaryView : UICollectionReusableView {
     
     private let button: UIButton = {
         let button = UIButton()
         button.tintColor = UIColor.whiteColor()
         button.userInteractionEnabled = false
-        button.setImage(ImageSupplementaryView.checkmarkImage, forState: .Normal)
-        button.setImage(ImageSupplementaryView.selectedCheckmarkImage, forState: .Selected)
+        button.setImage(SupplementaryView.checkmarkImage, forState: .Normal)
+        button.setImage(SupplementaryView.selectedCheckmarkImage, forState: .Selected)
         
         return button
     }()
