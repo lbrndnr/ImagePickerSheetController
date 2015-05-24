@@ -9,10 +9,6 @@
 import UIKit
 import Photos
 
-private let sheetCellIdentifier = "SheetCell"
-private let previewCellIdentifier = "PreviewCell"
-private let imageCellIdentifier = "ImageCell"
-
 private let presentationAnimationDuration = 0.3
 private let enlargementAnimationDuration = 0.3
 private let tableViewRowHeight: CGFloat = 50.0
@@ -100,8 +96,8 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
         tableView.dataSource = self
         tableView.delegate = self
         tableView.alwaysBounceVertical = false
-        tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: previewCellIdentifier)
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: sheetCellIdentifier)
+        tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
         addSubview(tableView)
         
         collectionView.horizontalImagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
@@ -111,7 +107,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
         collectionView.backgroundColor = UIColor.clearColor()
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
-        collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: imageCellIdentifier)
+        collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageCollectionViewCell.self))
         collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self))
     }
     
@@ -146,13 +142,13 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && previewsPhotos {
-            let cell = tableView.dequeueReusableCellWithIdentifier(previewCellIdentifier, forIndexPath: indexPath) as! ImagePreviewTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
             cell.collectionView = collectionView
             
             return cell
         }
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(sheetCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
@@ -207,7 +203,7 @@ public class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegat
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(imageCellIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageCollectionViewCell.self), forIndexPath: indexPath) as! ImageCollectionViewCell
         
         let asset = assets[indexPath.section]
         let size = sizeForAsset(asset)
