@@ -24,6 +24,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         tableView.dataSource = self
         tableView.delegate = self
         tableView.alwaysBounceVertical = false
+        tableView.layoutMargins = UIEdgeInsetsZero
+        tableView.separatorInset = UIEdgeInsetsZero
         tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
         
@@ -123,6 +125,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
             cell.collectionView = collectionView
+            cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
             
             return cell
         }
@@ -132,6 +135,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         cell.textLabel?.textColor = tableView.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
         cell.textLabel?.text = actions[indexPath.row].title(selectedPhotoIndices.count)
+        cell.layoutMargins = UIEdgeInsetsZero
         
         return cell
     }
@@ -228,14 +232,13 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
                     self.view.layoutIfNeeded()
-                    }, completion: { finished in
-                        self.reloadButtonTitles()
-                        self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
+                }, completion: { finished in
+                    self.reloadButtonTitles()
+                    self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
                 })
             }
             else {
-                let possibleCell = collectionView.cellForItemAtIndexPath(indexPath)
-                if let cell = possibleCell {
+                if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
                     var contentOffset = CGPointMake(cell.frame.midX - collectionView.frame.width / 2.0, 0.0)
                     contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
                     contentOffset.x = min(contentOffset.x, collectionView.contentSize.width - collectionView.frame.width + collectionView.contentInset.right)
