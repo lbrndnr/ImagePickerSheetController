@@ -145,7 +145,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
         let buttonIndex = buttonIndexForRow(indexPath.row)
-        actions[buttonIndex].callHandler()
+        actions[buttonIndex].handle(numberOfPhotos: selectedPhotoIndices.count)
     }
     
     // MARK: - UICollectionViewDataSource
