@@ -10,7 +10,7 @@ import UIKit
 import Photos
 import ImagePickerSheet
 
-class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: View Lifecycle
     
@@ -37,10 +37,29 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
         }
         
         if authorization == .Authorized {
-            let sheet = ImagePickerSheet()
-            sheet.numberOfButtons = 3
-            sheet.delegate = self
-            sheet.showInView(view)
+            let presentImagePickerController: UIImagePickerControllerSourceType -> () = { source in
+                let controller = UIImagePickerController()
+                controller.delegate = self
+                var sourceType = source
+                if (!UIImagePickerController.isSourceTypeAvailable(sourceType)) {
+                    sourceType = .PhotoLibrary
+                    println("Fallback to camera roll as a source since the simulator doesn't support taking pictures")
+                }
+                controller.sourceType = sourceType
+                
+                self.presentViewController(controller, animated: true, completion: nil)
+            }
+            
+            let controller = ImagePickerSheetController()
+            controller.addAction(ImageAction(title: NSLocalizedString("Take Photo Or Video", comment: "Take Photo Or Video"), secondaryTitle: NSLocalizedString("Add comment", comment: "Add comment")) { _ in
+                presentImagePickerController(.Camera)
+            })
+            controller.addAction(ImageAction(title: NSLocalizedString("Photo Library", comment: "Photo Library"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), $0) as String}) { _ in
+                presentImagePickerController(.PhotoLibrary)
+            })
+            controller.addAction(ImageAction(title: NSLocalizedString("Cancel", comment: "Cancel")))
+            
+            presentViewController(controller, animated: false, completion: nil)
         }
         else {
             let alertView = UIAlertView(title: NSLocalizedString("An error occurred", comment: "An error occurred"), message: NSLocalizedString("ImagePickerSheet needs access to the camera roll", comment: "ImagePickerSheet needs access to the camera roll"), delegate: nil, cancelButtonTitle: NSLocalizedString("OK", comment: "OK"))
@@ -48,50 +67,17 @@ class ViewController: UIViewController, ImagePickerSheetDelegate, UIImagePickerC
         }
     }
     
-    // MARK: ImagePickerSheetDelegate
-    
-    func imagePickerSheet(imagePickerSheet: ImagePickerSheet, titleForButtonAtIndex buttonIndex: Int) -> String {
-        let photosSelected = (imagePickerSheet.numberOfSelectedPhotos > 0)
-        
-        if (buttonIndex == 0) {
-            if photosSelected {
-                return NSLocalizedString("Add comment", comment: "Add comment")
-            }
-            else {
-                return NSLocalizedString("Take Photo Or Video", comment: "Take Photo Or Video")
-            }
-        }
-        else {
-            if photosSelected {
-                return NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), imagePickerSheet.numberOfSelectedPhotos) as String
-            }
-            else {
-                return NSLocalizedString("Photo Library", comment: "Photo Library")
-            }
-        }
-    }
-    
-    func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex != imagePickerSheet.cancelButtonIndex {
-            if imagePickerSheet.numberOfSelectedPhotos > 0 {
-                imagePickerSheet.getSelectedImagesWithCompletion() { images in
-                    println(images)
-                }
-            }
-            else {
-                let controller = UIImagePickerController()
-                controller.delegate = self
-                var sourceType: UIImagePickerControllerSourceType = (buttonIndex == 2) ? .PhotoLibrary : .Camera
-                if (!UIImagePickerController.isSourceTypeAvailable(sourceType)) {
-                    sourceType = .PhotoLibrary
-                    println("Fallback to camera roll as a source since the simulator doesn't support taking pictures")
-                }
-                controller.sourceType = sourceType
-                
-                presentViewController(controller, animated: true, completion: nil)
-            }
-        }
-    }
+//    func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
+//        if buttonIndex != imagePickerSheet.cancelButtonIndex {
+//            if imagePickerSheet.numberOfSelectedPhotos > 0 {
+//                imagePickerSheet.getSelectedImagesWithCompletion() { images in
+//                    println(images)
+//                }
+//            }
+//            else {
+//            }
+//        }
+//    }
     
     // MARK: UIImagePickerControllerDelegate
     

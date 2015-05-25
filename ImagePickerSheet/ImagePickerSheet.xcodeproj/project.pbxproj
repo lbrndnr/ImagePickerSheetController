@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		494722B01AD6E89700400013 /* ImagePickerSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 494722AF1AD6E89700400013 /* ImagePickerSheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4950D2341B12395F006361D8 /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950D2331B12395F006361D8 /* ImagePickerController.swift */; };
+		4950D2341B12395F006361D8 /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950D2331B12395F006361D8 /* ImagePickerSheetController.swift */; };
 		496CB4191AD6E908006171B6 /* ImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4121AD6E908006171B6 /* ImagePreviewFlowLayout.swift */; };
 		496CB41A1AD6E908006171B6 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4131AD6E908006171B6 /* ImageCollectionViewCell.swift */; };
 		496CB41B1AD6E908006171B6 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496CB4141AD6E908006171B6 /* ImagePickerCollectionView.swift */; };
@@ -21,6 +21,7 @@
 		496CB4301AD6E994006171B6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 496CB42F1AD6E994006171B6 /* Images.xcassets */; };
 		496CB4331AD6E994006171B6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 496CB4311AD6E994006171B6 /* LaunchScreen.xib */; };
 		4978E7AA1AE042EC00BEBED9 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4978E7A91AE042EC00BEBED9 /* Photos.framework */; };
+		49CC8DA91B1323B400B6D0D7 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CC8DA81B1323B400B6D0D7 /* AnimationController.swift */; };
 		49CF293C1ADEF61600432B1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49CF293E1ADEF61600432B1A /* Localizable.strings */; };
 		49CF293F1ADEF61D00432B1A /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 49CF29411ADEF61D00432B1A /* Localizable.stringsdict */; };
 		49D0458B1B0F713B00440668 /* ImagePickerSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494722AA1AD6E89700400013 /* ImagePickerSheet.framework */; };
@@ -56,7 +57,7 @@
 		494722AA1AD6E89700400013 /* ImagePickerSheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImagePickerSheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		494722AE1AD6E89700400013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		494722AF1AD6E89700400013 /* ImagePickerSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheet.h; sourceTree = "<group>"; };
-		4950D2331B12395F006361D8 /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
+		4950D2331B12395F006361D8 /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetController.swift; sourceTree = "<group>"; };
 		496CB4121AD6E908006171B6 /* ImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
 		496CB4131AD6E908006171B6 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		496CB4141AD6E908006171B6 /* ImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionView.swift; sourceTree = "<group>"; };
@@ -71,6 +72,7 @@
 		496CB42F1AD6E994006171B6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		496CB4321AD6E994006171B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4978E7A91AE042EC00BEBED9 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		49CC8DA81B1323B400B6D0D7 /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
 		49CF293D1ADEF61600432B1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		49CF29401ADEF61D00432B1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		49D05A451B126C540068528B /* ImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAction.swift; sourceTree = "<group>"; };
@@ -121,7 +123,8 @@
 				496CB4131AD6E908006171B6 /* ImageCollectionViewCell.swift */,
 				496CB4141AD6E908006171B6 /* ImagePickerCollectionView.swift */,
 				496CB4151AD6E908006171B6 /* ImagePickerSheet.swift */,
-				4950D2331B12395F006361D8 /* ImagePickerController.swift */,
+				4950D2331B12395F006361D8 /* ImagePickerSheetController.swift */,
+				49CC8DA81B1323B400B6D0D7 /* AnimationController.swift */,
 				49D05A451B126C540068528B /* ImageAction.swift */,
 				496CB4161AD6E908006171B6 /* ImagePreviewTableViewCell.swift */,
 				496CB4171AD6E908006171B6 /* SupplementaryView.swift */,
@@ -291,7 +294,8 @@
 				496CB41E1AD6E908006171B6 /* SupplementaryView.swift in Sources */,
 				496CB41B1AD6E908006171B6 /* ImagePickerCollectionView.swift in Sources */,
 				49D05A461B126C540068528B /* ImageAction.swift in Sources */,
-				4950D2341B12395F006361D8 /* ImagePickerController.swift in Sources */,
+				49CC8DA91B1323B400B6D0D7 /* AnimationController.swift in Sources */,
+				4950D2341B12395F006361D8 /* ImagePickerSheetController.swift in Sources */,
 				496CB4191AD6E908006171B6 /* ImagePreviewFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

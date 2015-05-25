@@ -8,19 +8,48 @@
 
 import Foundation
 
-public struct ImageAction {
-    
-    typealias Title = Int -> String
-    
+public typealias Title = Int -> String
+
+public class ImageAction {
     let title: Title
     let secondaryTitle: Title
     
     let handler: (ImageAction -> ())?
+    let secondaryHandler: (ImageAction -> ())?
     
-    init(title: Title, secondaryTitle: Title? = nil, handler: (ImageAction -> ())? = nil) {
-        self.title = title
-        self.secondaryTitle = title
-        self.handler = handler
+    public convenience init(title: String, secondaryTitle: String? = nil, handler: (ImageAction -> ())? = nil) {
+        self.init(title: { _ in title }, secondaryTitle: secondaryTitle.map { string in { _ in string }} ?? { _ in title }, handler: handler)
     }
     
+    public convenience init(title: String, secondaryTitle: Title, handler: (ImageAction -> ())? = nil) {
+        self.init(title: { _ in title }, secondaryTitle: secondaryTitle, handler: handler)
+    }
+    
+    public convenience init(title: Title, secondaryTitle: String? = nil, handler: (ImageAction -> ())? = nil) {
+        self.init(title: title, secondaryTitle: secondaryTitle.map { string in { _ in string }} ?? title, handler: handler)
+    }
+    
+    public init(title: Title, secondaryTitle: Title, handler: (ImageAction -> ())? = nil) {
+        self.title = title
+        self.secondaryTitle = secondaryTitle
+        self.handler = handler
+        self.secondaryHandler = nil
+    }
+    
+    func callHandler() {
+        handler?(self)
+    }
+    
+    func callSecondaryHandler() {
+        secondaryHandler?(self)
+    }
+    
+}
+
+func ?? (left: Title?, right: Title) -> Title {
+    if let left = left {
+        return left
+    }
+    
+    return right
 }

@@ -1,12 +1,12 @@
 //
-//  ImagePickerSheet.swift
+//  ImagePickerController.swift
 //  ImagePickerSheet
 //
-//  Created by Laurin Brandner on 04/09/14.
-//  Copyright (c) 2014 Laurin Brandner. All rights reserved.
+//  Created by Laurin Brandner on 24/05/15.
+//  Copyright (c) 2015 Laurin Brandner. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import Photos
 
 private let presentationAnimationDuration = 0.3
@@ -17,62 +17,83 @@ private let tableViewEnlargedPreviewRowHeight: CGFloat = 243.0
 private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
-class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+public class ImagePickerSheetController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate {
     
-    private let tableView = UITableView()
-    private let collectionView = ImagePickerCollectionView()
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.alwaysBounceVertical = false
+        tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
+        
+        return tableView
+    }()
     
-    private(set) var enlargedPreviews = false
+    private lazy var collectionView: ImagePickerCollectionView = {
+        let collectionView = ImagePickerCollectionView()
+        collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
+        collectionView.imagePreviewLayout.showsSupplementaryViews = false
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageCollectionViewCell.self))
+        collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self))
+        
+        return collectionView
+    }()
+    
+    private(set) var actions = [ImageAction]()
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private var previewsPhotos: Bool {
         return (assets.count > 0)
     }
+    private(set) var enlargedPreviews = false
+    
     private var supplementaryViews = [Int: SupplementaryView]()
-
+    
     private var firstButtonIndex: Int {
         return previewsPhotos ? 1 : 0
     }
     
     private let imageManager = PHCachingImageManager()
     
-    let actions: [ImageAction]
-    
     // MARK: - Initialization
     
-    init(actions: [ImageAction]) {
-        self.actions = actions
-        super.init(frame: CGRectZero)
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.alwaysBounceVertical = false
-        tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
-        addSubview(tableView)
-        
-        collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
-        collectionView.imagePreviewLayout.showsSupplementaryViews = false
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = UIColor.clearColor()
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.alwaysBounceHorizontal = true
-        collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageCollectionViewCell.self))
-        collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self))
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        initialize()
     }
 
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required public init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    private func initialize() {
+        modalPresentationStyle = .Custom
+        transitioningDelegate = self
+    }
+    
+    // MARK: - View Lifecycle
+    
+    override public func loadView() {
+        super.loadView()
+        
+        view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
+        
+        view.addSubview(tableView)
     }
     
     // MARK: - UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numberOfRows = actions.count
         if previewsPhotos {
             numberOfRows += 1
@@ -81,7 +102,7 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         return numberOfRows
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if previewsPhotos {
             if indexPath.row == 0 {
                 if (enlargedPreviews) {
@@ -95,7 +116,7 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         return tableViewRowHeight
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 && previewsPhotos {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
             cell.collectionView = collectionView
@@ -105,7 +126,7 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.textAlignment = .Center
-        cell.textLabel?.textColor = tintColor
+        cell.textLabel?.textColor = tableView.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
         cell.textLabel?.text = actions[buttonIndexForRow(indexPath.row)].title(selectedPhotoIndices.count)
         
@@ -114,30 +135,30 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    public func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return !(previewsPhotos && indexPath.row == 0)
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        
         let buttonIndex = buttonIndexForRow(indexPath.row)
-//        
-//        delegate?.imagePickerSheet?(self, clickedButtonAtIndex: buttonIndex)
-//        dismissWithClickedButtonIndex(buttonIndex, animated: true)
+        actions[buttonIndex].callHandler()
     }
     
     // MARK: - UICollectionViewDataSource
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return assets.count
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageCollectionViewCell.self), forIndexPath: indexPath) as! ImageCollectionViewCell
         
         let asset = assets[indexPath.section]
@@ -150,7 +171,7 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self), forIndexPath: indexPath) as! SupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
@@ -163,13 +184,13 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let asset = assets[indexPath.section]
         
         return sizeForAsset(asset)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
         let imageWidth = SupplementaryView.checkmarkImage?.size.width ?? 0
@@ -179,7 +200,7 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let nextIndex = indexPath.row+1
         if nextIndex < assets.count {
             let asset = assets[nextIndex]
@@ -189,7 +210,7 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(selectedPhotoIndices, indexPath.section)
         
         if !selected {
@@ -200,11 +221,11 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
                 
                 self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
                 
-                setNeedsLayout()
+                view.setNeedsLayout()
                 UIView.animateWithDuration(enlargementAnimationDuration, animations: {
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
-                    self.layoutIfNeeded()
+                    self.view.layoutIfNeeded()
                     }, completion: { finished in
                         self.reloadButtonTitles()
                         self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
@@ -233,45 +254,11 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         }
     }
     
-    // MARK: - Presentation
-//    
-//    func showInView(view: UIView) {
-//        if let superview = view.superview {
-//            fetchAssets()
-//            tableView.reloadData()
-//            
-//            delegate?.willPresentImagePickerSheet?(self)
-//            
-//            frame = view.frame
-//            superview.addSubview(self)
-//            
-//            let originalTableViewOffset = CGRectGetMinY(tableView.frame)
-//            tableView.frame.origin.y = CGRectGetHeight(bounds)
-//            overlayView.alpha = 0.0
-//            overlayView.userInteractionEnabled = false
-//            
-//            UIView.animateWithDuration(presentationAnimationDuration, animations: {
-//                self.tableView.frame.origin.y = originalTableViewOffset
-//                self.overlayView.alpha = 1.0
-//                }, completion: { finished in
-//                    self.delegate?.didPresentImagePickerSheet?(self)
-//                    self.overlayView.userInteractionEnabled = true
-//            })
-//        }
-//    }
-//    
-//    func dismissWithClickedButtonIndex(buttonIndex: Int, animated: Bool) {
-//        delegate?.imagePickerSheet?(self, willDismissWithButtonIndex: buttonIndex)
-//        
-//        let duration = (animated) ? presentationAnimationDuration : 0.0
-//        UIView.animateWithDuration(duration, animations: {
-//            self.overlayView.alpha = 0.0
-//            self.tableView.frame.origin.y += CGRectGetHeight(self.tableView.frame)
-//            }, completion: { finished in
-//                self.delegate?.imagePickerSheet?(self, didDismissWithButtonIndex: buttonIndex)
-//                self.removeFromSuperview()
-//        })
-//    }
+    // MARK: - Actions
+    
+    public func addAction(action: ImageAction) {
+        actions.append(action)
+    }
     
     // MARK: - Images
     
@@ -310,7 +297,7 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         
         let options = PHImageRequestOptions()
         options.deliveryMode = deliveryMode;
-
+        
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
             imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
@@ -351,15 +338,9 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
         }
     }
     
-    // MARK: - Other Methods
+    // MARK: - Buttons
     
-    override func tintColorDidChange() {
-        super.tintColorDidChange()
-        
-        reloadButtonTitles()
-    }
-    
-    func buttonIndexForRow(row: Int) -> Int {
+    private func buttonIndexForRow(row: Int) -> Int {
         return row-firstButtonIndex
     }
     
@@ -371,15 +352,25 @@ class ImagePickerSheet: UIView, UITableViewDataSource, UITableViewDelegate, UICo
     
     // MARK: - Layout
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(0)).reduce(0.0) { total, row in
             total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
         }
-        
-        tableView.frame.size = CGSizeMake(CGRectGetWidth(bounds), tableViewHeight)
-        tableView.frame.origin.y = CGRectGetMaxY(bounds)-CGRectGetHeight(tableView.frame)
+
+        tableView.frame = CGRect(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight, width: view.bounds.width, height: tableViewHeight)
     }
+    
+    // MARK: - Transitioning
+    
+//    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return AnimationController(presenting: true)
+//    }
+//    
+//    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return AnimationController(presenting: false)
+//    }
+    
     
 }

@@ -14,7 +14,7 @@ class ImagePickerCollectionView: UICollectionView {
         return contentOffset.x < -contentInset.left || contentOffset.x + frame.width > contentSize.width + contentInset.right
     }
     
-    var horizontalImagePreviewLayout: ImagePreviewFlowLayout {
+    var imagePreviewLayout: ImagePreviewFlowLayout {
         return collectionViewLayout as! ImagePreviewFlowLayout
     }
     
@@ -38,7 +38,7 @@ class ImagePickerCollectionView: UICollectionView {
     
     // MARK: - Panning
 
-    func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
+    @objc private func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
         if gestureRecognizer.state == .Ended {
             let translation = gestureRecognizer.translationInView(self)
             if translation == CGPointZero {
