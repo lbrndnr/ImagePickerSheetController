@@ -1,5 +1,5 @@
 //
-//  SupplementaryView.swift
+//  PreviewSupplementaryView.swift
 //  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 06/09/14.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class SupplementaryView : UICollectionReusableView {
+class PreviewSupplementaryView : UICollectionReusableView {
     
     private let button: UIButton = {
         let button = UIButton()
-        button.tintColor = UIColor.whiteColor()
+        button.tintColor = .whiteColor()
         button.userInteractionEnabled = false
-        button.setImage(SupplementaryView.checkmarkImage, forState: .Normal)
-        button.setImage(SupplementaryView.selectedCheckmarkImage, forState: .Selected)
+        button.setImage(PreviewSupplementaryView.checkmarkImage, forState: .Normal)
+        button.setImage(PreviewSupplementaryView.selectedCheckmarkImage, forState: .Selected)
         
         return button
     }()
@@ -30,14 +30,14 @@ class SupplementaryView : UICollectionReusableView {
     }
     
     class var checkmarkImage: UIImage? {
-        let bundle = NSBundle(forClass: ImagePickerSheet.self)
+        let bundle = NSBundle(forClass: ImagePickerSheetController.self)
         let image = UIImage(named: "ImagePickerSheet-Checkmark", inBundle: bundle, compatibleWithTraitCollection: nil)
         
         return image?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     class var selectedCheckmarkImage: UIImage? {
-        let bundle = NSBundle(forClass: ImagePickerSheet.self)
+        let bundle = NSBundle(forClass: ImagePickerSheetController.self)
         let image = UIImage(named: "ImagePickerSheet-Checkmark-Selected", inBundle: bundle, compatibleWithTraitCollection: nil)
         
         return image?.imageWithRenderingMode(.AlwaysTemplate)

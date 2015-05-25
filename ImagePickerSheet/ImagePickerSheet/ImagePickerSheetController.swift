@@ -19,7 +19,7 @@ private let collectionViewCheckmarkInset: CGFloat = 3.5
 
 public class ImagePickerSheetController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate {
     
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
@@ -32,6 +32,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     private lazy var collectionView: ImagePickerCollectionView = {
         let collectionView = ImagePickerCollectionView()
+        collectionView.backgroundColor = .clearColor()
         collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
         collectionView.imagePreviewLayout.showsSupplementaryViews = false
         collectionView.dataSource = self
@@ -39,9 +40,16 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
         collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageCollectionViewCell.self))
-        collectionView.registerClass(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self))
+        collectionView.registerClass(PreviewSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self))
         
         return collectionView
+    }()
+    
+    lazy var backgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
+        
+        return view
     }()
     
     private(set) var actions = [ImageAction]()
@@ -52,7 +60,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     }
     private(set) var enlargedPreviews = false
     
-    private var supplementaryViews = [Int: SupplementaryView]()
+    private var supplementaryViews = [Int: PreviewSupplementaryView]()
     
     private var firstButtonIndex: Int {
         return previewsPhotos ? 1 : 0
@@ -82,9 +90,14 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     override public func loadView() {
         super.loadView()
         
-        view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
-        
+        view.addSubview(backgroundView)
         view.addSubview(tableView)
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        fetchAssets()
     }
     
     // MARK: - UITableViewDataSource
@@ -103,14 +116,12 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     }
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if previewsPhotos {
-            if indexPath.row == 0 {
-                if (enlargedPreviews) {
-                    return tableViewEnlargedPreviewRowHeight
-                }
-                
-                return tableViewPreviewRowHeight
+        if previewsPhotos && indexPath.row == 0 {
+            if (enlargedPreviews) {
+                return tableViewEnlargedPreviewRowHeight
             }
+            
+            return tableViewPreviewRowHeight
         }
         
         return tableViewRowHeight
@@ -172,7 +183,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     }
     
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(SupplementaryView.self), forIndexPath: indexPath) as! SupplementaryView
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
         view.selected = contains(selectedPhotoIndices, indexPath.section)
@@ -193,7 +204,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let inset = 2.0 * collectionViewCheckmarkInset
         let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
-        let imageWidth = SupplementaryView.checkmarkImage?.size.width ?? 0
+        let imageWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
         
         return CGSizeMake(imageWidth  + inset, size.height)
     }
@@ -260,7 +271,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         actions.append(action)
     }
     
-    // MARK: - Images
+    // MARK: - Photos
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
@@ -320,7 +331,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         }
     }
     
-    func getSelectedImagesWithCompletion(completion: (images:[UIImage?]) -> Void) {
+    public func getSelectedImagesWithCompletion(completion: (images:[UIImage?]) -> Void) {
         var images = [UIImage?]()
         var counter = selectedPhotoIndices.count
         
@@ -355,6 +366,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        backgroundView.frame = view.bounds
+        
         let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(0)).reduce(0.0) { total, row in
             total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
         }
@@ -364,13 +377,12 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     // MARK: - Transitioning
     
-//    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return AnimationController(presenting: true)
-//    }
-//    
-//    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return AnimationController(presenting: false)
-//    }
+    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return AnimationController(imagePickerSheetController: self, presenting: true)
+    }
     
+    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return AnimationController(imagePickerSheetController: self, presenting: false)
+    }
     
 }

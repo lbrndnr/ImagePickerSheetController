@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow? = {
         let window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        window.backgroundColor = UIColor.whiteColor()
+        window.backgroundColor = .whiteColor()
         
         return window
     }()

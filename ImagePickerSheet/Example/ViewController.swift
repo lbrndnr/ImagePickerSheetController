@@ -59,29 +59,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             controller.addAction(ImageAction(title: NSLocalizedString("Photo Library", comment: "Photo Library"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), $0) as String}, handler: { _ in
                 presentImagePickerController(.PhotoLibrary)
             }, secondaryHandler: { _, numberOfPhotos in
-                println("Send \(numberOfPhotos) photos")
+                controller.getSelectedImagesWithCompletion() { images in
+                    println("Send \(images) photos")
+                }
             }))
             controller.addAction(ImageAction(title: NSLocalizedString("Cancel", comment: "Cancel")))
             
-            presentViewController(controller, animated: false, completion: nil)
+            presentViewController(controller, animated: true, completion: nil)
         }
         else {
             let alertView = UIAlertView(title: NSLocalizedString("An error occurred", comment: "An error occurred"), message: NSLocalizedString("ImagePickerSheet needs access to the camera roll", comment: "ImagePickerSheet needs access to the camera roll"), delegate: nil, cancelButtonTitle: NSLocalizedString("OK", comment: "OK"))
             alertView.show()
         }
     }
-    
-//    func imagePickerSheet(imagePickerSheet: ImagePickerSheet, willDismissWithButtonIndex buttonIndex: Int) {
-//        if buttonIndex != imagePickerSheet.cancelButtonIndex {
-//            if imagePickerSheet.numberOfSelectedPhotos > 0 {
-//                imagePickerSheet.getSelectedImagesWithCompletion() { images in
-//                    println(images)
-//                }
-//            }
-//            else {
-//            }
-//        }
-//    }
     
     // MARK: UIImagePickerControllerDelegate
     
