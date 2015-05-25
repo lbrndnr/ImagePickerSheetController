@@ -130,11 +130,13 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             return cell
         }
         
+        let action = actions[indexPath.row]
+        
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = tableView.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
-        cell.textLabel?.text = actions[indexPath.row].title(selectedPhotoIndices.count)
+        cell.textLabel?.text = selectedPhotoIndices.count > 0 ? action.secondaryTitle(selectedPhotoIndices.count) : action.title
         cell.layoutMargins = UIEdgeInsetsZero
         
         return cell

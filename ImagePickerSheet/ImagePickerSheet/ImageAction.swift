@@ -15,28 +15,25 @@ public class ImageAction {
     public typealias Handler = (ImageAction) -> ()
     public typealias SecondaryHandler = (ImageAction, Int) -> ()
     
-    let title: Title
+    let title: String
     let secondaryTitle: Title
     
     let handler: Handler?
     let secondaryHandler: SecondaryHandler?
     
-    // TODO: Less verbose by mapping the secondary handler to the primary one if secondary title not specified
-    public convenience init(title: String, secondaryTitle: String? = nil, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
-        self.init(title: { _ in title }, secondaryTitle: secondaryTitle.map { string in { _ in string }} ?? { _ in title }, handler: handler)
+    public convenience init(title: String, secondaryTitle: String? = nil, handler: Handler? = nil, var secondaryHandler: SecondaryHandler? = nil) {
+        if let handler = handler where secondaryTitle == nil && secondaryHandler == nil {
+            secondaryHandler = { action, _ in
+                handler(action)
+            }
+        }
+        
+        self.init(title: title, secondaryTitle: secondaryTitle.map { string in { _ in string }} ?? { _ in title }, handler: handler, secondaryHandler: secondaryHandler)
     }
     
-    public convenience init(title: String, secondaryTitle: Title, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
-        self.init(title: { _ in title }, secondaryTitle: secondaryTitle, handler: handler, secondaryHandler: secondaryHandler)
-    }
-    
-    public convenience init(title: Title, secondaryTitle: String? = nil, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
-        self.init(title: title, secondaryTitle: secondaryTitle.map { string in { _ in string }} ?? title, handler: handler, secondaryHandler: secondaryHandler)
-    }
-    
-    public init(title: Title, secondaryTitle: Title, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
+    public init(title: String, secondaryTitle: Title?, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
         self.title = title
-        self.secondaryTitle = secondaryTitle
+        self.secondaryTitle = secondaryTitle ?? { _ in title }
         self.handler = handler
         self.secondaryHandler = secondaryHandler
     }
