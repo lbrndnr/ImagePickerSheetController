@@ -55,16 +55,9 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     private(set) var actions = [ImageAction]()
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
-    private var previewsPhotos: Bool {
-        return (assets.count > 0)
-    }
     private(set) var enlargedPreviews = false
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
-    
-    private var firstButtonIndex: Int {
-        return previewsPhotos ? 1 : 0
-    }
     
     private let imageManager = PHCachingImageManager()
     
@@ -103,32 +96,31 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     // MARK: - UITableViewDataSource
     
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var numberOfRows = actions.count
-        if previewsPhotos {
-            numberOfRows += 1
+        if section == 0 {
+            return 1
         }
         
-        return numberOfRows
+        return actions.count
     }
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if previewsPhotos && indexPath.row == 0 {
-            if (enlargedPreviews) {
-                return tableViewEnlargedPreviewRowHeight
+        if indexPath.section == 0 {
+            if assets.count > 0 {
+                return enlargedPreviews ? tableViewEnlargedPreviewRowHeight : tableViewPreviewRowHeight
             }
             
-            return tableViewPreviewRowHeight
+            return 0
         }
         
         return tableViewRowHeight
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.row == 0 && previewsPhotos {
+        if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
             cell.collectionView = collectionView
             
@@ -139,7 +131,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = tableView.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
-        cell.textLabel?.text = actions[buttonIndexForRow(indexPath.row)].title(selectedPhotoIndices.count)
+        cell.textLabel?.text = actions[indexPath.row].title(selectedPhotoIndices.count)
         
         return cell
     }
@@ -147,7 +139,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     // MARK: - UITableViewDelegate
     
     public func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return !(previewsPhotos && indexPath.row == 0)
+        return indexPath.section != 0
     }
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -155,8 +147,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
-        let buttonIndex = buttonIndexForRow(indexPath.row)
-        actions[buttonIndex].handle(numberOfPhotos: selectedPhotoIndices.count)
+        actions[indexPath.row].handle(numberOfPhotos: selectedPhotoIndices.count)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -351,14 +342,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     // MARK: - Buttons
     
-    private func buttonIndexForRow(row: Int) -> Int {
-        return row-firstButtonIndex
-    }
-    
     private func reloadButtonTitles() {
-        let indexPaths = Array(firstButtonIndex ..< firstButtonIndex+actions.count-1).map({ NSIndexPath(forRow: $0, inSection: 0) })
-        
-        tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+        tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
     }
     
     // MARK: - Layout
@@ -368,8 +353,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         
         backgroundView.frame = view.bounds
         
-        let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(0)).reduce(0.0) { total, row in
-            total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 0))
+        let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(1)).reduce(tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))) { total, row in
+            total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 1))
         }
 
         tableView.frame = CGRect(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight, width: view.bounds.width, height: tableViewHeight)
