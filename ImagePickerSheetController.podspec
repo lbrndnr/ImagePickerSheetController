@@ -1,5 +1,5 @@
 #
-#  Be sure to run `pod spec lint ImagePickerSheet.podspec' to ensure this is a
+#  Be sure to run `pod spec lint ImagePickerSheetController.podspec' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
@@ -15,16 +15,16 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "ImagePickerSheet"
+  s.name         = "ImagePickerSheetController"
   s.version      = "0.0.8"
   s.summary      = "A duplicate of that shiny new custom action sheet seen in iOS8's iMessage"
 
   s.description  = <<-DESC
-                   ImagePickerSheet is a duplicate of that shiny new custom action sheet seen in iOS8's iMessage that Apple didn't make part of UIKit. It's the first project I've written in Swift. It works well but I might have coded something the Objective-C kind of way. Don't hesitate to open an issue or pull request if you spotted something. And no, ImagePickerSheet does not have the glitches Apple's image picker has :)
+                   ImagePickerSheetController is a duplicate of that shiny new custom action sheet seen in iOS8's iMessage that Apple didn't make part of UIKit. It's the first project I've written in Swift. It works well but I might have coded something the Objective-C kind of way. Don't hesitate to open an issue or pull request if you spotted something. And no, ImagePickerSheetController does not have the glitches Apple's image picker has :)
                    DESC
 
-  s.homepage     = "https://github.com/larcus94/ImagePickerSheet"
-  #s.screenshots  = "https://raw.github.com/larcus94/ImagePickerSheet/master/Screenshots/ImagePickerSheet.gif"
+  s.homepage     = "https://github.com/larcus94/ImagePickerSheetController"
+  #s.screenshots  = "https://raw.github.com/larcus94/ImagePickerSheetController/master/Screenshots/ImagePickerSheetController.gif"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -69,7 +69,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/larcus94/ImagePickerSheet.git", :tag => s.version }
+  s.source       = { :git => "https://github.com/larcus94/ImagePickerSheetController.git", :tag => s.version }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "ImagePickerSheet/ImagePickerSheet/*.swift"
+  s.source_files  = "ImagePickerSheetController/ImagePickerSheetController/*.swift"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -93,7 +93,7 @@ Pod::Spec.new do |s|
 
   # s.resource  = "icon.png"
   # s.resources = "Resources/*.png"
-  s.resource_bundle = {"Images" => ["ImagePickerSheet/ImagePickerSheet/Images.xcassets"]}
+  s.resource_bundle = {"Images" => ["ImagePickerSheetController/ImagePickerSheetController/Images.xcassets"]}
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 

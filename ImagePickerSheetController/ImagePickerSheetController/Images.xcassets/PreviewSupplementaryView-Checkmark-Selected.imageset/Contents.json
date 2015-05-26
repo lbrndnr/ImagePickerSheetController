@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "ImagePickerSheet-Checkmark-Selected.png"
+      "filename" : "PreviewSupplementaryView-Checkmark-Selected.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "ImagePickerSheet-Checkmark-Selected@2x.png"
+      "filename" : "PreviewSupplementaryView-Checkmark-Selected@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "ImagePickerSheet-Checkmark-Selected@3x.png"
+      "filename" : "PreviewSupplementaryView-Checkmark-Selected@3x.png"
     }
   ],
   "info" : {

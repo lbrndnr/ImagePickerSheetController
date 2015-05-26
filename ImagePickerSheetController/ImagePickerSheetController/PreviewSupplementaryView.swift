@@ -31,14 +31,14 @@ class PreviewSupplementaryView : UICollectionReusableView {
     
     class var checkmarkImage: UIImage? {
         let bundle = NSBundle(forClass: ImagePickerSheetController.self)
-        let image = UIImage(named: "ImagePickerSheet-Checkmark", inBundle: bundle, compatibleWithTraitCollection: nil)
+        let image = UIImage(named: "PreviewSupplementaryView-Checkmark", inBundle: bundle, compatibleWithTraitCollection: nil)
         
         return image?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     class var selectedCheckmarkImage: UIImage? {
         let bundle = NSBundle(forClass: ImagePickerSheetController.self)
-        let image = UIImage(named: "ImagePickerSheet-Checkmark-Selected", inBundle: bundle, compatibleWithTraitCollection: nil)
+        let image = UIImage(named: "PreviewSupplementaryView-Checkmark-Selected", inBundle: bundle, compatibleWithTraitCollection: nil)
         
         return image?.imageWithRenderingMode(.AlwaysTemplate)
     }
