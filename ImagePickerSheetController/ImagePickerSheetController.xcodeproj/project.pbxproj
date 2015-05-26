@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
-		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */; };
+		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift */; };
 		49DC4A751B14F1F600B4E78E /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */; };
 		49DC4A761B14F1F600B4E78E /* ImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6E1B14F1F600B4E78E /* ImageAction.swift */; };
 		49DC4A771B14F1F600B4E78E /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6F1B14F1F600B4E78E /* ImageCollectionViewCell.swift */; };
@@ -27,6 +27,8 @@
 		49DC4AA91B14F3B800B4E78E /* ImagePickerSheetController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49DC4AAF1B14FB9A00B4E78E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; };
 		49DC4AB01B14FB9A00B4E78E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; };
+		49F311801B1506FB00ACD6A7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 49F311821B1506FB00ACD6A7 /* Localizable.stringsdict */; };
+		49F311831B15070000ACD6A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F311851B15070000ACD6A7 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,7 +75,7 @@
 		49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheetController.h; sourceTree = "<group>"; };
 		49DC4A5C1B14F1BC00B4E78E /* ImagePickerSheetControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImagePickerSheetControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49DC4A621B14F1BC00B4E78E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetControllerTests.swift; sourceTree = "<group>"; };
+		49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetControllerSpecs.swift; sourceTree = "<group>"; };
 		49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
 		49DC4A6E1B14F1F600B4E78E /* ImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAction.swift; sourceTree = "<group>"; };
 		49DC4A6F1B14F1F600B4E78E /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -91,6 +93,8 @@
 		49DC4A941B14F31500B4E78E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		49DC4AAE1B14FB9A00B4E78E /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		49F311811B1506FB00ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		49F311841B15070000ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,7 +177,7 @@
 		49DC4A601B14F1BC00B4E78E /* ImagePickerSheetControllerTests */ = {
 			isa = PBXGroup;
 			children = (
-				49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */,
+				49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift */,
 				49DC4A611B14F1BC00B4E78E /* Supporting Files */,
 			);
 			path = ImagePickerSheetControllerTests;
@@ -192,7 +196,6 @@
 			children = (
 				49DC4A8A1B14F31500B4E78E /* AppDelegate.swift */,
 				49DC4A8C1B14F31500B4E78E /* ViewController.swift */,
-				49DC4A931B14F31500B4E78E /* LaunchScreen.xib */,
 				49DC4A881B14F31500B4E78E /* Supporting Files */,
 			);
 			path = Example;
@@ -201,6 +204,9 @@
 		49DC4A881B14F31500B4E78E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				49DC4A931B14F31500B4E78E /* LaunchScreen.xib */,
+				49F311851B15070000ACD6A7 /* Localizable.strings */,
+				49F311821B1506FB00ACD6A7 /* Localizable.stringsdict */,
 				49DC4A891B14F31500B4E78E /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -348,6 +354,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				49DC4A951B14F31500B4E78E /* LaunchScreen.xib in Resources */,
+				49F311831B15070000ACD6A7 /* Localizable.strings in Resources */,
+				49F311801B1506FB00ACD6A7 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,7 +381,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift in Sources */,
+				49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +421,24 @@
 				49DC4A941B14F31500B4E78E /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		49F311821B1506FB00ACD6A7 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49F311811B1506FB00ACD6A7 /* Base */,
+			);
+			name = Localizable.stringsdict;
+			path = ../../../../../Desktop;
+			sourceTree = "<group>";
+		};
+		49F311851B15070000ACD6A7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49F311841B15070000ACD6A7 /* Base */,
+			);
+			name = Localizable.strings;
+			path = ../../../../../Desktop;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

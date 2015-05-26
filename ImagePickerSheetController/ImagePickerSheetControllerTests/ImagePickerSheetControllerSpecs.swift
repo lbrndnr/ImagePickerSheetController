@@ -11,7 +11,7 @@ import XCTest
 import Quick
 import Nimble
 
-class ImagePickerSheetControllerTests: QuickSpec {
+class ImagePickerSheetControllerSpecs: QuickSpec {
     
     override func spec() {
         it("yes") {
