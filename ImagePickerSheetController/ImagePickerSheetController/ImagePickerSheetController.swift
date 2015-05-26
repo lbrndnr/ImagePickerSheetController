@@ -264,8 +264,10 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     // MARK: - Actions
     
     public func addAction(action: ImageAction) {
-        if action.style == .Cancel {
-            precondition(actions.filter { $0.style == ImageActionStyle.Cancel }.count == 0, "ImagePickerSheetController can only have one action with a style of .Cancel")
+        let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
+        if action.style == .Cancel && cancelActions.count > 0 {
+            // precondition() would be more swifty here, but that's not really testable as of now
+            NSException(name: NSInternalInconsistencyException, reason: "ImagePickerSheetController can only have one action with a style of .Cancel", userInfo: nil).raise()
         }
         
         actions.append(action)

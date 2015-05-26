@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
-		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift */; };
+		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */; };
 		49DC4A751B14F1F600B4E78E /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */; };
 		49DC4A761B14F1F600B4E78E /* ImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6E1B14F1F600B4E78E /* ImageAction.swift */; };
 		49DC4A771B14F1F600B4E78E /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6F1B14F1F600B4E78E /* ImageCollectionViewCell.swift */; };
@@ -75,7 +75,7 @@
 		49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheetController.h; sourceTree = "<group>"; };
 		49DC4A5C1B14F1BC00B4E78E /* ImagePickerSheetControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImagePickerSheetControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49DC4A621B14F1BC00B4E78E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetControllerSpecs.swift; sourceTree = "<group>"; };
+		49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetControllerSpec.swift; sourceTree = "<group>"; };
 		49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
 		49DC4A6E1B14F1F600B4E78E /* ImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAction.swift; sourceTree = "<group>"; };
 		49DC4A6F1B14F1F600B4E78E /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -177,7 +177,7 @@
 		49DC4A601B14F1BC00B4E78E /* ImagePickerSheetControllerTests */ = {
 			isa = PBXGroup;
 			children = (
-				49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift */,
+				49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */,
 				49DC4A611B14F1BC00B4E78E /* Supporting Files */,
 			);
 			path = ImagePickerSheetControllerTests;
@@ -381,7 +381,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpecs.swift in Sources */,
+				49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
