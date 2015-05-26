@@ -265,7 +265,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     public func addAction(action: ImageAction) {
         if action.style == .Cancel {
-            precondition(actions.filter { $0.style == ImageActionStyle.Cancel }.count > 0, "ImagePickerSheetController can only have one action with a style of .Cancel")
+            precondition(actions.filter { $0.style == ImageActionStyle.Cancel }.count == 0, "ImagePickerSheetController can only have one action with a style of .Cancel")
         }
         
         actions.append(action)

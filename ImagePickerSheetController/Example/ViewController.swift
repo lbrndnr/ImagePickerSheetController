@@ -63,7 +63,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         println("Send \(images) photos")
                     }
             }))
-            controller.addAction(ImageAction(title: NSLocalizedString("Cancel", comment: "Action Title")))
+            controller.addAction(ImageAction(title: NSLocalizedString("Cancel", comment: "Action Title"), style: .Cancel, handler: { _ in
+                println("Cancelled")
+            }))
             
             presentViewController(controller, animated: true, completion: nil)
         }

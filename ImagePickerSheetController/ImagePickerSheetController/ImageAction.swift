@@ -28,17 +28,17 @@ public class ImageAction {
     let handler: Handler?
     let secondaryHandler: SecondaryHandler?
     
-    public convenience init(title: String, secondaryTitle: String? = nil, style: ImageActionStyle = .Default, handler: Handler? = nil, var secondaryHandler: SecondaryHandler? = nil) {
+    public convenience init(title: String, secondaryTitle: String? = nil, style: ImageActionStyle = .Default, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
+        self.init(title: title, secondaryTitle: secondaryTitle.map { string in { _ in string }}, style: style, handler: handler, secondaryHandler: secondaryHandler)
+    }
+    
+    public init(title: String, secondaryTitle: Title?, style: ImageActionStyle = .Default, handler: Handler? = nil, var secondaryHandler: SecondaryHandler? = nil) {
         if let handler = handler where secondaryTitle == nil && secondaryHandler == nil {
             secondaryHandler = { action, _ in
                 handler(action)
             }
         }
         
-        self.init(title: title, secondaryTitle: secondaryTitle.map { string in { _ in string }} ?? { _ in title }, style: style, handler: handler, secondaryHandler: secondaryHandler)
-    }
-    
-    public init(title: String, secondaryTitle: Title?, style: ImageActionStyle = .Default, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
         self.title = title
         self.secondaryTitle = secondaryTitle ?? { _ in title }
         self.style = style
