@@ -25,6 +25,8 @@
 		49DC4A951B14F31500B4E78E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49DC4A931B14F31500B4E78E /* LaunchScreen.xib */; };
 		49DC4AA81B14F3B800B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4AA91B14F3B800B4E78E /* ImagePickerSheetController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		49DC4AAF1B14FB9A00B4E78E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; };
+		49DC4AB01B14FB9A00B4E78E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 49DC4A501B14F1BC00B4E78E;
 			remoteInfo = ImagePickerSheetController;
+		};
+		49F3117A1B14FEFE00ACD6A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49DC4A481B14F1BC00B4E78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49DC4A851B14F31500B4E78E;
+			remoteInfo = Example;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -80,6 +89,8 @@
 		49DC4A8A1B14F31500B4E78E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49DC4A8C1B14F31500B4E78E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		49DC4A941B14F31500B4E78E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		49DC4AAE1B14FB9A00B4E78E /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +107,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */,
+				49DC4AAF1B14FB9A00B4E78E /* Nimble.framework in Frameworks */,
+				49DC4AB01B14FB9A00B4E78E /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +129,7 @@
 				49DC4A531B14F1BC00B4E78E /* ImagePickerSheetController */,
 				49DC4A601B14F1BC00B4E78E /* ImagePickerSheetControllerTests */,
 				49DC4A871B14F31500B4E78E /* Example */,
+				49DC4AB11B14FBAD00B4E78E /* Frameworks */,
 				49DC4A521B14F1BC00B4E78E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -142,7 +156,6 @@
 				49DC4A731B14F1F600B4E78E /* ImagePreviewTableViewCell.swift */,
 				49DC4A741B14F1F600B4E78E /* PreviewSupplementaryView.swift */,
 				49DC4A7D1B14F22200B4E78E /* Images.xcassets */,
-				49DC4A811B14F2F500B4E78E /* Frameworks */,
 				49DC4A541B14F1BC00B4E78E /* Supporting Files */,
 			);
 			path = ImagePickerSheetController;
@@ -174,15 +187,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		49DC4A811B14F2F500B4E78E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				49DC4A7F1B14F2EF00B4E78E /* Photos.framework */,
-			);
-			name = Frameworks;
-			path = ..;
-			sourceTree = "<group>";
-		};
 		49DC4A871B14F31500B4E78E /* Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +204,16 @@
 				49DC4A891B14F31500B4E78E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		49DC4AB11B14FBAD00B4E78E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49DC4A7F1B14F2EF00B4E78E /* Photos.framework */,
+				49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */,
+				49DC4AAE1B14FB9A00B4E78E /* Quick.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +260,7 @@
 			);
 			dependencies = (
 				49DC4A5F1B14F1BC00B4E78E /* PBXTargetDependency */,
+				49F3117B1B14FEFE00ACD6A7 /* PBXTargetDependency */,
 			);
 			name = ImagePickerSheetControllerTests;
 			productName = ImagePickerSheetControllerTests;
@@ -285,6 +300,7 @@
 					};
 					49DC4A5B1B14F1BC00B4E78E = {
 						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = 49DC4A851B14F31500B4E78E;
 					};
 					49DC4A851B14F31500B4E78E = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -382,6 +398,11 @@
 			isa = PBXTargetDependency;
 			target = 49DC4A501B14F1BC00B4E78E /* ImagePickerSheetController */;
 			targetProxy = 49DC4AAA1B14F3B800B4E78E /* PBXContainerItemProxy */;
+		};
+		49F3117B1B14FEFE00ACD6A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49DC4A851B14F31500B4E78E /* Example */;
+			targetProxy = 49F3117A1B14FEFE00ACD6A7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -519,9 +540,11 @@
 		49DC4A6B1B14F1BC00B4E78E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					/Users/Laurin/Developments/Libraries/ImagePickerSheetController/Carthage/Build/iOS,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -530,19 +553,23 @@
 				INFOPLIST_FILE = ImagePickerSheetControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Debug;
 		};
 		49DC4A6C1B14F1BC00B4E78E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					/Users/Laurin/Developments/Libraries/ImagePickerSheetController/Carthage/Build/iOS,
 				);
 				INFOPLIST_FILE = ImagePickerSheetControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Release;
 		};
@@ -607,6 +634,7 @@
 				49DC4AA41B14F31500B4E78E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
