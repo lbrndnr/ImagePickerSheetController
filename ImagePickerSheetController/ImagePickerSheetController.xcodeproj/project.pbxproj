@@ -27,8 +27,8 @@
 		49DC4AA91B14F3B800B4E78E /* ImagePickerSheetController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49DC4AAF1B14FB9A00B4E78E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; };
 		49DC4AB01B14FB9A00B4E78E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; };
-		49F311801B1506FB00ACD6A7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 49F311821B1506FB00ACD6A7 /* Localizable.stringsdict */; };
-		49F311831B15070000ACD6A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F311851B15070000ACD6A7 /* Localizable.strings */; };
+		49F3118A1B15074100ACD6A7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 49F3118C1B15074100ACD6A7 /* Localizable.stringsdict */; };
+		49F3118D1B15074400ACD6A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F3118F1B15074400ACD6A7 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,8 +93,8 @@
 		49DC4A941B14F31500B4E78E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		49DC4AAE1B14FB9A00B4E78E /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
-		49F311811B1506FB00ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		49F311841B15070000ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		49F3118B1B15074100ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		49F3118E1B15074400ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,9 +204,9 @@
 		49DC4A881B14F31500B4E78E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				49F3118F1B15074400ACD6A7 /* Localizable.strings */,
+				49F3118C1B15074100ACD6A7 /* Localizable.stringsdict */,
 				49DC4A931B14F31500B4E78E /* LaunchScreen.xib */,
-				49F311851B15070000ACD6A7 /* Localizable.strings */,
-				49F311821B1506FB00ACD6A7 /* Localizable.stringsdict */,
 				49DC4A891B14F31500B4E78E /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -354,8 +354,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				49DC4A951B14F31500B4E78E /* LaunchScreen.xib in Resources */,
-				49F311831B15070000ACD6A7 /* Localizable.strings in Resources */,
-				49F311801B1506FB00ACD6A7 /* Localizable.stringsdict in Resources */,
+				49F3118D1B15074400ACD6A7 /* Localizable.strings in Resources */,
+				49F3118A1B15074100ACD6A7 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,22 +423,20 @@
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
-		49F311821B1506FB00ACD6A7 /* Localizable.stringsdict */ = {
+		49F3118C1B15074100ACD6A7 /* Localizable.stringsdict */ = {
 			isa = PBXVariantGroup;
 			children = (
-				49F311811B1506FB00ACD6A7 /* Base */,
+				49F3118B1B15074100ACD6A7 /* Base */,
 			);
 			name = Localizable.stringsdict;
-			path = ../../../../../Desktop;
 			sourceTree = "<group>";
 		};
-		49F311851B15070000ACD6A7 /* Localizable.strings */ = {
+		49F3118F1B15074400ACD6A7 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				49F311841B15070000ACD6A7 /* Base */,
+				49F3118E1B15074400ACD6A7 /* Base */,
 			);
 			name = Localizable.strings;
-			path = ../../../../../Desktop;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
