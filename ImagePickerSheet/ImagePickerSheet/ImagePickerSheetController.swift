@@ -50,6 +50,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "cancel"))
         
         return view
     }()
@@ -264,6 +265,10 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     // MARK: - Actions
     
     public func addAction(action: ImageAction) {
+        if action.style == .Cancel {
+            precondition(actions.filter { $0.style == ImageActionStyle.Cancel }.count > 0, "ImagePickerSheetController can only have one action with a style of .Cancel")
+        }
+        
         actions.append(action)
     }
     
@@ -349,6 +354,15 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     private func reloadButtonTitles() {
         tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+    }
+    
+    @objc private func cancel() {
+        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        
+        let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
+        if let cancelAction = cancelActions.first {
+            cancelAction.handle(numberOfPhotos: selectedPhotoIndices.count)
+        }
     }
     
     // MARK: - Layout
