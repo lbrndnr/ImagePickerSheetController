@@ -51,19 +51,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
             
             let controller = ImagePickerSheetController()
-            controller.addAction(ImageAction(title: NSLocalizedString("Take Photo Or Video", comment: "Take Photo Or Video"), secondaryTitle: NSLocalizedString("Add comment", comment: "Add comment"), handler: { _ in
+            controller.addAction(ImageAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
                 presentImagePickerController(.Camera)
             }, secondaryHandler: { _, numberOfPhotos in
                 println("Comment \(numberOfPhotos) photos")
             }))
-            controller.addAction(ImageAction(title: NSLocalizedString("Photo Library", comment: "Photo Library"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "The secondary title of the image picker sheet to send the photos"), $0) as String}, handler: { _ in
+            controller.addAction(ImageAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "Action Title"), $0) as String}, handler: { _ in
                 presentImagePickerController(.PhotoLibrary)
             }, secondaryHandler: { _, numberOfPhotos in
                 controller.getSelectedImagesWithCompletion() { images in
                     println("Send \(images) photos")
                 }
             }))
-            controller.addAction(ImageAction(title: NSLocalizedString("Cancel", comment: "Cancel")))
+            controller.addAction(ImageAction(title: NSLocalizedString("Cancel", comment: "Action Title")))
             
             presentViewController(controller, animated: true, completion: nil)
         }

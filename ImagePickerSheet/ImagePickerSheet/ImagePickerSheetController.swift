@@ -9,7 +9,6 @@
 import Foundation
 import Photos
 
-private let presentationAnimationDuration = 0.3
 private let enlargementAnimationDuration = 0.3
 private let tableViewRowHeight: CGFloat = 50.0
 private let tableViewPreviewRowHeight: CGFloat = 140.0
