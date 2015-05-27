@@ -16,15 +16,15 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ImagePickerSheetController"
-  s.version      = "0.0.9"
-  s.summary      = "A duplicate of that shiny new custom action sheet seen in iOS8's iMessage"
+  s.version      = "0.1.0"
+  s.summary      = "ImagePickerSheetController is like the custom photo action sheet in iMessage just without the glitches."
 
   s.description  = <<-DESC
-                   ImagePickerSheetController is a duplicate of that shiny new custom action sheet seen in iOS8's iMessage that Apple didn't make part of UIKit. It's the first project I've written in Swift. It works well but I might have coded something the Objective-C kind of way. Don't hesitate to open an issue or pull request if you spotted something. And no, ImagePickerSheetController does not have the glitches Apple's image picker has :)
+                   ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIActionController which makes its usage simple and concise.
                    DESC
 
   s.homepage     = "https://github.com/larcus94/ImagePickerSheetController"
-  #s.screenshots  = "https://raw.github.com/larcus94/ImagePickerSheetController/master/Screenshots/ImagePickerSheetController.gif"
+  s.screenshots  = "https://raw.github.com/larcus94/ImagePickerSheetController/master/Screenshots/ImagePickerSheetController.gif"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

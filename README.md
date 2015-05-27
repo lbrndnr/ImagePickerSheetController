@@ -1,7 +1,7 @@
 # ImagePickerSheetController
 
 ## About
-ImagePickerSheetController is like the custom photo action sheet in iMessage just without the glitches.
+ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIActionController which makes its usage simple and concise.
 
 ![demo](Screenshots/ImagePickerSheetController.gif)
 
@@ -43,12 +43,12 @@ It's recommended to use [stringsdict](https://developer.apple.com/library/ios/do
 
 ### CocoaPods
 ```ruby
-pod "ImagePickerSheetController", "~> 0.0.9"
+pod "ImagePickerSheetController", "~> 0.1.0"
 ```
 
 ###Carthage
 ```objc
-github "larcus94/ImagePickerSheetController" ~> 0.0.9
+github "larcus94/ImagePickerSheetController" ~> 0.1.0
 ```
 
 
