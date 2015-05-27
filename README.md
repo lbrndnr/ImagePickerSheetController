@@ -3,7 +3,7 @@
 ## About
 ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIActionController which makes its usage simple and concise.
 
-![demo](Screenshots/GoT.gif)
+![Screenshot](https://raw.githubusercontent.com/larcus94/ImagePickerSheetController/master/Screenshots/GoT.gif)
 
 [![Twitter: @larcus94](https://img.shields.io/badge/contact-@larcus94-blue.svg?style=flat)](https://twitter.com/larcus94)
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/larcus94/ImagePickerSheetController/blob/master/LICENSE)
