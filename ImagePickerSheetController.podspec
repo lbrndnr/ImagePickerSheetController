@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/larcus94/ImagePickerSheetController"
-  s.screenshots  = "https://raw.github.com/larcus94/ImagePickerSheetController/master/Screenshots/ImagePickerSheetController.gif"
+  s.screenshot  = "https://raw.github.com/larcus94/ImagePickerSheetController/master/Screenshots/ImagePickerSheetController.gif"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
