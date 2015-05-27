@@ -1,7 +1,7 @@
 # ImagePickerSheetController
 
 ## About
-ImagePickerSheetController replicates custom photo action sheet in iOS8's iMessage just without the glitches.
+ImagePickerSheetController is like the custom photo action sheet in iMessage just without the glitches.
 
 ![demo](Screenshots/ImagePickerSheetController.gif)
 
