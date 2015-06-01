@@ -295,8 +295,9 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        
         result.enumerateObjectsUsingBlock { obj, _, _ in
-            if let asset = obj as? PHAsset {
+            if let asset = obj as? PHAsset where self.assets.count < 50 {
                 self.assets.append(asset)
             }
         }
