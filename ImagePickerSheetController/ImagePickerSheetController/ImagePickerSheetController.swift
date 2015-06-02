@@ -29,7 +29,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
         
         return tableView
-    }()
+        }()
     
     private lazy var collectionView: ImagePickerCollectionView = {
         let collectionView = ImagePickerCollectionView()
@@ -44,7 +44,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         collectionView.registerClass(PreviewSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self))
         
         return collectionView
-    }()
+        }()
     
     lazy var backgroundView: UIView = {
         let view = UIView()
@@ -52,7 +52,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "cancel"))
         
         return view
-    }()
+        }()
     
     private(set) var actions = [ImageAction]()
     private var assets = [PHAsset]()
@@ -63,13 +63,24 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     private let imageManager = PHCachingImageManager()
     
+    /**
+    Describes how many items can be selected. If it is set to 0 or any negative integer then selection is not limited.
+    */
+    public var selectionCount: Int = Int.max {
+        didSet {
+            if selectionCount <= 0 {
+                selectionCount = Int.max
+            }
+        }
+    }
+    
     // MARK: - Initialization
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         initialize()
     }
-
+    
     required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
@@ -221,7 +232,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selected = contains(selectedPhotoIndices, indexPath.section)
         
-        if !selected {
+        if !selected && selectedPhotoIndices.count < selectionCount {
             selectedPhotoIndices.append(indexPath.section)
             
             if !enlargedPreviews {
@@ -234,9 +245,9 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
                     self.view.layoutIfNeeded()
-                }, completion: { finished in
-                    self.reloadButtonTitles()
-                    self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
+                    }, completion: { finished in
+                        self.reloadButtonTitles()
+                        self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
                 })
             }
             else {
@@ -252,11 +263,13 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             }
         }
         else {
-            selectedPhotoIndices.removeAtIndex(find(selectedPhotoIndices, indexPath.section)!)
-            reloadButtonTitles()
+            if let index = find(selectedPhotoIndices, indexPath.section) {
+                selectedPhotoIndices.removeAtIndex(find(selectedPhotoIndices, indexPath.section)!)
+                reloadButtonTitles()
+            }
         }
         
-        if let sectionView = supplementaryViews[indexPath.section] {
+        if let sectionView = supplementaryViews[indexPath.section] where selectedPhotoIndices.count < selectionCount || find(selectedPhotoIndices, indexPath.section) != nil {
             sectionView.selected = !selected
         }
     }
@@ -281,7 +294,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let height: CGFloat = {
             let rowHeight = self.enlargedPreviews ? tableViewEnlargedPreviewRowHeight : tableViewPreviewRowHeight
             return rowHeight-2.0*collectionViewInset
-        }()
+            }()
         
         return CGSize(width: CGFloat(floorf(Float(proportion*height))), height: height)
     }
@@ -295,7 +308,6 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
-        
         result.enumerateObjectsUsingBlock { obj, _, _ in
             if let asset = obj as? PHAsset where self.assets.count < 50 {
                 self.assets.append(asset)
@@ -377,7 +389,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(1)).reduce(tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))) { total, row in
             total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 1))
         }
-
+        
         tableView.frame = CGRect(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight, width: view.bounds.width, height: tableViewHeight)
     }
     
