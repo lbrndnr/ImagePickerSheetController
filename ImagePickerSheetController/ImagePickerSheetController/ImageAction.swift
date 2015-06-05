@@ -20,9 +20,13 @@ public class ImageAction {
     public typealias Handler = (ImageAction) -> ()
     public typealias SecondaryHandler = (ImageAction, Int) -> ()
     
+    /// The title of the action's button.
     public let title: String
+    
+    /// The title of the action's button when more than one image is selected.
     public let secondaryTitle: Title
     
+    /// The style of the action. This is used to call a cancel handler when dismissing the controller by tapping the background.
     public let style: ImageActionStyle
     
     let handler: Handler?

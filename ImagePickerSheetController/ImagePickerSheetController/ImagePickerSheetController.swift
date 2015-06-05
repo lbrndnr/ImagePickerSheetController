@@ -56,6 +56,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         return view
     }()
     
+    /// All the actions in the same order as they were added. The first action is shown at the top.
     public private(set) var actions = [ImageAction]()
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
@@ -265,7 +266,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     // MARK: - Actions
     
-    /// Add an new action.
+    /// Adds an new action.
     /// Raises an exception when a second action of type .Cancel has been added.
     public func addAction(action: ImageAction) {
         let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
