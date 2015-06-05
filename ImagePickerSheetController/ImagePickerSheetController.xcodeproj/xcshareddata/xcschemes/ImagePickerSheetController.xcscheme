@@ -52,16 +52,6 @@
                ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49A408371B21842500D6005C"
-               BuildableName = "ImagePickerSheetControllerUITests.xctest"
-               BlueprintName = "ImagePickerSheetControllerUITests"
-               ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
