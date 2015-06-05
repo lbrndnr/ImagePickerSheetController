@@ -57,7 +57,14 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     }()
     
     /// All the actions in the same order as they were added. The first action is shown at the top.
-    public private(set) var actions = [ImageAction]()
+    public private(set) var actions = [ImageAction]() {
+        didSet {
+            if isViewLoaded() {
+                reloadButtons()
+                view.setNeedsLayout()
+            }
+        }
+    }
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private(set) var enlargedPreviews = false
@@ -238,7 +245,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                     self.tableView.endUpdates()
                     self.view.layoutIfNeeded()
                 }, completion: { finished in
-                    self.reloadButtonTitles()
+                    self.reloadButtons()
                     self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
                 })
             }
@@ -251,12 +258,12 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                     collectionView.setContentOffset(contentOffset, animated: true)
                 }
                 
-                reloadButtonTitles()
+                reloadButtons()
             }
         }
         else {
             selectedPhotoIndices.removeAtIndex(find(selectedPhotoIndices, indexPath.section)!)
-            reloadButtonTitles()
+            reloadButtons()
         }
         
         if let sectionView = supplementaryViews[indexPath.section] {
@@ -360,7 +367,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     // MARK: - Buttons
     
-    private func reloadButtonTitles() {
+    private func reloadButtons() {
         tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
     }
     
