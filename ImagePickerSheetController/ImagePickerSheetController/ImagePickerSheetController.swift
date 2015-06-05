@@ -20,6 +20,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
+        tableView.accessibilityIdentifier = "ImagePickerSheet"
         tableView.dataSource = self
         tableView.delegate = self
         tableView.alwaysBounceVertical = false
@@ -48,13 +49,14 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     lazy var backgroundView: UIView = {
         let view = UIView()
+        view.accessibilityIdentifier = "ImagePickerSheetBackground"
         view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "cancel"))
         
         return view
     }()
     
-    private(set) var actions = [ImageAction]()
+    public private(set) var actions = [ImageAction]()
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private(set) var enlargedPreviews = false

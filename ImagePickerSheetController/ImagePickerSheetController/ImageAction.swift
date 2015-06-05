@@ -20,10 +20,10 @@ public class ImageAction {
     public typealias Handler = (ImageAction) -> ()
     public typealias SecondaryHandler = (ImageAction, Int) -> ()
     
-    let title: String
-    let secondaryTitle: Title
+    public let title: String
+    public let secondaryTitle: Title
     
-    let style: ImageActionStyle
+    public let style: ImageActionStyle
     
     let handler: Handler?
     let secondaryHandler: SecondaryHandler?
