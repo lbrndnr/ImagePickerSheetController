@@ -28,10 +28,16 @@ public class ImageAction {
     let handler: Handler?
     let secondaryHandler: SecondaryHandler?
     
+    /// Initializes a new ImageAction. The secondary title and handler are used when at least 1 image has been selected.
+    /// Secondary title defaults to title if not specified.
+    /// Secondary Handler defaults to handler if both, the secondary handler and secondary title are not specified.
     public convenience init(title: String, secondaryTitle: String? = nil, style: ImageActionStyle = .Default, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
         self.init(title: title, secondaryTitle: secondaryTitle.map { string in { _ in string }}, style: style, handler: handler, secondaryHandler: secondaryHandler)
     }
     
+    /// Initializes a new ImageAction. The secondary title and handler are used when at least 1 image has been selected.
+    /// Secondary title defaults to title if not specified. Use the closure to format a title according to the selection.
+    /// Secondary Handler defaults to handler if both, the secondary handler and secondary title are not specified.
     public init(title: String, secondaryTitle: Title?, style: ImageActionStyle = .Default, handler: Handler? = nil, var secondaryHandler: SecondaryHandler? = nil) {
         if let handler = handler where secondaryTitle == nil && secondaryHandler == nil {
             secondaryHandler = { action, _ in

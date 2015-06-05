@@ -263,6 +263,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     // MARK: - Actions
     
+    /// Add an new action.
+    /// Raises an exception when a second action of type .Cancel has been added.
     public func addAction(action: ImageAction) {
         let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
         if action.style == .Cancel && cancelActions.count > 0 {
@@ -334,6 +336,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         }
     }
     
+    /// Retrieves the selected images in high quality.
     public func getSelectedImagesWithCompletion(completion: (images:[UIImage?]) -> Void) {
         var images = [UIImage?]()
         var counter = selectedPhotoIndices.count
