@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49A4083D1B21842500D6005C /* ImagePickerSheetControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A4083C1B21842500D6005C /* ImagePickerSheetControllerUITests.swift */; };
+		49A4083E1B21842500D6005C /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
+		49A408451B21853E00D6005C /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
+		49A408471B21854300D6005C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
+		49A408491B2186D500D6005C /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */; };
@@ -32,6 +37,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		49A4083F1B21842500D6005C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49DC4A481B14F1BC00B4E78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49DC4A501B14F1BC00B4E78E;
+			remoteInfo = ImagePickerSheetController;
+		};
+		49A4084A1B21871500D6005C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49DC4A481B14F1BC00B4E78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49DC4A851B14F31500B4E78E;
+			remoteInfo = Example;
+		};
 		49DC4A5E1B14F1BC00B4E78E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49DC4A481B14F1BC00B4E78E /* Project object */;
@@ -70,6 +89,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		49A408381B21842500D6005C /* ImagePickerSheetControllerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImagePickerSheetControllerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49A4083B1B21842500D6005C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49A4083C1B21842500D6005C /* ImagePickerSheetControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetControllerUITests.swift; sourceTree = "<group>"; };
+		49A408441B21853E00D6005C /* KIF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KIF.framework; path = ../Carthage/Build/iOS/KIF.framework; sourceTree = "<group>"; };
+		49A408461B21854300D6005C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		49A408481B2186D500D6005C /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
 		49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImagePickerSheetController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49DC4A551B14F1BC00B4E78E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheetController.h; sourceTree = "<group>"; };
@@ -98,6 +123,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		49A408351B21842500D6005C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49A408471B21854300D6005C /* CoreGraphics.framework in Frameworks */,
+				49A408451B21853E00D6005C /* KIF.framework in Frameworks */,
+				49A4083E1B21842500D6005C /* ImagePickerSheetController.framework in Frameworks */,
+				49A408491B2186D500D6005C /* IOKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49DC4A4D1B14F1BC00B4E78E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,11 +163,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49A408391B21842500D6005C /* ImagePickerSheetControllerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				49A4083C1B21842500D6005C /* ImagePickerSheetControllerUITests.swift */,
+				49A4083A1B21842500D6005C /* Supporting Files */,
+			);
+			path = ImagePickerSheetControllerUITests;
+			sourceTree = "<group>";
+		};
+		49A4083A1B21842500D6005C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				49A4083B1B21842500D6005C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		49DC4A471B14F1BC00B4E78E = {
 			isa = PBXGroup;
 			children = (
 				49DC4A531B14F1BC00B4E78E /* ImagePickerSheetController */,
 				49DC4A601B14F1BC00B4E78E /* ImagePickerSheetControllerTests */,
+				49A408391B21842500D6005C /* ImagePickerSheetControllerUITests */,
 				49DC4A871B14F31500B4E78E /* Example */,
 				49DC4AB11B14FBAD00B4E78E /* Frameworks */,
 				49DC4A521B14F1BC00B4E78E /* Products */,
@@ -144,6 +198,7 @@
 				49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */,
 				49DC4A5C1B14F1BC00B4E78E /* ImagePickerSheetControllerTests.xctest */,
 				49DC4A861B14F31500B4E78E /* Example.app */,
+				49A408381B21842500D6005C /* ImagePickerSheetControllerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,6 +270,9 @@
 		49DC4AB11B14FBAD00B4E78E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49A408481B2186D500D6005C /* IOKit.framework */,
+				49A408461B21854300D6005C /* CoreGraphics.framework */,
+				49A408441B21853E00D6005C /* KIF.framework */,
 				49DC4A7F1B14F2EF00B4E78E /* Photos.framework */,
 				49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */,
 				49DC4AAE1B14FB9A00B4E78E /* Quick.framework */,
@@ -236,6 +294,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		49A408371B21842500D6005C /* ImagePickerSheetControllerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49A408431B21842500D6005C /* Build configuration list for PBXNativeTarget "ImagePickerSheetControllerUITests" */;
+			buildPhases = (
+				49A408341B21842500D6005C /* Sources */,
+				49A408351B21842500D6005C /* Frameworks */,
+				49A408361B21842500D6005C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49A408401B21842500D6005C /* PBXTargetDependency */,
+				49A4084B1B21871500D6005C /* PBXTargetDependency */,
+			);
+			name = ImagePickerSheetControllerUITests;
+			productName = ImagePickerSheetControllerUITests;
+			productReference = 49A408381B21842500D6005C /* ImagePickerSheetControllerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		49DC4A501B14F1BC00B4E78E /* ImagePickerSheetController */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49DC4A671B14F1BC00B4E78E /* Build configuration list for PBXNativeTarget "ImagePickerSheetController" */;
@@ -301,6 +378,10 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Laurin Brandner";
 				TargetAttributes = {
+					49A408371B21842500D6005C = {
+						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = 49DC4A851B14F31500B4E78E;
+					};
 					49DC4A501B14F1BC00B4E78E = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
@@ -328,12 +409,20 @@
 			targets = (
 				49DC4A501B14F1BC00B4E78E /* ImagePickerSheetController */,
 				49DC4A5B1B14F1BC00B4E78E /* ImagePickerSheetControllerTests */,
+				49A408371B21842500D6005C /* ImagePickerSheetControllerUITests */,
 				49DC4A851B14F31500B4E78E /* Example */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		49A408361B21842500D6005C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49DC4A4F1B14F1BC00B4E78E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -362,6 +451,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		49A408341B21842500D6005C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49A4083D1B21842500D6005C /* ImagePickerSheetControllerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49DC4A4C1B14F1BC00B4E78E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -397,6 +494,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		49A408401B21842500D6005C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49DC4A501B14F1BC00B4E78E /* ImagePickerSheetController */;
+			targetProxy = 49A4083F1B21842500D6005C /* PBXContainerItemProxy */;
+		};
+		49A4084B1B21871500D6005C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49DC4A851B14F31500B4E78E /* Example */;
+			targetProxy = 49A4084A1B21871500D6005C /* PBXContainerItemProxy */;
+		};
 		49DC4A5F1B14F1BC00B4E78E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49DC4A501B14F1BC00B4E78E /* ImagePickerSheetController */;
@@ -442,6 +549,42 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		49A408411B21842500D6005C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					/Users/Laurin/Developments/Libraries/ImagePickerSheetController/Carthage/Build/iOS,
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ImagePickerSheetControllerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		49A408421B21842500D6005C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					/Users/Laurin/Developments/Libraries/ImagePickerSheetController/Carthage/Build/iOS,
+				);
+				INFOPLIST_FILE = ImagePickerSheetControllerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
 		49DC4A651B14F1BC00B4E78E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -624,6 +767,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		49A408431B21842500D6005C /* Build configuration list for PBXNativeTarget "ImagePickerSheetControllerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49A408411B21842500D6005C /* Debug */,
+				49A408421B21842500D6005C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		49DC4A4B1B14F1BC00B4E78E /* Build configuration list for PBXProject "ImagePickerSheetController" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

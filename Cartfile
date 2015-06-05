@@ -1,2 +1,3 @@
 github "Quick/Quick"
 github "Quick/Nimble" "v1.0.0-rc.1"
+github "kif-framework/KIF"
