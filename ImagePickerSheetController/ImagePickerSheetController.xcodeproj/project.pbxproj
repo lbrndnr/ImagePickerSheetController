@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		49A4083D1B21842500D6005C /* ImagePickerSheetControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A4083C1B21842500D6005C /* ImagePickerSheetControllerUITests.swift */; };
 		49A4083E1B21842500D6005C /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
-		49A408451B21853E00D6005C /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		49A408471B21854300D6005C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
 		49A408491B2186D500D6005C /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -128,7 +127,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				49A408471B21854300D6005C /* CoreGraphics.framework in Frameworks */,
-				49A408451B21853E00D6005C /* KIF.framework in Frameworks */,
 				49A4083E1B21842500D6005C /* ImagePickerSheetController.framework in Frameworks */,
 				49A408491B2186D500D6005C /* IOKit.framework in Frameworks */,
 			);
@@ -552,7 +550,6 @@
 		49A408411B21842500D6005C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -565,14 +562,13 @@
 				INFOPLIST_FILE = ImagePickerSheetControllerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Debug;
 		};
 		49A408421B21842500D6005C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -581,7 +577,7 @@
 				INFOPLIST_FILE = ImagePickerSheetControllerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Release;
 		};
