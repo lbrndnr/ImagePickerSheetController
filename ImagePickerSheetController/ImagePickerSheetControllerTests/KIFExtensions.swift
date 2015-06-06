@@ -8,6 +8,8 @@
 
 import Foundation
 import KIF
+import Quick
+import Nimble
 
 extension XCTestCase {
     func tester(_ file : String = __FILE__, _ line : Int = __LINE__) -> KIFUITestActor {
@@ -27,4 +29,22 @@ extension KIFTestActor {
     func system(_ file : String = __FILE__, _ line : Int = __LINE__) -> KIFSystemTestActor {
         return KIFSystemTestActor(inFile: file, atLine: line, delegate: self)
     }
+}
+
+extension QuickSpec: KIFTestActorDelegate {
+    
+    public override func failWithException(exception: NSException!, stopTest stop: Bool) {
+        if stop {
+            fail(exception.description)
+        }
+    }
+    
+    public override func failWithExceptions(exceptions: [AnyObject]!, stopTest stop: Bool) {
+        if let exceptions = exceptions as? [NSException] {
+            for exception in exceptions {
+                failWithException(exception, stopTest: stop)
+            }
+        }
+    }
+    
 }
