@@ -21,6 +21,7 @@ class ImagePickerSheetControllerSpec: QuickSpec {
         
         let imageControllerViewIdentifier = "ImagePickerSheet"
         let imageControllerBackgroundViewIdentifier = "ImagePickerSheetBackground"
+        let imageControllerPreviewIdentifier = "ImagePickerSheetPreview"
         
         beforeEach {
             imageController = ImagePickerSheetController()
@@ -79,52 +80,71 @@ class ImagePickerSheetControllerSpec: QuickSpec {
                     self.tester().waitForViewWithAccessibilityLabel(title)
                 }
             }
+        }
+        
+        describe("handlers") {
+            var defaultAction: ImageAction!
+            var cancelAction: ImageAction!
             
-            describe("handlers") {
-                var defaultAction: ImageAction!
-                var cancelAction: ImageAction!
+            var defaultActionCalled: Int!
+            var cancelActionCalled: Int!
+            
+            beforeEach {
+                defaultActionCalled = 0
+                cancelActionCalled = 0
                 
-                var defaultActionCalled: Int!
-                var cancelActionCalled: Int!
+                defaultAction = ImageAction(title: "Action", handler: { _ in
+                    defaultActionCalled = defaultActionCalled+1
+                })
+                imageController.addAction(defaultAction)
                 
-                beforeEach {
-                    defaultActionCalled = 0
-                    cancelActionCalled = 0
-                    
-                    defaultAction = ImageAction(title: "Action", handler: { _ in
-                        defaultActionCalled = defaultActionCalled+1
-                    })
-                    imageController.addAction(defaultAction)
-                    
-                    cancelAction = ImageAction(title: "Cancel", style: .Cancel, handler: { _ in
-                        cancelActionCalled = cancelActionCalled+1
-                    })
-                    imageController.addAction(cancelAction)
-                    
-                    rootViewController.presentViewController(imageController, animated: false, completion: nil)
-                }
+                cancelAction = ImageAction(title: "Cancel", style: .Cancel, handler: { _ in
+                    cancelActionCalled = cancelActionCalled+1
+                })
+                imageController.addAction(cancelAction)
                 
-                it("should call default handler once") {
-                    self.tester().tapViewWithAccessibilityLabel(defaultAction.title)
-                    
-                    expect(defaultActionCalled).to(equal(1))
-                    expect(cancelActionCalled).to(equal(0))
-                }
-                
-                it("should call cancel handler once when tapping action") {
-                    self.tester().tapViewWithAccessibilityLabel(cancelAction.title)
-                    
-                    expect(defaultActionCalled).to(equal(0))
-                    expect(cancelActionCalled).to(equal(1))
-                }
-                
-                it("should call cancel handler once when tapping background") {
-                    self.tester().tapViewWithAccessibilityIdentifier(imageControllerBackgroundViewIdentifier)
-                    
-                    expect(defaultActionCalled).to(equal(0))
-                    expect(cancelActionCalled).to(equal(1))
-                }
+                rootViewController.presentViewController(imageController, animated: false, completion: nil)
             }
+            
+            it("should call default handler once") {
+                self.tester().tapViewWithAccessibilityLabel(defaultAction.title)
+                
+                expect(defaultActionCalled).to(equal(1))
+                expect(cancelActionCalled).to(equal(0))
+            }
+            
+            it("should call cancel handler once when tapping action") {
+                self.tester().tapViewWithAccessibilityLabel(cancelAction.title)
+                
+                expect(defaultActionCalled).to(equal(0))
+                expect(cancelActionCalled).to(equal(1))
+            }
+            
+            it("should call cancel handler once when tapping background") {
+                self.tester().tapViewWithAccessibilityIdentifier(imageControllerBackgroundViewIdentifier)
+                
+                expect(defaultActionCalled).to(equal(0))
+                expect(cancelActionCalled).to(equal(1))
+            }
+        }
+        
+        describe("images") {
+            
+            it("should display images") {
+                
+            }
+            
+            it("should select images") {
+                let selection = 3
+                
+                for i in 0..<selection {
+                    let indexPath = NSIndexPath(forItem: 0, inSection: i)
+                    self.tester().tapItemAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+                }
+                
+                expect(imageController.numberOfSelectedImages).to(equal(selection))
+            }
+            
         }
     }
     

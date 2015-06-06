@@ -56,9 +56,9 @@ public class ImageAction {
         self.secondaryHandler = secondaryHandler
     }
     
-    func handle(numberOfPhotos: Int = 0) {
-        if numberOfPhotos > 0 {
-            secondaryHandler?(self, numberOfPhotos)
+    func handle(numberOfImages: Int = 0) {
+        if numberOfImages > 0 {
+            secondaryHandler?(self, numberOfImages)
         }
         else {
             handler?(self)

@@ -34,6 +34,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     private lazy var collectionView: ImagePickerCollectionView = {
         let collectionView = ImagePickerCollectionView()
+        collectionView.accessibilityIdentifier = "ImagePickerSheetPreview"
         collectionView.backgroundColor = .clearColor()
         collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
         collectionView.imagePreviewLayout.showsSupplementaryViews = false
@@ -66,7 +67,12 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         }
     }
     private var assets = [PHAsset]()
-    private var selectedPhotoIndices = [Int]()
+    
+    /// The number of the currently selected images.
+    public var numberOfSelectedImages: Int {
+        return selectedImageIndices.count
+    }
+    private var selectedImageIndices = [Int]()
     private(set) var enlargedPreviews = false
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
@@ -146,7 +152,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = tableView.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
-        cell.textLabel?.text = selectedPhotoIndices.count > 0 ? action.secondaryTitle(selectedPhotoIndices.count) : action.title
+        cell.textLabel?.text = selectedImageIndices.count > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
         cell.layoutMargins = UIEdgeInsetsZero
         
         return cell
@@ -163,7 +169,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
-        actions[indexPath.row].handle(numberOfPhotos: selectedPhotoIndices.count)
+        actions[indexPath.row].handle(numberOfImages: numberOfSelectedImages)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -193,7 +199,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
-        view.selected = contains(selectedPhotoIndices, indexPath.section)
+        view.selected = contains(selectedImageIndices, indexPath.section)
         
         supplementaryViews[indexPath.section] = view
         
@@ -229,10 +235,10 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     }
     
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let selected = contains(selectedPhotoIndices, indexPath.section)
+        let selected = contains(selectedImageIndices, indexPath.section)
         
         if !selected {
-            selectedPhotoIndices.append(indexPath.section)
+            selectedImageIndices.append(indexPath.section)
             
             if !enlargedPreviews {
                 enlargedPreviews = true
@@ -262,7 +268,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             }
         }
         else {
-            selectedPhotoIndices.removeAtIndex(find(selectedPhotoIndices, indexPath.section)!)
+            selectedImageIndices.removeAtIndex(find(selectedImageIndices, indexPath.section)!)
             reloadButtons()
         }
         
@@ -285,7 +291,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         actions.append(action)
     }
     
-    // MARK: - Photos
+    // MARK: - Images
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
@@ -349,9 +355,9 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     /// Retrieves the selected images in high quality.
     public func getSelectedImagesWithCompletion(completion: (images:[UIImage?]) -> Void) {
         var images = [UIImage?]()
-        var counter = selectedPhotoIndices.count
+        var counter = numberOfSelectedImages
         
-        for index in selectedPhotoIndices {
+        for index in selectedImageIndices {
             let asset = assets[index]
             
             requestImageForAsset(asset, deliveryMode: .HighQualityFormat) { image in
@@ -376,7 +382,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         
         let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
         if let cancelAction = cancelActions.first {
-            cancelAction.handle(numberOfPhotos: selectedPhotoIndices.count)
+            cancelAction.handle(numberOfImages: numberOfSelectedImages)
         }
     }
     
