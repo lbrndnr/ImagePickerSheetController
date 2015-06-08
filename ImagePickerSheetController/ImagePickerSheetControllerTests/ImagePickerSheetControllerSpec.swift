@@ -34,6 +34,7 @@ class ImagePickerSheetControllerSpec: QuickSpec {
         describe("presentation") {
             it("should present") {
                 rootViewController.presentViewController(imageController, animated: true, completion: nil)
+                self.tester().acknowledgeSystemAlert()
                 self.tester().waitForViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
             }
         }
@@ -79,6 +80,17 @@ class ImagePickerSheetControllerSpec: QuickSpec {
                 for (title, _) in actions {
                     self.tester().waitForViewWithAccessibilityLabel(title)
                 }
+            }
+            
+            it("should adapt action titles") {
+                rootViewController.presentViewController(imageController, animated: false, completion: nil)
+                
+                imageController.addAction(ImageAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
+                
+                let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+                self.tester().tapItemAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+                
+                self.tester().waitForViewWithAccessibilityLabel("Secondary 1")
             }
         }
         
@@ -129,9 +141,8 @@ class ImagePickerSheetControllerSpec: QuickSpec {
         }
         
         describe("images") {
-            
-            it("should display images") {
-                
+            beforeEach {
+                rootViewController.presentViewController(imageController, animated: false, completion: nil)
             }
             
             it("should select images") {
@@ -139,12 +150,19 @@ class ImagePickerSheetControllerSpec: QuickSpec {
                 
                 for i in 0..<selection {
                     let indexPath = NSIndexPath(forItem: 0, inSection: i)
+                
                     self.tester().tapItemAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+                    self.tester().waitForAnimationsToFinish()
                 }
                 
                 expect(imageController.numberOfSelectedImages).to(equal(selection))
+                
+                var selectedImagesCount = 0
+                imageController.getSelectedImagesWithCompletion { images in
+                    selectedImagesCount = images.count
+                }
+                expect(selectedImagesCount).toEventually(equal(selection), timeout: 10, pollInterval: 1)
             }
-            
         }
     }
     
