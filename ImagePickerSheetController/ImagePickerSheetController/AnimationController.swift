@@ -9,7 +9,8 @@
 import UIKit
 
 class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-    
+    static let animationDuration = NSTimeInterval(0.3)
+
     let imagePickerSheetController: ImagePickerSheetController
     let presenting: Bool
     
@@ -23,7 +24,7 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     // MARK: - UIViewControllerAnimatedTransitioning
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
-        return 0.3
+        return AnimationController.animationDuration
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
