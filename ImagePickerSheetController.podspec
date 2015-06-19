@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.summary      = "ImagePickerSheetController is like the custom photo action sheet in iMessage just without the glitches."
 
   s.description  = <<-DESC
-                   ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIActionController which makes its usage simple and concise.
+                   ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIAlertController which makes its usage simple and concise.
                    DESC
 
   s.homepage     = "https://github.com/larcus94/ImagePickerSheetController"
