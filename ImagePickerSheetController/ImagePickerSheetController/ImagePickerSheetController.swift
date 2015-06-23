@@ -9,8 +9,6 @@
 import Foundation
 import Photos
 
-private let enlargementAnimationDuration = 0.3
-private let tableViewRowHeight: CGFloat = 50.0
 private let tableViewPreviewRowHeight: CGFloat = 140.0
 private let tableViewEnlargedPreviewRowHeight: CGFloat = 243.0
 private let collectionViewInset: CGFloat = 5.0
@@ -134,7 +132,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             return 0
         }
         
-        return tableViewRowHeight
+        return 50
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -247,7 +245,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                 self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
                 
                 view.setNeedsLayout()
-                UIView.animateWithDuration(enlargementAnimationDuration, animations: {
+                UIView.animateWithDuration(0.3, animations: {
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
                     self.view.layoutIfNeeded()
