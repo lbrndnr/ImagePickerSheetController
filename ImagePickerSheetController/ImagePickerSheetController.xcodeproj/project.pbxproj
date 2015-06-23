@@ -109,7 +109,7 @@
 		49DC4A741B14F1F600B4E78E /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
 		49DC4A7D1B14F22200B4E78E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		49DC4A7F1B14F2EF00B4E78E /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
-		49DC4A861B14F31500B4E78E /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		49DC4A861B14F31500B4E78E /* IPSC Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IPSC Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49DC4A891B14F31500B4E78E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49DC4A8A1B14F31500B4E78E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49DC4A8C1B14F31500B4E78E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 			children = (
 				49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */,
 				49DC4A5C1B14F1BC00B4E78E /* ImagePickerSheetControllerTests.xctest */,
-				49DC4A861B14F31500B4E78E /* Example.app */,
+				49DC4A861B14F31500B4E78E /* IPSC Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -320,7 +320,7 @@
 			);
 			name = Example;
 			productName = Example;
-			productReference = 49DC4A861B14F31500B4E78E /* Example.app */;
+			productReference = 49DC4A861B14F31500B4E78E /* IPSC Example.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -634,7 +634,7 @@
 				);
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "IPSC Example";
 			};
 			name = Debug;
 		};
@@ -644,7 +644,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "IPSC Example";
 			};
 			name = Release;
 		};
