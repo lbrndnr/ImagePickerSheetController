@@ -11,9 +11,9 @@
 		494505AD1B22021D00EF9ADC /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
 		494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
-		494505B31B2202C400EF9ADC /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		494505B41B2202CA00EF9ADC /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		494505B51B2202CA00EF9ADC /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		495F89A81B394288006B9BA4 /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		495F89AA1B394288006B9BA4 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */; };
@@ -63,15 +63,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		494505B21B2202A800EF9ADC /* CopyFiles */ = {
+		495F89A61B394277006B9BA4 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				494505B41B2202CA00EF9ADC /* Nimble.framework in CopyFiles */,
-				494505B51B2202CA00EF9ADC /* Quick.framework in CopyFiles */,
-				494505B31B2202C400EF9ADC /* KIF.framework in CopyFiles */,
+				495F89A81B394288006B9BA4 /* KIF.framework in CopyFiles */,
+				495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */,
+				495F89AA1B394288006B9BA4 /* Quick.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,7 +291,7 @@
 				49DC4A581B14F1BC00B4E78E /* Sources */,
 				49DC4A591B14F1BC00B4E78E /* Frameworks */,
 				49DC4A5A1B14F1BC00B4E78E /* Resources */,
-				494505B21B2202A800EF9ADC /* CopyFiles */,
+				495F89A61B394277006B9BA4 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -573,6 +573,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ImagePickerSheetController/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -588,6 +589,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ImagePickerSheetController/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -598,11 +600,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -618,11 +616,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = ImagePickerSheetControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
