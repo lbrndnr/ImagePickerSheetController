@@ -9,9 +9,6 @@ ImagePickerSheetController is a component that replicates the custom photo actio
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/larcus94/ImagePickerSheetController/blob/master/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-## Author
-I'm Laurin Brandner, I'm on [Twitter](https://twitter.com/larcus94).
-
 ## Usage
 `ImagePickerSheetController` is similar to `UIAlertController` in its usage.
 
@@ -51,9 +48,11 @@ pod "ImagePickerSheetController", "~> 0.1.4"
 github "larcus94/ImagePickerSheetController" ~> 0.1.4
 ```
 
-
 ## Requirements
 ImagePickerSheetController is written in Swift and links against `Photos.framework`. It therefore requires iOS 8 or later.
+
+## Author
+I'm Laurin Brandner, I'm on [Twitter](https://twitter.com/larcus94).
 
 ## License
 ImagePickerSheetController is licensed under the [MIT License](http://opensource.org/licenses/mit-license.php).

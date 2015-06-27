@@ -43,7 +43,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "49DC4A851B14F31500B4E78E"
-               BuildableName = "IPSC Example.app"
+               BuildableName = "Example.app"
                BlueprintName = "Example"
                ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
             </BuildableReference>
