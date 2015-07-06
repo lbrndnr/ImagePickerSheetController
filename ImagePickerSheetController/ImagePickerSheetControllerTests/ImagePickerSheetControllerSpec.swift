@@ -11,6 +11,7 @@ import XCTest
 import KIF
 import Quick
 import Nimble
+import Photos
 import ImagePickerSheetController
 
 class ImagePickerSheetControllerSpec: QuickSpec {
@@ -150,18 +151,23 @@ class ImagePickerSheetControllerSpec: QuickSpec {
                 
                 for i in 0..<selection {
                     let indexPath = NSIndexPath(forItem: 0, inSection: i)
-                
+            
                     self.tester().tapItemAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
-                    self.tester().waitForAnimationsToFinish()
                 }
                 
                 expect(imageController.numberOfSelectedImages).to(equal(selection))
+                expect(imageController.selectedImageAssets.count).to(equal(selection))
                 
-                var selectedImagesCount = 0
-                imageController.getSelectedImagesWithCompletion { images in
-                    selectedImagesCount = images.count
+                let selectedAssets = imageController.selectedImageAssets
+                let options = PHFetchOptions()
+                options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+                let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+                
+                result.enumerateObjectsUsingBlock { obj, idx, _ in
+                    if let asset = obj as? PHAsset where idx < selection {
+                        expect(asset.localIdentifier).to(equal(selectedAssets[idx].localIdentifier))
+                    }
                 }
-                expect(selectedImagesCount).toEventually(equal(selection), timeout: 10, pollInterval: 1)
             }
         }
     }

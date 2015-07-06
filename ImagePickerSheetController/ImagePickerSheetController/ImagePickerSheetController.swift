@@ -67,11 +67,12 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     
     private var assets = [PHAsset]()
     
+    private var selectedImageIndices = [Int]()
+    
     /// The number of the currently selected images.
     public var numberOfSelectedImages: Int {
         return selectedImageIndices.count
     }
-    private var selectedImageIndices = [Int]()
     
     /// The selected image assets
     public var selectedImageAssets: [PHAsset] {
