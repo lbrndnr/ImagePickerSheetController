@@ -64,6 +64,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             }
         }
     }
+    
     private var assets = [PHAsset]()
     
     /// The number of the currently selected images.
@@ -71,6 +72,12 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         return selectedImageIndices.count
     }
     private var selectedImageIndices = [Int]()
+    
+    /// The selected image assets
+    public var selectedImageAssets: [PHAsset] {
+        return selectedImageIndices.map { self.assets[$0] }
+    }
+    
     private(set) var enlargedPreviews = false
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
@@ -348,25 +355,6 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         if !asset.representsBurst {
             let targetSize = targetSizeForAssetOfSize(size)
             imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: nil)
-        }
-    }
-    
-    /// Retrieves the selected images in high quality.
-    public func getSelectedImagesWithCompletion(completion: (images:[UIImage?]) -> Void) {
-        var images = [UIImage?]()
-        var counter = numberOfSelectedImages
-        
-        for index in selectedImageIndices {
-            let asset = assets[index]
-            
-            requestImageForAsset(asset, deliveryMode: .HighQualityFormat) { image in
-                images.append(image)
-                counter--
-                
-                if counter <= 0 {
-                    completion(images: images)
-                }
-            }
         }
     }
     
