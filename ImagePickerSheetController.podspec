@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ImagePickerSheetController"
-  s.version      = "0.1.5"
+  s.version      = "0.1.6"
   s.summary      = "ImagePickerSheetController is like the custom photo action sheet in iMessage just without the glitches."
 
   s.description  = <<-DESC
