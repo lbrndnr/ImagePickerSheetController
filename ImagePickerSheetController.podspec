@@ -91,9 +91,9 @@ Pod::Spec.new do |s|
   #  non-essential files like tests, examples and documentation.
   #
 
-  # s.resource  = "icon.png"
+  s.resource  = "ImagePickerSheetController/ImagePickerSheetController/Images.xcassets"
   # s.resources = "Resources/*.png"
-  s.resource_bundle = {"Images" => ["ImagePickerSheetController/ImagePickerSheetController/Images.xcassets"]}
+  # s.resource_bundle = {"Images" => ["ImagePickerSheetController/ImagePickerSheetController/Images.xcassets"]}
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
