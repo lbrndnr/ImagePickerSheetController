@@ -248,7 +248,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let selected = contains(selectedImageIndices, indexPath.section)
         
         if !selected {
-            if limit >= 0 {
+            if limit > 0 {
                 if selectedImageIndices.count >= limit && limit == 1 {
                     let previousItemIndex = selectedImageIndices.last!
                     supplementaryViews[previousItemIndex]?.selected = false
