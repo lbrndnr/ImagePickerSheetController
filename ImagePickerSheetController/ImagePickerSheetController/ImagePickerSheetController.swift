@@ -65,8 +65,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         }
     }
     
-    // Limit of selected images, if limit = 1 (previous will be unselected), if limit > 1 = you can't select new images.
-    public var limit = 0
+    /// Maximum selection of images, if maximumSelection = 1 (previous will be unselected), if limit > 1 = first will be unselected.
+    public var maximumSelection = 0
     
     private var assets = [PHAsset]()
     
@@ -248,13 +248,15 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let selected = contains(selectedImageIndices, indexPath.section)
         
         if !selected {
-            if limit > 0 {
-                if selectedImageIndices.count >= limit && limit == 1 {
+            if maximumSelection > 0 {
+                if selectedImageIndices.count >= maximumSelection && maximumSelection == 1 {
                     let previousItemIndex = selectedImageIndices.last!
                     supplementaryViews[previousItemIndex]?.selected = false
                     selectedImageIndices.removeLast()
-                } else if selectedImageIndices.count >= limit {
-                    return
+                } else if selectedImageIndices.count >= maximumSelection {
+                    let firstItemIndex = selectedImageIndices.first!
+                    supplementaryViews[firstItemIndex]?.selected = false
+                    selectedImageIndices.removeAtIndex(0)
                 }
             }
             
