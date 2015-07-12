@@ -65,7 +65,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         }
     }
     
-    /// Maximum selection of images, if maximumSelection = 1 (previous will be unselected), if limit > 1 = first will be unselected.
+    /// Maximum selection of images.
     public var maximumSelection: Int?
     
     private var assets = [PHAsset]()
