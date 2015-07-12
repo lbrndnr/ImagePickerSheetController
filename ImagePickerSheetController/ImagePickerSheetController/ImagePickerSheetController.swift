@@ -117,7 +117,26 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchAssets()
+        if PHPhotoLibrary.authorizationStatus() == .Authorized {
+            fetchAssets()
+        }
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if PHPhotoLibrary.authorizationStatus() == .NotDetermined {
+            PHPhotoLibrary.requestAuthorization() { status in
+                if status == .Authorized {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.fetchAssets()
+                        
+                        self.tableView.reloadData()
+                        self.view.setNeedsLayout()
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - UITableViewDataSource
