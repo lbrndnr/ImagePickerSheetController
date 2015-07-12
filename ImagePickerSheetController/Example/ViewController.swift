@@ -51,6 +51,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
             
             let controller = ImagePickerSheetController()
+            controller.maximumSelection = 2
             controller.addAction(ImageAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
                 presentImagePickerController(.Camera)
             }, secondaryHandler: { _, numberOfPhotos in

@@ -248,14 +248,10 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let selected = contains(selectedImageIndices, indexPath.section)
         
         if !selected {
-            if maximumSelection > 0 {
-                if selectedImageIndices.count >= maximumSelection && maximumSelection == 1 {
-                    let previousItemIndex = selectedImageIndices.last!
+            if let maximumSelection = maximumSelection {
+                if selectedImageIndices.count >= maximumSelection,
+                    let previousItemIndex = selectedImageIndices.first {
                     supplementaryViews[previousItemIndex]?.selected = false
-                    selectedImageIndices.removeLast()
-                } else if selectedImageIndices.count >= maximumSelection {
-                    let firstItemIndex = selectedImageIndices.first!
-                    supplementaryViews[firstItemIndex]?.selected = false
                     selectedImageIndices.removeAtIndex(0)
                 }
             }
