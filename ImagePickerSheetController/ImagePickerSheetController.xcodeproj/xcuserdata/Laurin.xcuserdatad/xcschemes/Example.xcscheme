@@ -28,6 +28,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "49DC4A5B1B14F1BC00B4E78E"
+               BuildableName = "ImagePickerSheetControllerTests.xctest"
+               BlueprintName = "ImagePickerSheetControllerTests"
+               ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

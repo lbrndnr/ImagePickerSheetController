@@ -89,7 +89,7 @@ class ImagePickerSheetControllerSpec: QuickSpec {
                 imageController.addAction(ImageAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
                 
                 let indexPath = NSIndexPath(forItem: 0, inSection: 0)
-                self.tester().tapItemAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+                self.tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
                 
                 self.tester().waitForViewWithAccessibilityLabel("Secondary 1")
             }
@@ -142,30 +142,73 @@ class ImagePickerSheetControllerSpec: QuickSpec {
         }
         
         describe("images") {
+            let selection = 3
+            let options = PHFetchOptions()
+            options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+            let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+            
+            let selectTheFirstThreeImages: () -> () = {
+                for i in 0..<selection {
+                    let indexPath = NSIndexPath(forItem: 0, inSection: i)
+                    self.tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+                }
+            }
+            
             beforeEach {
                 rootViewController.presentViewController(imageController, animated: false, completion: nil)
             }
             
-            it("should select images") {
-                let selection = 3
-                
-                for i in 0..<selection {
-                    let indexPath = NSIndexPath(forItem: 0, inSection: i)
-            
-                    self.tester().tapItemAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+            describe("without limit") {
+                beforeEach {
+                    selectTheFirstThreeImages()
+                    
+                    expect(imageController.numberOfSelectedImages).to(equal(selection))
+                    expect(imageController.selectedImageAssets.count).to(equal(selection))
                 }
                 
-                expect(imageController.numberOfSelectedImages).to(equal(selection))
-                expect(imageController.selectedImageAssets.count).to(equal(selection))
+                it("should select first three images") {
+                    let selectedAssets = imageController.selectedImageAssets
+                    result.enumerateObjectsUsingBlock { obj, idx, _ in
+                        if let asset = obj as? PHAsset where idx < selection {
+                            expect(asset.localIdentifier).to(equal(selectedAssets[idx].localIdentifier))
+                        }
+                    }
+                }
                 
-                let selectedAssets = imageController.selectedImageAssets
-                let options = PHFetchOptions()
-                options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-                let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+                it("should select and deselct") {
+                    let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+                    self.tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+                    
+                    expect(imageController.numberOfSelectedImages).to(equal(selection-1))
+                    expect(imageController.selectedImageAssets.count).to(equal(selection-1))
+                    
+                    let selectedAssets = imageController.selectedImageAssets
+                    result.enumerateObjectsUsingBlock { obj, idx, _ in
+                        if let asset = obj as? PHAsset where idx < selection && idx > 0 {
+                            expect(asset.localIdentifier).to(equal(selectedAssets[idx-1].localIdentifier))
+                        }
+                    }
+                }
+            }
+            
+            describe("with limit") {
+                let maxSelection = 2
                 
-                result.enumerateObjectsUsingBlock { obj, idx, _ in
-                    if let asset = obj as? PHAsset where idx < selection {
-                        expect(asset.localIdentifier).to(equal(selectedAssets[idx].localIdentifier))
+                beforeEach {
+                    imageController.maximumSelection = maxSelection
+                }
+                
+                it("should should only select two images") {
+                    selectTheFirstThreeImages()
+                    
+                    expect(imageController.numberOfSelectedImages).to(equal(maxSelection))
+                    expect(imageController.selectedImageAssets.count).to(equal(maxSelection))
+                    
+                    let selectedAssets = imageController.selectedImageAssets
+                    result.enumerateObjectsUsingBlock { obj, idx, _ in
+                        if let asset = obj as? PHAsset where idx < selection && idx > 0 {
+                            expect(asset.localIdentifier).to(equal(selectedAssets[idx-1].localIdentifier))
+                        }
                     }
                 }
             }

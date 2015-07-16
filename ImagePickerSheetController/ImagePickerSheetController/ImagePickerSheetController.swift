@@ -34,6 +34,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let collectionView = ImagePickerCollectionView()
         collectionView.accessibilityIdentifier = "ImagePickerSheetPreview"
         collectionView.backgroundColor = .clearColor()
+        collectionView.allowsMultipleSelection = true
         collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
         collectionView.imagePreviewLayout.showsSupplementaryViews = false
         collectionView.dataSource = self
@@ -220,6 +221,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             cell.imageView.image = image
         }
         
+        cell.selected = contains(selectedImageIndices, indexPath.section)
+        
         return cell
     }
     
@@ -263,55 +266,53 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     }
     
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.deselectItemAtIndexPath(indexPath, animated: false)
-        let selected = contains(selectedImageIndices, indexPath.section)
-        
-        if !selected {
-            if let maximumSelection = maximumSelection {
-                if selectedImageIndices.count >= maximumSelection,
-                    let previousItemIndex = selectedImageIndices.first {
+        if let maximumSelection = maximumSelection {
+            if selectedImageIndices.count >= maximumSelection,
+                let previousItemIndex = selectedImageIndices.first {
                     supplementaryViews[previousItemIndex]?.selected = false
                     selectedImageIndices.removeAtIndex(0)
-                }
             }
+        }
+        
+        selectedImageIndices.append(indexPath.section)
+        
+        if !enlargedPreviews {
+            enlargedPreviews = true
             
-            selectedImageIndices.append(indexPath.section)
+            self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
             
-            if !enlargedPreviews {
-                enlargedPreviews = true
-                
-                self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
-                
-                view.setNeedsLayout()
-                UIView.animateWithDuration(0.3, animations: {
-                    self.tableView.beginUpdates()
-                    self.tableView.endUpdates()
-                    self.view.layoutIfNeeded()
+            view.setNeedsLayout()
+            UIView.animateWithDuration(0.3, animations: {
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+                self.view.layoutIfNeeded()
                 }, completion: { finished in
                     self.reloadButtons()
                     self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
-                })
-            }
-            else {
-                if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
-                    var contentOffset = CGPointMake(cell.frame.midX - collectionView.frame.width / 2.0, 0.0)
-                    contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
-                    contentOffset.x = min(contentOffset.x, collectionView.contentSize.width - collectionView.frame.width + collectionView.contentInset.right)
-                    
-                    collectionView.setContentOffset(contentOffset, animated: true)
-                }
-                
-                reloadButtons()
-            }
+            })
         }
         else {
-            selectedImageIndices.removeAtIndex(find(selectedImageIndices, indexPath.section)!)
+            if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
+                var contentOffset = CGPointMake(cell.frame.midX - collectionView.frame.width / 2.0, 0.0)
+                contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
+                contentOffset.x = min(contentOffset.x, collectionView.contentSize.width - collectionView.frame.width + collectionView.contentInset.right)
+                
+                collectionView.setContentOffset(contentOffset, animated: true)
+            }
+            
+            reloadButtons()
+        }
+
+        supplementaryViews[indexPath.section]?.selected = true
+    }
+    
+    public func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        if let index = find(selectedImageIndices, indexPath.section) {
+            selectedImageIndices.removeAtIndex(index)
             reloadButtons()
         }
         
-        if let sectionView = supplementaryViews[indexPath.section] {
-            sectionView.selected = !selected
-        }
+        supplementaryViews[indexPath.section]?.selected = false
     }
     
     // MARK: - Actions

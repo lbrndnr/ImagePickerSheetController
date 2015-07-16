@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Laurin Brandner. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import KIF
 import Quick
 import Nimble
@@ -31,6 +31,28 @@ extension KIFTestActor {
     
     func system(_ file : String = __FILE__, _ line : Int = __LINE__) -> KIFSystemTestActor {
         return KIFSystemTestActor(inFile: file, atLine: line, delegate: self)
+    }
+    
+}
+
+extension KIFUITestActor {
+    
+    // Needed because UICollectionView fails to select an item due to a reason I don't quite grasp
+    func tapImagePreviewAtIndexPath(indexPath: NSIndexPath, inCollectionViewWithAccessibilityIdentifier collectionViewIdentifier: String) {
+        let collectionView = waitForViewWithAccessibilityIdentifier(collectionViewIdentifier) as! UICollectionView
+        let cellAttributes = collectionView.layoutAttributesForItemAtIndexPath(indexPath)
+        let contentOffset = CGPoint(x: cellAttributes!.frame.minX-collectionView.contentInset.left, y: 0)
+        
+        collectionView.setContentOffset(contentOffset, animated: false)
+        
+        let newCellAttributes = collectionView.layoutAttributesForItemAtIndexPath(indexPath)
+        let cellCenter = collectionView.convertPoint(newCellAttributes!.center, toView: nil)
+        
+        // Tap it manually here, no UICollectionView selection
+        tapScreenAtPoint(cellCenter)
+        
+        // Wait so that a possible preview zooming animation can finish
+        waitForAnimationsToFinish()
     }
     
 }
