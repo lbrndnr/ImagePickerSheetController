@@ -38,12 +38,12 @@ It's recommended to use [stringsdict](https://developer.apple.com/library/ios/do
 
 ### CocoaPods
 ```ruby
-pod "ImagePickerSheetController", "~> 0.1.6"
+pod "ImagePickerSheetController", "~> 0.1.7"
 ```
 
 ###Carthage
 ```objc
-github "larcus94/ImagePickerSheetController" ~> 0.1.6
+github "larcus94/ImagePickerSheetController" ~> 0.1.7
 ```
 
 ## Requirements
