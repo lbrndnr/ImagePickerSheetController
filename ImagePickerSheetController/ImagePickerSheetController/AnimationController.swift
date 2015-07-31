@@ -22,7 +22,7 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     
     // MARK: - UIViewControllerAnimatedTransitioning
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.3
     }
     
@@ -38,7 +38,10 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     // MARK: - Animation
     
     private func animatePresentation(context: UIViewControllerContextTransitioning) {
-        let containerView = context.containerView()
+        guard let containerView = context.containerView() else {
+            return
+        }
+        
         containerView.addSubview(imagePickerSheetController.view)
         
         let tableViewOriginY = imagePickerSheetController.tableView.frame.origin.y
@@ -48,20 +51,22 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
         UIView.animateWithDuration(transitionDuration(context), animations: {
             self.imagePickerSheetController.tableView.frame.origin.y = tableViewOriginY
             self.imagePickerSheetController.backgroundView.alpha = 1
-        }, completion: { _ in
-            context.completeTransition(true)
+            }, completion: { _ in
+                context.completeTransition(true)
         })
     }
     
     private func animateDismissal(context: UIViewControllerContextTransitioning) {
-        let containerView = context.containerView()
+        guard let containerView = context.containerView() else {
+            return
+        }
         
         UIView.animateWithDuration(transitionDuration(context), animations: {
             self.imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
             self.imagePickerSheetController.backgroundView.alpha = 0
-        }, completion: { _ in
-            self.imagePickerSheetController.view.removeFromSuperview()
-            context.completeTransition(true)
+            }, completion: { _ in
+                self.imagePickerSheetController.view.removeFromSuperview()
+                context.completeTransition(true)
         })
     }
     

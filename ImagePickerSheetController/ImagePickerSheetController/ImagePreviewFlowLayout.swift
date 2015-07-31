@@ -29,7 +29,7 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         initialize()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initialize()
@@ -94,22 +94,25 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return super.targetContentOffsetForProposedContentOffset(contentOffset)
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-        return layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }.reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
-            let supplementaryAttributes = layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath)
-            return memo + [attributes, supplementaryAttributes]
+    // WARNING: wut
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        return layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }
+                               .reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
+            if let supplementaryAttributes = layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath) {
+                return memo + [attributes, supplementaryAttributes]
+            }
+            return memo
         }
     }
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         return layoutAttributes[indexPath.section]
     }
     
-    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         if let collectionView = collectionView,
-            dataSource = collectionView.dataSource,
-            delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-            let itemAttributes = layoutAttributesForItemAtIndexPath(indexPath)
+            delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+            itemAttributes = layoutAttributesForItemAtIndexPath(indexPath) {
             
             let inset = collectionView.contentInset
             let bounds = collectionView.bounds

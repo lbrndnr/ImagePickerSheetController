@@ -26,7 +26,7 @@ class ImagePickerCollectionView: UICollectionView {
         initialize()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initialize()

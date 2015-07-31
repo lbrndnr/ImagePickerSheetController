@@ -96,7 +96,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         initialize()
     }
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
@@ -177,7 +177,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         
         let action = actions[indexPath.row]
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath) 
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = tableView.tintColor
         cell.textLabel?.font = UIFont.systemFontOfSize(21)
@@ -198,7 +198,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
-        actions[indexPath.row].handle(numberOfImages: numberOfSelectedImages)
+        actions[indexPath.row].handle(numberOfSelectedImages)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -221,7 +221,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             cell.imageView.image = image
         }
         
-        cell.selected = contains(selectedImageIndices, indexPath.section)
+        cell.selected = selectedImageIndices.contains(indexPath.section)
         
         return cell
     }
@@ -230,7 +230,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
-        view.selected = contains(selectedImageIndices, indexPath.section)
+        view.selected = selectedImageIndices.contains(indexPath.section)
         
         supplementaryViews[indexPath.section] = view
         
@@ -307,7 +307,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
     }
     
     public func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        if let index = find(selectedImageIndices, indexPath.section) {
+        if let index = selectedImageIndices.indexOf(indexPath.section) {
             selectedImageIndices.removeAtIndex(index)
             reloadButtons()
         }
@@ -371,7 +371,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
             imageManager.requestImageDataForAsset(asset, options: options) { data, _, _, _ in
-                let image = UIImage(data: data)
+                let image = data.flatMap { UIImage(data: $0) }
                 completion(image: image)
             }
         }
@@ -401,7 +401,7 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         
         let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
         if let cancelAction = cancelActions.first {
-            cancelAction.handle(numberOfImages: numberOfSelectedImages)
+            cancelAction.handle(numberOfSelectedImages)
         }
     }
     
