@@ -12,7 +12,7 @@ import KIF
 import Quick
 import Nimble
 import Photos
-import ImagePickerSheetController
+@testable import ImagePickerSheetController
 
 class ImagePickerSheetControllerSpec: QuickSpec {
     
@@ -62,9 +62,9 @@ class ImagePickerSheetControllerSpec: QuickSpec {
         describe("actions") {
             it("should not add two cancel actions") {
                 imageController.addAction(ImageAction(title: "Cancel1", style: .Cancel))
-                expect {
-                    imageController.addAction(ImageAction(title: "Cancel2", style: .Cancel))
-                }.to(raiseException())
+                imageController.addAction(ImageAction(title: "Cancel2", style: .Cancel))
+
+                expect(imageController.actions.filter { $0.style == .Cancel }.count).to(equal(1))
             }
             
             it("should add actions") {
