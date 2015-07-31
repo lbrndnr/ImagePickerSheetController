@@ -11,90 +11,167 @@
     __block NSException *exception = [NSException exceptionWithName:NSInvalidArgumentException
                                                              reason:@"No food"
                                                            userInfo:@{@"key": @"value"}];
-    expectAction([exception raise]).to(raiseException());
-    expectAction([exception raise]).to(raiseException().named(NSInvalidArgumentException));
-    expectAction([exception raise]).to(raiseException().
-                                       named(NSInvalidArgumentException).
-                                       reason(@"No food"));
-    expectAction([exception raise]).to(raiseException().
-                                       named(NSInvalidArgumentException).
-                                       reason(@"No food").
-                                       userInfo(@{@"key": @"value"}));
+    expectAction(^{ @throw exception; }).to(raiseException());
+    expectAction(^{ [exception raise]; }).to(raiseException());
+    expectAction(^{ [exception raise]; }).to(raiseException().named(NSInvalidArgumentException));
+    expectAction(^{ [exception raise]; }).to(raiseException().
+                                             named(NSInvalidArgumentException).
+                                             reason(@"No food"));
+    expectAction(^{ [exception raise]; }).to(raiseException().
+                                             named(NSInvalidArgumentException).
+                                             reason(@"No food").
+                                             userInfo(@{@"key": @"value"}));
 
-    expectAction(exception).toNot(raiseException());
+    expectAction(^{ }).toNot(raiseException());
 }
 
-- (void)testPositiveMatchesWithSubMatchers {
+- (void)testPositiveMatchesWithBlocks {
     __block NSException *exception = [NSException exceptionWithName:NSInvalidArgumentException
                                                              reason:@"No food"
                                                            userInfo:@{@"key": @"value"}];
-    expectAction([exception raise]).to(raiseException().
-                                       withName(equal(NSInvalidArgumentException)).
-                                       withReason(beginWith(@"No")));
-    expectAction([exception raise]).to(raiseException().
-                                       withName(equal(NSInvalidArgumentException)));
-    expectAction([exception raise]).toNot(raiseException().withReason(beginWith(@"Much")));
+    expectAction(^{ [exception raise]; }).to(raiseException().
+                                             satisfyingBlock(^(NSException *exception) {
+        expect(exception.name).to(equal(NSInvalidArgumentException));
+    }));
+    expectAction(^{ [exception raise]; }).to(raiseException().
+                                             named(NSInvalidArgumentException).
+                                             satisfyingBlock(^(NSException *exception) {
+        expect(exception.name).to(equal(NSInvalidArgumentException));
+    }));
+    expectAction(^{ [exception raise]; }).to(raiseException().
+                                             named(NSInvalidArgumentException).
+                                             reason(@"No food").
+                                             satisfyingBlock(^(NSException *exception) {
+        expect(exception.name).to(equal(NSInvalidArgumentException));
+    }));
+    expectAction(^{ [exception raise]; }).to(raiseException().
+                                             named(NSInvalidArgumentException).
+                                             reason(@"No food").
+                                             userInfo(@{@"key": @"value"}).
+                                             satisfyingBlock(^(NSException *exception) {
+        expect(exception.name).to(equal(NSInvalidArgumentException));
+    }));
 }
 
 - (void)testNegativeMatches {
     __block NSException *exception = [NSException exceptionWithName:NSInvalidArgumentException
                                                              reason:@"No food"
                                                            userInfo:@{@"key": @"value"}];
-    expectFailureMessage(@"expected to raise any exception", ^{
-        expect([exception reason]).to(raiseException());
+
+    expectFailureMessage(@"expected to raise any exception, got no exception", ^{
+        expectAction(^{ }).to(raiseException());
     });
 
-    expectFailureMessage(@"expected to raise exception with name equal <foo>", ^{
-        expect([exception reason]).to(raiseException().
-                                      named(@"foo"));
+    expectFailureMessage(@"expected to raise exception with name <foo>, got no exception", ^{
+        expectAction(^{ }).to(raiseException().
+                              named(@"foo"));
     });
 
-    expectFailureMessage(@"expected to raise exception with name equal <NSInvalidArgumentException> with reason equal <cakes>", ^{
-        expect([exception reason]).to(raiseException().
-                                      named(NSInvalidArgumentException).
-                                      reason(@"cakes"));
+    expectFailureMessage(@"expected to raise exception with name <NSInvalidArgumentException> with reason <cakes>, got no exception", ^{
+        expectAction(^{ }).to(raiseException().
+                              named(NSInvalidArgumentException).
+                              reason(@"cakes"));
     });
 
-    expectFailureMessage(@"expected to raise exception with name equal <NSInvalidArgumentException> with reason equal <No food> with userInfo equal <{k = v;}>", ^{
-        expect([exception reason]).to(raiseException().
-                                      named(NSInvalidArgumentException).
-                                      reason(@"No food").
-                                      userInfo(@{@"k": @"v"}));
+    expectFailureMessage(@"expected to raise exception with name <NSInvalidArgumentException> with reason <No food> with userInfo <{k = v;}>, got no exception", ^{
+        expectAction(^{ }).to(raiseException().
+                              named(NSInvalidArgumentException).
+                              reason(@"No food").
+                              userInfo(@{@"k": @"v"}));
     });
 
-
-    expectFailureMessage(@"expected to not raise any exception", ^{
-        expectAction([exception raise]).toNot(raiseException());
+    expectFailureMessage(@"expected to not raise any exception, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }", ^{
+        expectAction(^{ [exception raise]; }).toNot(raiseException());
     });
 }
 
-- (void)testNegativeMatchesWithSubMatchers {
+- (void)testNegativeMatchesWithPassingBlocks {
     __block NSException *exception = [NSException exceptionWithName:NSInvalidArgumentException
                                                              reason:@"No food"
                                                            userInfo:@{@"key": @"value"}];
-
-    expectFailureMessage(@"expected to raise exception with name equal <NSInvalidArgumentException> with reason begin with <Much>", ^{
-        expectAction([exception raise]).to(raiseException().
-                                           withName(equal(NSInvalidArgumentException)).
-                                           withReason(beginWith(@"Much")));
-    });
-    expectFailureMessage(@"expected to raise exception with reason begin with <Much>", ^{
-        expectAction([exception raise]).to(raiseException().
-                                           withReason(beginWith(@"Much")));
+    expectFailureMessage(@"expected to raise exception that satisfies block, got no exception", ^{
+        expect(exception).to(raiseException().
+                             satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(@"LOL"));
+        }));
     });
 
-    expectFailureMessage(@"expected to not raise exception with name equal <NSInvalidArgumentException> with reason begin with <No>", ^{
-        expectAction([exception raise]).toNot(raiseException().
-                                              withName(equal(NSInvalidArgumentException)).
-                                              withReason(beginWith(@"No")));
+    NSString *outerFailureMessage = @"expected to raise exception that satisfies block, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }";
+    expectFailureMessages((@[outerFailureMessage]), ^{
+        expectAction(^{ [exception raise]; }).to(raiseException().
+                                                 satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(NSInvalidArgumentException));
+        }));
     });
-    expectFailureMessage(@"expected to not raise exception with name equal <NSInvalidArgumentException>", ^{
-        expectAction([exception raise]).toNot(raiseException().
-                                              withName(equal(NSInvalidArgumentException)));
+
+    outerFailureMessage = @"expected to raise exception with name <foo> that satisfies block, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }";
+    expectFailureMessages((@[outerFailureMessage]), ^{
+        expectAction(^{ [exception raise]; }).to(raiseException().
+                                                 named(@"foo").
+                                                 satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(NSInvalidArgumentException));
+        }));
     });
-    expectFailureMessage(@"expected to not raise exception with userInfo equal <{key = value;}>", ^{
-        expectAction([exception raise]).toNot(raiseException().
-                                              withUserInfo(equal(@{@"key": @"value"})));
+
+    outerFailureMessage = @"expected to raise exception with name <NSInvalidArgumentException> with reason <bar> that satisfies block, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }";
+    expectFailureMessages((@[outerFailureMessage]), ^{
+        expectAction(^{ [exception raise]; }).to(raiseException().
+                                                 named(NSInvalidArgumentException).
+                                                 reason(@"bar").
+                                                 satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(NSInvalidArgumentException));
+        }));
+    });
+
+    outerFailureMessage = @"expected to raise exception with name <NSInvalidArgumentException> with reason <No food> with userInfo <{}> that satisfies block, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }";
+    expectFailureMessages((@[outerFailureMessage]), ^{
+        expectAction(^{ [exception raise]; }).to(raiseException().
+                                                 named(NSInvalidArgumentException).
+                                                 reason(@"No food").
+                                                 userInfo(@{}).
+                                                 satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(NSInvalidArgumentException));
+        }));
+    });
+}
+
+- (void)testNegativeMatchesWithNegativeBlocks {
+    __block NSException *exception = [NSException exceptionWithName:NSInvalidArgumentException
+                                                             reason:@"No food"
+                                                           userInfo:@{@"key": @"value"}];
+    NSString *outerFailureMessage;
+
+    NSString const *innerFailureMessage = @"expected to equal <foo>, got <NSInvalidArgumentException>";
+    outerFailureMessage = @"expected to raise exception with name <NSInvalidArgumentException> that satisfies block, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }";
+    expectFailureMessages((@[outerFailureMessage, innerFailureMessage]), ^{
+        expectAction(^{ [exception raise]; }).to(raiseException().
+                                                 named(NSInvalidArgumentException).
+                                                 satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(@"foo"));
+        }));
+    });
+
+
+    outerFailureMessage = @"expected to raise exception with name <NSInvalidArgumentException> with reason <No food> that satisfies block, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }";
+    expectFailureMessages((@[outerFailureMessage, innerFailureMessage]), ^{
+        expectAction(^{ [exception raise]; }).to(raiseException().
+                                                 named(NSInvalidArgumentException).
+                                                 reason(@"No food").
+                                                 satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(@"foo"));
+        }));
+    });
+
+
+    outerFailureMessage = @"expected to raise exception with name <NSInvalidArgumentException> with reason <No food> with userInfo <{key = value;}> that satisfies block, got NSException { name=NSInvalidArgumentException, reason='No food', userInfo=[key: value] }";
+    expectFailureMessages((@[outerFailureMessage, innerFailureMessage]), ^{
+        expectAction(^{ [exception raise]; }).to(raiseException().
+                                                 named(NSInvalidArgumentException).
+                                                 reason(@"No food").
+                                                 userInfo(@{@"key": @"value"}).
+                                                 satisfyingBlock(^(NSException *exception) {
+            expect(exception.name).to(equal(@"foo"));
+        }));
     });
 }
 

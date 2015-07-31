@@ -3,8 +3,8 @@ import Foundation
 /// Implement this protocol to implement a custom matcher for Swift
 public protocol Matcher {
     typealias ValueType
-    func matches(actualExpression: Expression<ValueType>, failureMessage: FailureMessage) -> Bool
-    func doesNotMatch(actualExpression: Expression<ValueType>, failureMessage: FailureMessage) -> Bool
+    func matches(actualExpression: Expression<ValueType>, failureMessage: FailureMessage) throws -> Bool
+    func doesNotMatch(actualExpression: Expression<ValueType>, failureMessage: FailureMessage) throws -> Bool
 }
 
 /// Objective-C interface to the Swift variant of Matcher.
@@ -40,7 +40,6 @@ extension NSArray : NMBOrderedCollection {}
     var doubleValue: CDouble { get }
 }
 extension NSNumber : NMBDoubleConvertible { }
-extension NSDecimalNumber : NMBDoubleConvertible { } // TODO: not the best to downsize
 
 /// Protocol for types to support beLessThan(), beLessThanOrEqualTo(),
 ///  beGreaterThan(), beGreaterThanOrEqualTo(), and equal() matchers.

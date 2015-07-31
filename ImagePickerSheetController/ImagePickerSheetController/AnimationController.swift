@@ -51,8 +51,8 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
         UIView.animateWithDuration(transitionDuration(context), animations: {
             self.imagePickerSheetController.tableView.frame.origin.y = tableViewOriginY
             self.imagePickerSheetController.backgroundView.alpha = 1
-            }, completion: { _ in
-                context.completeTransition(true)
+        }, completion: { _ in
+            context.completeTransition(true)
         })
     }
     
@@ -64,9 +64,9 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
         UIView.animateWithDuration(transitionDuration(context), animations: {
             self.imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
             self.imagePickerSheetController.backgroundView.alpha = 0
-            }, completion: { _ in
-                self.imagePickerSheetController.view.removeFromSuperview()
-                context.completeTransition(true)
+        }, completion: { _ in
+            self.imagePickerSheetController.view.removeFromSuperview()
+            context.completeTransition(true)
         })
     }
     

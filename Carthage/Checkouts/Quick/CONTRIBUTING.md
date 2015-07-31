@@ -1,5 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
 - [Welcome to Quick!](#welcome-to-quick!)
   - [Reporting Bugs](#reporting-bugs)
@@ -8,6 +9,7 @@
     - [Style Conventions](#style-conventions)
   - [Core Members](#core-members)
     - [Code of Conduct](#code-of-conduct)
+  - [Creating a Release](#creating-a-release)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -32,6 +34,7 @@ it.
 
 ## Building the Project
 
+- After cloning the repository, run `git submodule update --init` to pull the Nimble submodule.
 - Use `Quick.xcworkspace` to work on Quick. The workspace includes
   Nimble, which is used in Quick's tests.
 
@@ -46,7 +49,7 @@ it.
   README or other documentation.
 - Be sure the unit tests for both the OS X and iOS targets of both Quick
   and Nimble pass before submitting your pull request. You can run all
-  the iOS and OS X unit tests using `rake test`.
+  the iOS and OS X unit tests using `rake`.
 - To make minor updates to old versions of Quick that support Swift
   1.1, issue a pull request against the `swift-1.1` branch. The master
   branch supports Swift 1.2. Travis CI will only pass for pull requests
@@ -88,3 +91,20 @@ some "ground rules":
   issues or pull requests submitted to the project. Please provide kind,
   constructive feedback. Please don't be sarcastic or snarky.
 
+## Creating a Release
+
+The process is relatively straight forward, but here's is a useful checklist for tagging:
+
+- Bump the version in `Quick.podspec` (update, commit, push to github)
+- Look a changes from the previously tagged release and write release notes: `git log v0.4.0...HEAD`
+    - The release notes should include user-facing information (api breakages, new features, bug fixes)
+- Tag the version: `git tag -s vA.B.C -F release-notes-file`
+- Push the tag: `git push origin vA.B.C`
+- Push the podspec file to trunk: `pod trunk push Quick.podspec`
+- Build the carthage pre-built binary:
+  - `carthage build --no-skip-current`
+  - `carthage archive Quick`
+- Go to [github releases](https://github.com/Quick/Quick/releases) and mark the tagged commit as a release.
+  - Use the same release notes you created for the tag, but tweak up formatting for github.
+  - Attach the carthage release `Quick.framework.zip` to the release.
+- Announce!

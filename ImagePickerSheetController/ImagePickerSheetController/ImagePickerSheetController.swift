@@ -286,9 +286,9 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
                 self.view.layoutIfNeeded()
-                }, completion: { finished in
-                    self.reloadButtons()
-                    self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
+            }, completion: { finished in
+                self.reloadButtons()
+                self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
             })
         }
         else {

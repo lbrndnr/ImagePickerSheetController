@@ -3,8 +3,13 @@
 > **If you're using Xcode 6.2 & Swift 1.1,** use Quick `v0.2.*`.
 > New releases are developed on the `swift-1.1` branch.
 >
-> **If you're using Xcode 6.3 & Swift 1.2,** use the latest version of Quick--`v0.3.0` at the time of writing.
+> **If you're using Xcode 6.3 & Swift 1.2,** use Quick `v0.3.*`.
 > New releases are developed on the `master` branch.
+>
+> **If you're using Xcode 7.0 & Swift 2.0,** use the latest version of Quick--`v0.5.1` at the time of writing.
+> New releases are developed on the `swift-2.0` branch.
+
+
 
 Quick provides the syntax to define examples and example groups. Nimble
 provides the `expect(...).to` assertion syntax. You may use either one,
@@ -12,9 +17,9 @@ or both, in your tests.
 
 There are three recommended ways of linking Quick to your tests:
 
-1. Git Submodules
-2. CocoaPods
-3. Carthage
+1. [Git Submodules](#git-submodules)
+2. [CocoaPods](#cocoapods)
+3. [Carthage](#carthage)
 
 Choose one and follow the instructions below. Once you've completed them,
 you should be able to `import Quick` from within files in your test target.
@@ -23,9 +28,11 @@ you should be able to `import Quick` from within files in your test target.
 
 To link Quick and Nimble using Git submodules:
 
-1. Add submodules for Quick and Nimble.
-2. Add `Quick.xcodeproj` and `Nimble.xcodeproj` to your project's `.xcworkspace`.
-3. Link `Quick.framework` and `Nimble.framework` in your test target's
+1. Add submodule for Quick.
+2. If you don't already have a `.xcworkspace` for your project, create one. ([Here's how](https://developer.apple.com/library/ios/recipes/xcode_help-structure_navigator/articles/Adding_an_Existing_Project_to_a_Workspace.html))
+3. Add `Quick.xcodeproj` to your project's `.xcworkspace`.
+4. Add `Nimble.xcodeproj` to your project's `.xcworkspace`. It exists in `path/to/Quick/Externals/Nimble`. By adding Nimble from Quick's dependencies (as opposed to adding directly as a submodule), you'll ensure that you're using the correct version of Nimble for whatever version of Quick you're using.
+5. Link `Quick.framework` and `Nimble.framework` in your test target's
    "Link Binary with Libraries" build phase.
 
 First, if you don't already have one, create a directory for your Git submodules.
@@ -88,12 +95,27 @@ First, update CocoaPods to Version 0.36.0 or newer, which is necessary to instal
 Then, add Quick and Nimble to your Podfile. Additionally, the ```use_frameworks!``` line is necessary for using Swift in CocoaPods:
 
 ```rb
+
 # Podfile
 
+use_frameworks!
+
+def testing_pods
+    # If you're using Xcode 7 / Swift 2
+    pod 'Quick', '~> 0.5.0'
+    pod 'Nimble', '2.0.0-rc.2'
+
+    # If you're using Xcode 6 / Swift 1.2
+    pod 'Quick', '~> 0.3.0'
+    pod 'Nimble', '~> 1.0.0'
+end
+
 target 'MyTests' do
-  use_frameworks!
-  pod 'Quick'
-  pod 'Nimble'
+    testing_pods
+end
+
+target 'MyUITests' do
+    testing_pods
 end
 ```
 
@@ -101,6 +123,20 @@ Finally, download and link Quick and Nimble to your tests:
 
 ```sh
 pod install
+```
+
+### Using Swift 1.2?
+
+The latest release of Quick (0.4.0) is for Swift 2 (Xcode 7), but the latest Nimble (1.0.0) is for Swift 1.2 (Xcode 6).
+
+If you want Xcode 6 do:
+
+```sh
+target 'MyTests' do
+  use_frameworks!
+  pod 'Quick', '~>0.3.0'
+  pod 'Nimble', '~>1.0.0'
+end
 ```
 
 ## [Carthage](https://github.com/Carthage/Carthage)
@@ -111,7 +147,7 @@ to copy them to the target's Frameworks destination.
 
  > As Carthage builds dynamic frameworks, you will need a valid code signing identity set up.
 
-1. Add Quick to your `[Cartfile.private](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfileprivate)`:
+1. Add Quick to your [`Cartfile.private`](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfileprivate):
 
     ```
     github "Quick/Quick"

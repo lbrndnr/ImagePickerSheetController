@@ -48,8 +48,8 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         contentSize = CGSizeZero
 
         if let collectionView = collectionView,
-               dataSource = collectionView.dataSource,
-               delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+                   dataSource = collectionView.dataSource,
+                     delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
             var origin = CGPoint(x: sectionInset.left, y: sectionInset.top)
             let numberOfSections = dataSource.numberOfSectionsInCollectionView?(collectionView) ?? 0
             
@@ -82,8 +82,8 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         var contentOffset = proposedContentOffset
         if let indexPath = invalidationCenteredIndexPath {
             if let collectionView = collectionView {
-                let frame = layoutAttributes[indexPath.section].frame
-                contentOffset.x = frame.midX - collectionView.frame.width / 2.0
+                        let frame = layoutAttributes[indexPath.section].frame
+                  contentOffset.x = frame.midX - collectionView.frame.width / 2.0
                 
                 contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
                 contentOffset.x = min(contentOffset.x, collectionViewContentSize().width - collectionView.frame.width + collectionView.contentInset.right)
