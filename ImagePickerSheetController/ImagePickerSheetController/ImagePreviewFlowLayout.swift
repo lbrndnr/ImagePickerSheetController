@@ -94,7 +94,6 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return super.targetContentOffsetForProposedContentOffset(contentOffset)
     }
     
-    // WARNING: wut
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }
                                .reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in

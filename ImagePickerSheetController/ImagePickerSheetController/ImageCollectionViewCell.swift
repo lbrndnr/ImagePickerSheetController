@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageCollectionViewCell : UICollectionViewCell {
+class ImageCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()

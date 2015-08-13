@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+class AnimationController: NSObject {
     
     let imagePickerSheetController: ImagePickerSheetController
     let presenting: Bool
@@ -18,21 +18,6 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     init(imagePickerSheetController: ImagePickerSheetController, presenting: Bool) {
         self.imagePickerSheetController = imagePickerSheetController
         self.presenting = presenting
-    }
-    
-    // MARK: - UIViewControllerAnimatedTransitioning
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.3
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        if presenting {
-            animatePresentation(transitionContext)
-        }
-        else {
-            animateDismissal(transitionContext)
-        }
     }
     
     // MARK: - Animation
@@ -68,6 +53,24 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
             self.imagePickerSheetController.view.removeFromSuperview()
             context.completeTransition(true)
         })
+    }
+    
+}
+
+// MARK: - UIViewControllerAnimatedTransitioning
+extension AnimationController: UIViewControllerAnimatedTransitioning {
+    
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+        return 0.3
+    }
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        if presenting {
+            animatePresentation(transitionContext)
+        }
+        else {
+            animateDismissal(transitionContext)
+        }
     }
     
 }
