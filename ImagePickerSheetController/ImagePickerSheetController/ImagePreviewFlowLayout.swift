@@ -95,13 +95,14 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }
-                               .reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
-            if let supplementaryAttributes = layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath) {
-                return memo + [attributes, supplementaryAttributes]
-            }
-            return memo
-        }
+        return layoutAttributes
+                    .filter { CGRectIntersectsRect(rect, $0.frame) }
+                    .reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
+                        if let supplementaryAttributes = layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath) {
+                            return memo + [attributes, supplementaryAttributes]
+                        }
+                        return memo
+                    }
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
