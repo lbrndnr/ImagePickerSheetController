@@ -135,6 +135,8 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                         self.tableView.reloadData()
                         self.view.setNeedsLayout()
                         
+                        // Explicitely disable animations so it wouldn't animate either
+                        // if it was in a popover
                         CATransaction.begin()
                         CATransaction.setDisableActions(true)
                         self.view.layoutIfNeeded()
