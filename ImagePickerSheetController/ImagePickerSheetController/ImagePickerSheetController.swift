@@ -134,6 +134,11 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
                         
                         self.tableView.reloadData()
                         self.view.setNeedsLayout()
+                        
+                        CATransaction.begin()
+                        CATransaction.setDisableActions(true)
+                        self.view.layoutIfNeeded()
+                        CATransaction.commit()
                     }
                 }
             }
