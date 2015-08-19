@@ -416,7 +416,9 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
             total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 1))
         }
 
-        tableView.frame = CGRect(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight, width: view.bounds.width, height: tableViewHeight)
+        let tableViewSize = CGSize(width: view.bounds.width, height: tableViewHeight)
+        preferredContentSize = tableViewSize
+        tableView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight), size: tableViewSize)
     }
     
     // MARK: - Transitioning
