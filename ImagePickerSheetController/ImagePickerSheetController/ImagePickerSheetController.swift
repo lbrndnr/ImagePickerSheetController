@@ -415,8 +415,10 @@ public class ImagePickerSheetController: UIViewController, UITableViewDataSource
         let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(1)).reduce(tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))) { total, row in
             total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 1))
         }
-
         let tableViewSize = CGSize(width: view.bounds.width, height: tableViewHeight)
+        
+        // This particular order is necessary so that the sheet is layed out
+        // correctly with and without an enclosing popover
         preferredContentSize = tableViewSize
         tableView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight), size: tableViewSize)
     }
