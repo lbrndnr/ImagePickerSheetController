@@ -52,6 +52,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             print("Cancelled")
         }))
         
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            controller.modalPresentationStyle = .Popover
+            controller.popoverPresentationController?.sourceView = view
+            controller.popoverPresentationController?.sourceRect = CGRect(origin: view.center, size: CGSize())
+        }
+        
         presentViewController(controller, animated: true, completion: nil)
     }
     

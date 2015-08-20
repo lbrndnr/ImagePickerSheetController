@@ -134,6 +134,13 @@ public class ImagePickerSheetController: UIViewController {
                         
                         self.tableView.reloadData()
                         self.view.setNeedsLayout()
+                        
+                        // Explicitely disable animations so it wouldn't animate either
+                        // if it was in a popover
+                        CATransaction.begin()
+                        CATransaction.setDisableActions(true)
+                        self.view.layoutIfNeeded()
+                        CATransaction.commit()
                     }
                 }
             }
@@ -232,14 +239,17 @@ public class ImagePickerSheetController: UIViewController {
         
         backgroundView.frame = view.bounds
         
-        let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(1))
-                .reduce(tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))) { total, row in
-                    total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 1))
-                }
-
-        tableView.frame = CGRect(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight, width: view.bounds.width, height: tableViewHeight)
+        let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(1)).reduce(tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))) { total, row in
+            total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 1))
+        }
+        let tableViewSize = CGSize(width: view.bounds.width, height: tableViewHeight)
+        
+        // This particular order is necessary so that the sheet is layed out
+        // correctly with and without an enclosing popover
+        preferredContentSize = tableViewSize
+        tableView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight), size: tableViewSize)
     }
-    
+
 }
 
 // MARK: - UITableViewDataSource
