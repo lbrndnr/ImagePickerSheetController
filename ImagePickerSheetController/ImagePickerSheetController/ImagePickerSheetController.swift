@@ -8,7 +8,6 @@
 
 import Foundation
 import Photos
-import CoreMedia
 
 private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
@@ -86,13 +85,7 @@ public class ImagePickerSheetController: UIViewController {
     /// image has been selected.
     public private(set) var enlargedPreviews = false
     
-    private var currentImagePreviewHeight: CGFloat {
-        guard enlargedPreviews else {
-            return 129
-        }
-        
-        return enlargedImagePreviewHeightForViewWidth(view.bounds.width)
-    }
+    private var imagePreviewHeight: CGFloat = 0
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
     
@@ -169,7 +162,7 @@ public class ImagePickerSheetController: UIViewController {
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
-        return CGSize(width: floor(proportion*currentImagePreviewHeight), height: currentImagePreviewHeight)
+        return CGSize(width: floor(proportion*imagePreviewHeight), height: imagePreviewHeight)
     }
     
     private func targetSizeForAssetOfSize(size: CGSize) -> CGSize {
@@ -237,28 +230,10 @@ public class ImagePickerSheetController: UIViewController {
     
     // MARK: - Layout
     
-    private func enlargedImagePreviewHeightForViewWidth(width: CGFloat) -> CGFloat {
-        let camera = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
-            .map { $0 as! AVCaptureDevice }
-            .filter { $0.position == .Back }
-            .first
-        
-        let ratio: CGFloat
-        
-        if let camera = camera {
-            let size = CMVideoFormatDescriptionGetPresentationDimensions(camera.activeFormat.formatDescription, true, true)
-            ratio = size.width / size.height
-        }
-        else {
-            ratio = 2 / 3
-        }
-        
-        let maxImageWidth = width - 2 * collectionViewInset
-        return round(maxImageWidth * ratio)
-    }
-    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        reloadImagePreviewHeight()
         
         backgroundView.frame = view.bounds
         
@@ -271,6 +246,22 @@ public class ImagePickerSheetController: UIViewController {
         // correctly with and without an enclosing popover
         preferredContentSize = tableViewSize
         tableView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight), size: tableViewSize)
+    }
+    
+    private func reloadImagePreviewHeight() {
+        guard enlargedPreviews else {
+            imagePreviewHeight = 129
+            return
+        }
+        
+        let maxImageWidth = view.bounds.width - 2 * collectionViewInset
+
+        let assetRatio = assets.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
+                               .map { $0.height / $0.width }
+                               .sort(>)
+        let ratio = assetRatio.first ?? 2 / 3
+        
+        imagePreviewHeight = maxImageWidth * ratio
     }
 
 }
@@ -294,7 +285,7 @@ extension ImagePickerSheetController: UITableViewDataSource {
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if assets.count > 0 {
-                return currentImagePreviewHeight + 2 * collectionViewInset
+                return imagePreviewHeight + 2 * collectionViewInset
             }
             
             return 0
@@ -415,6 +406,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
             
             view.setNeedsLayout()
+            reloadImagePreviewHeight()
             UIView.animateWithDuration(0.3, animations: {
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()

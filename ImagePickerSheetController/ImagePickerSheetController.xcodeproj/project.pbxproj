@@ -14,7 +14,6 @@
 		495F89A81B394288006B9BA4 /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		495F89AA1B394288006B9BA4 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		496DC6D21B86F6E90011AF73 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 496DC6D11B86F6E90011AF73 /* CoreMedia.framework */; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */; };
@@ -127,7 +126,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				496DC6D21B86F6E90011AF73 /* CoreMedia.framework in Frameworks */,
 				49DC4A801B14F2EF00B4E78E /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
