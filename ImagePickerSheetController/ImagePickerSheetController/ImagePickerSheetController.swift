@@ -9,8 +9,6 @@
 import Foundation
 import Photos
 
-private let tableViewPreviewRowHeight: CGFloat = 140.0
-private let tableViewEnlargedPreviewRowHeight: CGFloat = 243.0
 private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
@@ -87,6 +85,18 @@ public class ImagePickerSheetController: UIViewController {
     /// image has been selected.
     private(set) var enlargedPreviews = false
     
+    private lazy var enlargedImagePreviewHeight: CGFloat = {
+        return 280
+    }()
+    
+    private var currentImagePreviewHeight: CGFloat {
+        guard enlargedPreviews else {
+            return 129
+        }
+        
+        return enlargedImagePreviewHeight
+    }
+    
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
     
     private let imageManager = PHCachingImageManager()
@@ -162,13 +172,7 @@ public class ImagePickerSheetController: UIViewController {
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
-        
-        let height: CGFloat = {
-            let rowHeight = self.enlargedPreviews ? tableViewEnlargedPreviewRowHeight : tableViewPreviewRowHeight
-            return rowHeight-2.0*collectionViewInset
-        }()
-        
-        return CGSize(width: CGFloat(floorf(Float(proportion*height))), height: height)
+        return CGSize(width: CGFloat(floorf(Float(proportion*currentImagePreviewHeight))), height: currentImagePreviewHeight)
     }
     
     private func targetSizeForAssetOfSize(size: CGSize) -> CGSize {
@@ -273,7 +277,7 @@ extension ImagePickerSheetController: UITableViewDataSource {
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if assets.count > 0 {
-                return enlargedPreviews ? tableViewEnlargedPreviewRowHeight : tableViewPreviewRowHeight
+                return currentImagePreviewHeight + 2 * collectionViewInset
             }
             
             return 0
