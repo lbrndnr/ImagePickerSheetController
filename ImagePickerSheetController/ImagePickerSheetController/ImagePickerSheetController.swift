@@ -83,6 +83,8 @@ public class ImagePickerSheetController: UIViewController {
         return selectedImageIndices.map { self.assets[$0] }
     }
     
+    /// Whether the preview row has been elarged. This is the case when at least once
+    /// image has been selected.
     private(set) var enlargedPreviews = false
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
