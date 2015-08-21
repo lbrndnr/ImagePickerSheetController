@@ -84,34 +84,14 @@ public class ImagePickerSheetController: UIViewController {
     
     /// Whether the preview row has been elarged. This is the case when at least once
     /// image has been selected.
-    private(set) var enlargedPreviews = false
-    
-    private lazy var enlargedImagePreviewHeight: CGFloat = {
-        let camera = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
-            .map { $0 as! AVCaptureDevice }
-            .filter { $0.position == .Back }
-            .first
-        
-        let ratio: CGFloat
-        
-        if let camera = camera {
-            let size = CMVideoFormatDescriptionGetPresentationDimensions(camera.activeFormat.formatDescription, true, true)
-            ratio = size.width / size.height
-        }
-        else {
-            ratio = 2 / 3
-        }
-        
-        let maxImageWidth = UIScreen.mainScreen().bounds.width - 2 * collectionViewInset
-        return round(maxImageWidth * ratio)
-    }()
+    public private(set) var enlargedPreviews = false
     
     private var currentImagePreviewHeight: CGFloat {
         guard enlargedPreviews else {
             return 129
         }
         
-        return enlargedImagePreviewHeight
+        return enlargedImagePreviewHeightForViewWidth(view.bounds.width)
     }
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
@@ -256,6 +236,26 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     // MARK: - Layout
+    
+    private func enlargedImagePreviewHeightForViewWidth(width: CGFloat) -> CGFloat {
+        let camera = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
+            .map { $0 as! AVCaptureDevice }
+            .filter { $0.position == .Back }
+            .first
+        
+        let ratio: CGFloat
+        
+        if let camera = camera {
+            let size = CMVideoFormatDescriptionGetPresentationDimensions(camera.activeFormat.formatDescription, true, true)
+            ratio = size.width / size.height
+        }
+        else {
+            ratio = 2 / 3
+        }
+        
+        let maxImageWidth = width - 2 * collectionViewInset
+        return round(maxImageWidth * ratio)
+    }
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
