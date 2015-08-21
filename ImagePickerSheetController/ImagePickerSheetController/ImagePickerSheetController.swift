@@ -256,12 +256,15 @@ public class ImagePickerSheetController: UIViewController {
         
         let maxImageWidth = view.bounds.width - 2 * collectionViewInset
 
-        let assetRatio = assets.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
-                               .map { $0.height / $0.width }
-                               .sort(>)
-        let ratio = assetRatio.first ?? 2 / 3
+        let assetRatios = assets.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
+                                .map { $0.height / $0.width }
+            
+        let assetHeights = assetRatios.map { $0 * maxImageWidth }
+                                      .filter { $0 < maxImageWidth && $0 < 300 } // Make sure the preview isn't too high
+                                      .sort(>)
         
-        imagePreviewHeight = maxImageWidth * ratio
+        // Fallback, if the user only has square images
+        imagePreviewHeight = assetHeights.first ?? 250
     }
 
 }
