@@ -33,7 +33,7 @@ class AnimationController: NSObject {
         imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
         imagePickerSheetController.backgroundView.alpha = 0
         
-        UIView.animateWithDuration(transitionDuration(context), animations: {
+        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseOut, animations: { () -> Void in
             self.imagePickerSheetController.tableView.frame.origin.y = tableViewOriginY
             self.imagePickerSheetController.backgroundView.alpha = 1
         }, completion: { _ in
@@ -46,7 +46,7 @@ class AnimationController: NSObject {
             return
         }
         
-        UIView.animateWithDuration(transitionDuration(context), animations: {
+        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseIn, animations: { () -> Void in
             self.imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
             self.imagePickerSheetController.backgroundView.alpha = 0
         }, completion: { _ in

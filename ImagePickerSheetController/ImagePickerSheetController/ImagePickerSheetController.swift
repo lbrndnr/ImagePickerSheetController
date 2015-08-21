@@ -169,7 +169,7 @@ public class ImagePickerSheetController: UIViewController {
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
-        return CGSize(width: CGFloat(floorf(Float(proportion*currentImagePreviewHeight))), height: currentImagePreviewHeight)
+        return CGSize(width: floor(proportion*currentImagePreviewHeight), height: currentImagePreviewHeight)
     }
     
     private func targetSizeForAssetOfSize(size: CGSize) -> CGSize {
