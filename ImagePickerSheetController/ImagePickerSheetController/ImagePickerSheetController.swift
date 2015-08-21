@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import CoreMedia
 
 private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
@@ -86,7 +87,23 @@ public class ImagePickerSheetController: UIViewController {
     private(set) var enlargedPreviews = false
     
     private lazy var enlargedImagePreviewHeight: CGFloat = {
-        return 280
+        let camera = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
+            .map { $0 as! AVCaptureDevice }
+            .filter { $0.position == .Back }
+            .first
+        
+        let ratio: CGFloat
+        
+        if let camera = camera {
+            let size = CMVideoFormatDescriptionGetPresentationDimensions(camera.activeFormat.formatDescription, true, true)
+            ratio = size.width / size.height
+        }
+        else {
+            ratio = 2 / 3
+        }
+        
+        let maxImageWidth = UIScreen.mainScreen().bounds.width - 2 * collectionViewInset
+        return round(maxImageWidth * ratio)
     }()
     
     private var currentImagePreviewHeight: CGFloat {
