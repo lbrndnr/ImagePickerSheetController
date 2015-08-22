@@ -8,8 +8,6 @@
 
 import UIKit
 import KIF
-import Quick
-import Nimble
 
 extension XCTestCase {
     
@@ -53,24 +51,6 @@ extension KIFUITestActor {
         
         // Wait so that a possible preview zooming animation can finish
         waitForAnimationsToFinish()
-    }
-    
-}
-
-extension QuickSpec: KIFTestActorDelegate {
-    
-    public override func failWithException(exception: NSException!, stopTest stop: Bool) {
-        if stop {
-            fail(exception.description)
-        }
-    }
-    
-    public override func failWithExceptions(exceptions: [AnyObject]!, stopTest stop: Bool) {
-        if let exceptions = exceptions as? [NSException] {
-            for exception in exceptions {
-                failWithException(exception, stopTest: stop)
-            }
-        }
     }
     
 }

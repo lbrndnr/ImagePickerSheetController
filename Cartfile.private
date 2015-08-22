@@ -1,3 +1,1 @@
-github "Quick/Quick" "swift-2.0"
 github "Quick/Nimble" "swift-2.0"
-github "kif-framework/KIF"
