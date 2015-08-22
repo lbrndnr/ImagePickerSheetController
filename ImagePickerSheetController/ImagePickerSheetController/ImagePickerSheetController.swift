@@ -260,11 +260,11 @@ public class ImagePickerSheetController: UIViewController {
                                 .map { $0.height / $0.width }
             
         let assetHeights = assetRatios.map { $0 * maxImageWidth }
-                                      .filter { $0 < maxImageWidth && $0 < 300 } // Make sure the preview isn't too high
+                                      .filter { $0 < maxImageWidth && $0 < 300 } // Make sure the preview isn't too high eg for squares
                                       .sort(>)
         
-        // Fallback, if the user only has square images
-        imagePreviewHeight = assetHeights.first ?? 250
+        // Just a sanity check, to make sure this doesn't exceed 300 points
+        imagePreviewHeight = round(min(assetHeights.first ?? 0, 300))
     }
 
 }
