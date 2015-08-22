@@ -164,7 +164,14 @@ public class ImagePickerSheetController: UIViewController {
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
-        return CGSize(width: floor(proportion*imagePreviewHeight), height: imagePreviewHeight)
+        
+        let maxImageWidth = view.bounds.width - 2 * collectionViewInset
+        var width = floor(proportion*imagePreviewHeight)
+        if enlargedPreviews {
+            width = min(width, maxImageWidth)
+        }
+        
+        return CGSize(width: width, height: imagePreviewHeight)
     }
     
     private func targetSizeForAssetOfSize(size: CGSize) -> CGSize {
@@ -251,22 +258,26 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     private func reloadImagePreviewHeight() {
+        let minHeight: CGFloat = 129
+        
         guard enlargedPreviews else {
-            imagePreviewHeight = 129
+            imagePreviewHeight = minHeight
             return
         }
         
+        let maxHeight: CGFloat = 300
         let maxImageWidth = view.bounds.width - 2 * collectionViewInset
 
         let assetRatios = assets.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
                                 .map { $0.height / $0.width }
             
         let assetHeights = assetRatios.map { $0 * maxImageWidth }
-                                      .filter { $0 < maxImageWidth && $0 < 300 } // Make sure the preview isn't too high eg for squares
+                                      .filter { $0 < maxImageWidth && $0 < maxHeight } // Make sure the preview isn't too high eg for squares
                                       .sort(>)
+        let assetHeight = round(assetHeights.first ?? 0)
         
         // Just a sanity check, to make sure this doesn't exceed 300 points
-        imagePreviewHeight = round(min(assetHeights.first ?? 0, 300))
+        imagePreviewHeight = max(min(assetHeight, maxHeight), 200)
     }
 
 }

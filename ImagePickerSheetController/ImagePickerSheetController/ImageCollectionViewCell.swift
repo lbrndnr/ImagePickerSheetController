@@ -13,6 +13,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .ScaleAspectFill
+        imageView.clipsToBounds = true
         
         return imageView
     }()
