@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PreviewSupplementaryView : UICollectionReusableView {
+class PreviewSupplementaryView: UICollectionReusableView {
     
     private let button: UIButton = {
         let button = UIButton()
@@ -51,7 +51,7 @@ class PreviewSupplementaryView : UICollectionReusableView {
         initialize()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initialize()

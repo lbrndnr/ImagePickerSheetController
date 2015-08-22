@@ -29,7 +29,7 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         initialize()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initialize()
@@ -48,8 +48,8 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         contentSize = CGSizeZero
 
         if let collectionView = collectionView,
-               dataSource = collectionView.dataSource,
-               delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+                   dataSource = collectionView.dataSource,
+                     delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
             var origin = CGPoint(x: sectionInset.left, y: sectionInset.top)
             let numberOfSections = dataSource.numberOfSectionsInCollectionView?(collectionView) ?? 0
             
@@ -82,8 +82,8 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         var contentOffset = proposedContentOffset
         if let indexPath = invalidationCenteredIndexPath {
             if let collectionView = collectionView {
-                let frame = layoutAttributes[indexPath.section].frame
-                contentOffset.x = frame.midX - collectionView.frame.width / 2.0
+                        let frame = layoutAttributes[indexPath.section].frame
+                  contentOffset.x = frame.midX - collectionView.frame.width / 2.0
                 
                 contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
                 contentOffset.x = min(contentOffset.x, collectionViewContentSize().width - collectionView.frame.width + collectionView.contentInset.right)
@@ -94,22 +94,25 @@ class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
         return super.targetContentOffsetForProposedContentOffset(contentOffset)
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-        return layoutAttributes.filter { CGRectIntersectsRect(rect, $0.frame) }.reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
-            let supplementaryAttributes = layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath)
-            return memo + [attributes, supplementaryAttributes]
-        }
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        return layoutAttributes
+                    .filter { CGRectIntersectsRect(rect, $0.frame) }
+                    .reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
+                        if let supplementaryAttributes = layoutAttributesForSupplementaryViewOfKind(UICollectionElementKindSectionHeader, atIndexPath: attributes.indexPath) {
+                            return memo + [attributes, supplementaryAttributes]
+                        }
+                        return memo
+                    }
     }
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         return layoutAttributes[indexPath.section]
     }
     
-    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+    override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         if let collectionView = collectionView,
-            dataSource = collectionView.dataSource,
-            delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-            let itemAttributes = layoutAttributesForItemAtIndexPath(indexPath)
+            delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+            itemAttributes = layoutAttributesForItemAtIndexPath(indexPath) {
             
             let inset = collectionView.contentInset
             let bounds = collectionView.bounds

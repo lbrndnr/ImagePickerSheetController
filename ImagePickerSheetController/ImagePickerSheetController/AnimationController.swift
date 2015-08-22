@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+class AnimationController: NSObject {
     
     let imagePickerSheetController: ImagePickerSheetController
     let presenting: Bool
@@ -20,9 +20,47 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
         self.presenting = presenting
     }
     
-    // MARK: - UIViewControllerAnimatedTransitioning
+    // MARK: - Animation
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    private func animatePresentation(context: UIViewControllerContextTransitioning) {
+        guard let containerView = context.containerView() else {
+            return
+        }
+        
+        containerView.addSubview(imagePickerSheetController.view)
+        
+        let tableViewOriginY = imagePickerSheetController.tableView.frame.origin.y
+        imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
+        imagePickerSheetController.backgroundView.alpha = 0
+        
+        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseOut, animations: { () -> Void in
+            self.imagePickerSheetController.tableView.frame.origin.y = tableViewOriginY
+            self.imagePickerSheetController.backgroundView.alpha = 1
+        }, completion: { _ in
+            context.completeTransition(true)
+        })
+    }
+    
+    private func animateDismissal(context: UIViewControllerContextTransitioning) {
+        guard let containerView = context.containerView() else {
+            return
+        }
+        
+        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseIn, animations: { () -> Void in
+            self.imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
+            self.imagePickerSheetController.backgroundView.alpha = 0
+        }, completion: { _ in
+            self.imagePickerSheetController.view.removeFromSuperview()
+            context.completeTransition(true)
+        })
+    }
+    
+}
+
+// MARK: - UIViewControllerAnimatedTransitioning
+extension AnimationController: UIViewControllerAnimatedTransitioning {
+    
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.3
     }
     
@@ -33,36 +71,6 @@ class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
         else {
             animateDismissal(transitionContext)
         }
-    }
-    
-    // MARK: - Animation
-    
-    private func animatePresentation(context: UIViewControllerContextTransitioning) {
-        let containerView = context.containerView()
-        containerView.addSubview(imagePickerSheetController.view)
-        
-        let tableViewOriginY = imagePickerSheetController.tableView.frame.origin.y
-        imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
-        imagePickerSheetController.backgroundView.alpha = 0
-        
-        UIView.animateWithDuration(transitionDuration(context), animations: {
-            self.imagePickerSheetController.tableView.frame.origin.y = tableViewOriginY
-            self.imagePickerSheetController.backgroundView.alpha = 1
-        }, completion: { _ in
-            context.completeTransition(true)
-        })
-    }
-    
-    private func animateDismissal(context: UIViewControllerContextTransitioning) {
-        let containerView = context.containerView()
-        
-        UIView.animateWithDuration(transitionDuration(context), animations: {
-            self.imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
-            self.imagePickerSheetController.backgroundView.alpha = 0
-        }, completion: { _ in
-            self.imagePickerSheetController.view.removeFromSuperview()
-            context.completeTransition(true)
-        })
     }
     
 }
