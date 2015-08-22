@@ -120,6 +120,8 @@ public class ImagePickerSheetController: UIViewController {
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        preferredContentSize = CGSize(width: 400, height: view.frame.height)
+        
         if PHPhotoLibrary.authorizationStatus() == .Authorized {
             fetchAssets()
         }
