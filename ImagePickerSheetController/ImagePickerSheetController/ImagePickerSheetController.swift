@@ -154,10 +154,19 @@ public class ImagePickerSheetController: UIViewController {
     // MARK: - Actions
     
     /// Adds an new action.
-    /// Will replace any existing action of type .Cancel in order to make sure that only one is present.
+    /// If the passed action is of type Cancel, any pre-existing Cancel actions will be removed.
+    /// Always arranges the actions so that the Cancel action appears at the bottom.
     public func addAction(action: ImageAction) {
-        actions = actions.filter { $0.style != ImageActionStyle.Cancel }
+        if action.style == .Cancel {
+            actions = actions.filter { $0.style != .Cancel }
+        }
+        
         actions.append(action)
+        
+        if let index = actions.indexOf({ $0.style == .Cancel }) {
+            let cancelAction = actions.removeAtIndex(index)
+            actions.append(cancelAction)
+        }
     }
     
     // MARK: - Images

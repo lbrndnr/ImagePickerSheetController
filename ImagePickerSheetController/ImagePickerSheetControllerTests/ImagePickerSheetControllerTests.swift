@@ -39,7 +39,7 @@ class ImagePickerSheetControllerTests: XCTestCase {
     // MARK: - Presentation
     
     func testPresentation() {
-        presentImagePickerSheetController()
+        presentImagePickerSheetController(true)
         tester().acknowledgeSystemAlert()
         tester().waitForViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
     }
@@ -99,16 +99,14 @@ class ImagePickerSheetControllerTests: XCTestCase {
         }
     }
     
-    func testAdaptionOfActionTitles() {
-        presentImagePickerSheetController()
-        tester().waitForViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
+    func testActionOrdering() {
+        let cancelActionTitle = "Cancel"
+        let defaultActionTitle = "Action"
         
-        imageController.addAction(ImageAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
+        imageController.addAction(ImageAction(title: cancelActionTitle, style: .Cancel))
+        imageController.addAction(ImageAction(title: defaultActionTitle))
         
-        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
-        tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
-        
-        tester().waitForViewWithAccessibilityLabel("Secondary 1")
+        expect(self.imageController.actions.map { $0.title }).to(equal([defaultActionTitle, cancelActionTitle]))
     }
     
     // MARK: - Action Handling
@@ -161,6 +159,17 @@ class ImagePickerSheetControllerTests: XCTestCase {
         
         expect(self.defaultActionCalled).to(equal(0))
         expect(self.cancelActionCalled).to(equal(1))
+    }
+    
+    func testAdaptionOfActionTitles() {
+        presentImagePickerSheetController()
+        
+        imageController.addAction(ImageAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
+        
+        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+        tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
+        
+        tester().waitForViewWithAccessibilityLabel("Secondary 1")
     }
     
     // MARK: - Images
@@ -240,8 +249,8 @@ class ImagePickerSheetControllerTests: XCTestCase {
     
     // MARK: - Utilities
     
-    func presentImagePickerSheetController() {
-        rootViewController.presentViewController(imageController, animated: false, completion: nil)
+    func presentImagePickerSheetController(animated: Bool = false) {
+        rootViewController.presentViewController(imageController, animated: animated, completion: nil)
         tester().waitForViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
     }
     
