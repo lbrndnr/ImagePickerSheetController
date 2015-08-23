@@ -13,6 +13,7 @@
 		492BF4E51B8A2FCF000ECFAC /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BF4E11B8A2FCF000ECFAC /* PreviewSupplementaryView.swift */; };
 		492BF4E81B8A3022000ECFAC /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */; };
 		492BF4EA1B8A302A000ECFAC /* ImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BF4E91B8A302A000ECFAC /* ImagePreviewTableViewCell.swift */; };
+		492BF4EC1B8A3057000ECFAC /* ImageActionFontProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BF4EB1B8A3057000ECFAC /* ImageActionFontProviderType.swift */; };
 		494505AC1B2201AF00EF9ADC /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */; };
 		494505AD1B22021D00EF9ADC /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
@@ -92,6 +93,7 @@
 		492BF4E11B8A2FCF000ECFAC /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
 		492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetController.swift; sourceTree = "<group>"; };
 		492BF4E91B8A302A000ECFAC /* ImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
+		492BF4EB1B8A3057000ECFAC /* ImageActionFontProviderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageActionFontProviderType.swift; sourceTree = "<group>"; };
 		494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
 		496DC6D11B86F6E90011AF73 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		49A408441B21853E00D6005C /* KIF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KIF.framework; path = ../Carthage/Build/iOS/KIF.framework; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 		492BF4E61B8A3022000ECFAC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				492BF4EB1B8A3057000ECFAC /* ImageActionFontProviderType.swift */,
 				492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */,
 			);
 			path = Controller;
@@ -418,6 +421,7 @@
 				492BF4E81B8A3022000ECFAC /* ImagePickerSheetController.swift in Sources */,
 				492BF4E41B8A2FCF000ECFAC /* ImagePreviewFlowLayout.swift in Sources */,
 				492BF4E51B8A2FCF000ECFAC /* PreviewSupplementaryView.swift in Sources */,
+				492BF4EC1B8A3057000ECFAC /* ImageActionFontProviderType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

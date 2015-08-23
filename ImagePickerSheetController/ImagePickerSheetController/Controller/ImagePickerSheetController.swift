@@ -12,7 +12,7 @@ import Photos
 private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
-public class ImagePickerSheetController: UIViewController {
+public class ImagePickerSheetController: UIViewController, ImageActionFontProviderType {
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -333,7 +333,7 @@ extension ImagePickerSheetController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath)
         cell.textLabel?.textAlignment = .Center
         cell.textLabel?.textColor = tableView.tintColor
-        cell.textLabel?.font = UIFont.systemFontOfSize(21)
+        cell.textLabel?.font = fontForAction(action)
         cell.textLabel?.text = selectedImageIndices.count > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
         cell.layoutMargins = UIEdgeInsetsZero
         
