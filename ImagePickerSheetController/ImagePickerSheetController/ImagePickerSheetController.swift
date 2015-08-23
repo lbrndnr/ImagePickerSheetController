@@ -240,7 +240,7 @@ public class ImagePickerSheetController: UIViewController {
     @objc private func cancel() {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
-        let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
+        let cancelActions = actions.filter { $0.style == .Cancel }
         if let cancelAction = cancelActions.first {
             cancelAction.handle(numberOfSelectedImages)
         }
