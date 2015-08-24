@@ -12,6 +12,7 @@ import Photos
 private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
+@available(iOS 8.0, *)
 public class ImagePickerSheetController: UIViewController, ImageActionFontProviderType {
     
     lazy var tableView: UITableView = {
