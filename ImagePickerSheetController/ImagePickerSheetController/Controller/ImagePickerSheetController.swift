@@ -18,13 +18,14 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.accessibilityIdentifier = "ImagePickerSheet"
+        tableView.backgroundColor = .clearColor()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.alwaysBounceVertical = false
         tableView.layoutMargins = UIEdgeInsetsZero
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
+        tableView.registerClass(ImageSheetTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImageSheetTableViewCell.self))
         
         return tableView
     }()
@@ -321,22 +322,34 @@ extension ImagePickerSheetController: UITableViewDataSource {
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell: ImageSheetTableViewCell
+        
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
-            cell.collectionView = collectionView
-            cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
+            let previewCell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
+            previewCell.collectionView = collectionView
+            previewCell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
             
-            return cell
+            cell = previewCell
+        }
+        else {
+            let action = actions[indexPath.row]
+            
+            cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImageSheetTableViewCell.self), forIndexPath: indexPath) as! ImageSheetTableViewCell
+            cell.backgroundColor = .whiteColor()
+            cell.textLabel?.textAlignment = .Center
+            cell.textLabel?.textColor = tableView.tintColor
+            cell.textLabel?.font = fontForAction(action)
+            cell.textLabel?.text = selectedImageIndices.count > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
         }
         
-        let action = actions[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath)
-        cell.textLabel?.textAlignment = .Center
-        cell.textLabel?.textColor = tableView.tintColor
-        cell.textLabel?.font = fontForAction(action)
-        cell.textLabel?.text = selectedImageIndices.count > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
-        cell.layoutMargins = UIEdgeInsetsZero
+        // iOS specific design
+        if #available(iOS 9, *) {
+            cell.roundedCorners = .All(12)
+            cell.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+        }
+        else {
+            cell.layoutMargins = UIEdgeInsetsZero
+        }
         
         return cell
     }
