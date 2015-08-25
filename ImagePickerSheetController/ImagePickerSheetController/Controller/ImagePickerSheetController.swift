@@ -60,7 +60,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
     public private(set) var actions = [ImageAction]() {
         didSet {
             if isViewLoaded() {
-                reloadButtons()
+                reloadActionRows()
                 view.setNeedsLayout()
             }
         }
@@ -171,6 +171,19 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         }
     }
     
+    private func reloadActionRows() {
+        tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+    }
+    
+    @objc private func cancel() {
+        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        
+        let cancelActions = actions.filter { $0.style == .Cancel }
+        if let cancelAction = cancelActions.first {
+            cancelAction.handle(numberOfSelectedImages)
+        }
+    }
+    
     // MARK: - Images
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
@@ -233,22 +246,43 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         }
     }
     
-    // MARK: - Buttons
-    
-    private func reloadButtons() {
-        tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
-    }
-    
-    @objc private func cancel() {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-        
-        let cancelActions = actions.filter { $0.style == .Cancel }
-        if let cancelAction = cancelActions.first {
-            cancelAction.handle(numberOfSelectedImages)
-        }
-    }
-    
     // MARK: - Layout
+    
+    private func attributesForRowAtIndexPath(indexPath: NSIndexPath) -> (corners: RoundedCorner, backgroundInsets: UIEdgeInsets) {
+        let s = numberOfSectionsInTableView(tableView)
+        var indexPaths = (0 ..< s).map { (self.tableView(self.tableView, numberOfRowsInSection: $0), $0) }
+                                  .flatMap { numberOfRows, section in
+                                      (0 ..< numberOfRows).map { NSIndexPath(forRow: $0, inSection: section) }
+                                  }
+        
+        let defaultInset: CGFloat = 10
+        let innerInset: CGFloat = 4
+        
+        guard indexPaths.first != indexPath else {
+            return (.Top(5), UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
+        }
+        
+        let cancelIndexPath = actions.indexOf { $0.style == .Cancel }
+                                     .map { NSIndexPath(forRow: $0, inSection: 1) }
+        
+        
+        if let cancelIndexPath = cancelIndexPath {
+            if cancelIndexPath == indexPath {
+                return (.All(5), UIEdgeInsets(top: innerInset, left: defaultInset, bottom: defaultInset, right: defaultInset))
+            }
+            
+            indexPaths.removeLast()
+            
+            if indexPath == indexPaths.last {
+                return (.Bottom(5), UIEdgeInsets(top: 0, left: defaultInset, bottom: innerInset, right: defaultInset))
+            }
+        }
+        else if indexPath == indexPaths.last {
+            return (.Bottom(5), UIEdgeInsets(top: 0, left: defaultInset, bottom: defaultInset, right: defaultInset))
+        }
+        
+        return (.None, UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
+    }
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -344,11 +378,7 @@ extension ImagePickerSheetController: UITableViewDataSource {
         
         // iOS specific design
         if #available(iOS 9, *) {
-            cell.roundedCorners = .All(12)
-            cell.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
-        }
-        else {
-            cell.layoutMargins = UIEdgeInsetsZero
+            (cell.roundedCorners, cell.backgroundInsets) = attributesForRowAtIndexPath(indexPath)
         }
         
         return cell
@@ -451,7 +481,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
                 self.tableView.endUpdates()
                 self.view.layoutIfNeeded()
                 }, completion: { finished in
-                    self.reloadButtons()
+                    self.reloadActionRows()
                     self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
             })
         }
@@ -464,7 +494,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
                 collectionView.setContentOffset(contentOffset, animated: true)
             }
             
-            reloadButtons()
+            reloadActionRows()
         }
         
         supplementaryViews[indexPath.section]?.selected = true
@@ -473,7 +503,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
     public func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         if let index = selectedImageIndices.indexOf(indexPath.section) {
             selectedImageIndices.removeAtIndex(index)
-            reloadButtons()
+            reloadActionRows()
         }
         
         supplementaryViews[indexPath.section]?.selected = false

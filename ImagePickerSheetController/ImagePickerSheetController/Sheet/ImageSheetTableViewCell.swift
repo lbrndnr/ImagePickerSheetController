@@ -17,10 +17,32 @@ enum RoundedCorner {
 
 class ImageSheetTableViewCell: UITableViewCell {
 
+    var backgroundInsets = UIEdgeInsets() {
+        didSet {
+            reloadMask()
+        }
+    }
+    
     var roundedCorners = RoundedCorner.None {
         didSet {
             reloadMask()
         }
+    }
+    
+    // MARK: - Initialization
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        initialize()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    private func initialize() {
+        layoutMargins = UIEdgeInsets()
     }
     
     // MARK: - Layout
@@ -28,25 +50,24 @@ class ImageSheetTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        layer.mask?.frame = bounds
-        
         reloadMask()
     }
     
     // MARK: - Masking
     
     private func reloadMask() {
-        let maskLayer = layer.mask as? CAShapeLayer ?? {
+        if layer.mask == nil {
             let maskLayer = CAShapeLayer()
             maskLayer.frame = bounds
             maskLayer.fillColor = UIColor.blackColor().CGColor
             maskLayer.strokeColor = maskLayer.fillColor
-            layer.mask = maskLayer
             
-            return maskLayer
-        }()
-        
-        maskLayer.path = maskPathWithRect(UIEdgeInsetsInsetRect(bounds, layoutMargins), roundedCorner: roundedCorners)
+            layer.mask = maskLayer
+        }
+
+        let layerMask = layer.mask as? CAShapeLayer
+        layerMask?.frame = bounds
+        layerMask?.path = maskPathWithRect(UIEdgeInsetsInsetRect(bounds, backgroundInsets), roundedCorner: roundedCorners)
     }
     
     private func maskPathWithRect(rect: CGRect, roundedCorner: RoundedCorner) -> CGPathRef {
@@ -58,10 +79,10 @@ class ImageSheetTableViewCell: UITableViewCell {
             corners = .AllCorners
             radii = value
         case .Top(let value):
-            corners = .AllCorners
+            corners = [.TopLeft, .TopRight]
             radii = value
         case .Bottom(let value):
-            corners = .AllCorners
+            corners = [.BottomLeft, .BottomRight]
             radii = value
         case .None:
             return UIBezierPath(rect: rect).CGPath
