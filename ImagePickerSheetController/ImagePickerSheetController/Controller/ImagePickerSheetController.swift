@@ -514,9 +514,9 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
                 self.view.layoutIfNeeded()
-                }, completion: { finished in
-                    self.reloadActionRows()
-                    self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
+            }, completion: { finished in
+                self.reloadActionRows()
+                self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
             })
         }
         else {
