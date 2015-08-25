@@ -9,7 +9,7 @@
 import Foundation
 import Photos
 
-private let collectionViewInset: CGFloat = 5.0
+private let collectionViewInset: CGFloat = 5
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
 @available(iOS 8.0, *)
@@ -184,6 +184,29 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         }
     }
     
+    // MARK: - Sheet
+    // These methods are necessary so that no call cycles happen when calculating the row attributes
+    
+    private func numberOfSheetSections() -> Int {
+        return 2
+    }
+    
+    private func numberOfSheetRowsInSection(section: Int) -> Int {
+        if section == 0 {
+            return 1
+        }
+        
+        return actions.count
+    }
+
+    private func allSheetIndexPaths() -> [NSIndexPath] {
+        let s = numberOfSheetSections()
+        return (0 ..< s).map { (self.numberOfSheetRowsInSection($0), $0) }
+                        .flatMap { numberOfRows, section in
+                            (0 ..< numberOfRows).map { NSIndexPath(forRow: $0, inSection: section) }
+                        }
+    }
+    
     // MARK: - Images
     
     private func sizeForAsset(asset: PHAsset) -> CGSize {
@@ -255,14 +278,9 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
             return (.None, UIEdgeInsets())
         }
         
-        let s = numberOfSectionsInTableView(tableView)
-        var indexPaths = (0 ..< s).map { (self.tableView(self.tableView, numberOfRowsInSection: $0), $0) }
-                                  .flatMap { numberOfRows, section in
-                                      (0 ..< numberOfRows).map { NSIndexPath(forRow: $0, inSection: section) }
-                                  }
-        
         let defaultInset: CGFloat = 10
         let innerInset: CGFloat = 4
+        var indexPaths = allSheetIndexPaths()
         
         guard indexPaths.first != indexPath else {
             return (.Top(5), UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
@@ -297,9 +315,8 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         
         backgroundView.frame = view.bounds
         
-        let tableViewHeight = Array(0..<tableView.numberOfRowsInSection(1)).reduce(tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))) { total, row in
-            total + tableView(tableView, heightForRowAtIndexPath: NSIndexPath(forRow: row, inSection: 1))
-        }
+        let tableViewHeight = allSheetIndexPaths().map { self.tableView(tableView, heightForRowAtIndexPath: $0) }
+                                                  .reduce(0, combine: +)
         let tableViewSize = CGSize(width: view.bounds.width, height: tableViewHeight)
         
         // This particular order is necessary so that the sheet is layed out
@@ -338,15 +355,11 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
 extension ImagePickerSheetController: UITableViewDataSource {
     
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return numberOfSheetSections()
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }
-        
-        return actions.count
+        return numberOfSheetRowsInSection(section)
     }
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -358,7 +371,17 @@ extension ImagePickerSheetController: UITableViewDataSource {
             return 0
         }
         
-        return 50
+        let actionRowHeight: CGFloat
+        
+        if #available(iOS 9, *) {
+            actionRowHeight = 57
+        }
+        else {
+            actionRowHeight = 50
+        }
+        
+        let insets = attributesForRowAtIndexPath(indexPath).backgroundInsets
+        return actionRowHeight + insets.top + insets.bottom
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
