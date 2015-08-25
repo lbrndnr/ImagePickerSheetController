@@ -59,8 +59,8 @@ class ImageSheetTableViewCell: UITableViewCell {
         if layer.mask == nil {
             let maskLayer = CAShapeLayer()
             maskLayer.frame = bounds
+            maskLayer.lineWidth = 0
             maskLayer.fillColor = UIColor.blackColor().CGColor
-            maskLayer.strokeColor = maskLayer.fillColor
             
             layer.mask = maskLayer
         }

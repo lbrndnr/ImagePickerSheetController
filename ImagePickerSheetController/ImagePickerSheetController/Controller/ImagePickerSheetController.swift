@@ -9,6 +9,7 @@
 import Foundation
 import Photos
 
+private let cornerRadius: CGFloat = 13
 private let collectionViewInset: CGFloat = 5
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
@@ -283,7 +284,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         var indexPaths = allSheetIndexPaths()
         
         guard indexPaths.first != indexPath else {
-            return (.Top(5), UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
+            return (.Top(cornerRadius), UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
         }
         
         let cancelIndexPath = actions.indexOf { $0.style == .Cancel }
@@ -292,17 +293,17 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         
         if let cancelIndexPath = cancelIndexPath {
             if cancelIndexPath == indexPath {
-                return (.All(5), UIEdgeInsets(top: innerInset, left: defaultInset, bottom: defaultInset, right: defaultInset))
+                return (.All(cornerRadius), UIEdgeInsets(top: innerInset, left: defaultInset, bottom: defaultInset, right: defaultInset))
             }
             
             indexPaths.removeLast()
             
             if indexPath == indexPaths.last {
-                return (.Bottom(5), UIEdgeInsets(top: 0, left: defaultInset, bottom: innerInset, right: defaultInset))
+                return (.Bottom(cornerRadius), UIEdgeInsets(top: 0, left: defaultInset, bottom: innerInset, right: defaultInset))
             }
         }
         else if indexPath == indexPaths.last {
-            return (.Bottom(5), UIEdgeInsets(top: 0, left: defaultInset, bottom: defaultInset, right: defaultInset))
+            return (.Bottom(cornerRadius), UIEdgeInsets(top: 0, left: defaultInset, bottom: defaultInset, right: defaultInset))
         }
         
         return (.None, UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
