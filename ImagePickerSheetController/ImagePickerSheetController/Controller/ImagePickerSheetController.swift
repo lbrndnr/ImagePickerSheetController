@@ -189,8 +189,10 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
         
-        let maxImageWidth = view.bounds.width - 2 * collectionViewInset
+        let insets = attributesForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)).backgroundInsets
+        let maxImageWidth = view.bounds.width - 2 * collectionViewInset - insets.left - insets.right
         var width = floor(proportion*imagePreviewHeight)
+        
         if enlargedPreviews {
             width = min(width, maxImageWidth)
         }
@@ -249,6 +251,10 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
     // MARK: - Layout
     
     private func attributesForRowAtIndexPath(indexPath: NSIndexPath) -> (corners: RoundedCorner, backgroundInsets: UIEdgeInsets) {
+        guard #available(iOS 9, *) else {
+            return (.None, UIEdgeInsets())
+        }
+        
         let s = numberOfSectionsInTableView(tableView)
         var indexPaths = (0 ..< s).map { (self.tableView(self.tableView, numberOfRowsInSection: $0), $0) }
                                   .flatMap { numberOfRows, section in
@@ -377,9 +383,7 @@ extension ImagePickerSheetController: UITableViewDataSource {
         }
         
         // iOS specific design
-        if #available(iOS 9, *) {
-            (cell.roundedCorners, cell.backgroundInsets) = attributesForRowAtIndexPath(indexPath)
-        }
+        (cell.roundedCorners, cell.backgroundInsets) = attributesForRowAtIndexPath(indexPath)
         
         return cell
     }
