@@ -399,7 +399,6 @@ extension ImagePickerSheetController: UITableViewDataSource {
             let action = actions[indexPath.row]
             
             cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImageSheetTableViewCell.self), forIndexPath: indexPath) as! ImageSheetTableViewCell
-            cell.backgroundColor = .whiteColor()
             cell.textLabel?.textAlignment = .Center
             cell.textLabel?.textColor = tableView.tintColor
             cell.textLabel?.font = fontForAction(action)
@@ -408,6 +407,13 @@ extension ImagePickerSheetController: UITableViewDataSource {
         
         // iOS specific design
         (cell.roundedCorners, cell.backgroundInsets) = attributesForRowAtIndexPath(indexPath)
+        
+        if #available(iOS 9, *) {
+            cell.backgroundColor = UIColor(white: 0.97, alpha: 1)
+        }
+        else {
+            cell.backgroundColor = .whiteColor()
+        }
         
         return cell
     }
