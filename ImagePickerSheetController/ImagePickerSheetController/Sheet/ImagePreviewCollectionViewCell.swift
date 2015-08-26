@@ -1,6 +1,6 @@
 //
-//  ImagePreviewTableViewCell.swift
-//  ImagePickerSheet
+//  ImagePreviewCollectionViewCell.swift
+//  ImagePickerSheetController
 //
 //  Created by Laurin Brandner on 06/09/14.
 //  Copyright (c) 2014 Laurin Brandner. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImagePreviewTableViewCell: ImageSheetTableViewCell {
+class ImagePreviewCollectionViewCell: ImageSheetCollectionViewCell {
     
     var collectionView: ImagePickerCollectionView? {
         willSet {
@@ -19,12 +19,6 @@ class ImagePreviewTableViewCell: ImageSheetTableViewCell {
             if let collectionView = newValue {
                 addSubview(collectionView)
             }
-        }
-    }
-    
-    override var backgroundInsets: UIEdgeInsets {
-        didSet {
-            setNeedsLayout()
         }
     }
     

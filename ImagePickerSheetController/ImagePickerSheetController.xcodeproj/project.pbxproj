@@ -9,18 +9,19 @@
 /* Begin PBXBuildFile section */
 		492BF4E81B8A3022000ECFAC /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */; };
 		492BF4EC1B8A3057000ECFAC /* ImageActionFontProviderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BF4EB1B8A3057000ECFAC /* ImageActionFontProviderType.swift */; };
+		4944CA851B8DB7F3007EA349 /* ImageActionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944CA841B8DB7F3007EA349 /* ImageActionCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		494505AC1B2201AF00EF9ADC /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */; };
 		494505AD1B22021D00EF9ADC /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
 		494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
 		495F89A81B394288006B9BA4 /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4981CB031B8B246000A09750 /* ImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFD1B8B246000A09750 /* ImagePreviewTableViewCell.swift */; };
+		4981CB031B8B246000A09750 /* ImagePreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFD1B8B246000A09750 /* ImagePreviewCollectionViewCell.swift */; };
 		4981CB041B8B246000A09750 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFF1B8B246000A09750 /* ImageCollectionViewCell.swift */; };
 		4981CB051B8B246000A09750 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB001B8B246000A09750 /* ImagePickerCollectionView.swift */; };
 		4981CB061B8B246000A09750 /* ImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB011B8B246000A09750 /* ImagePreviewFlowLayout.swift */; };
 		4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */; };
-		4981CB091B8B255A00A09750 /* ImageSheetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB081B8B255A00A09750 /* ImageSheetTableViewCell.swift */; };
+		4981CB091B8B255A00A09750 /* ImageSheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB081B8B255A00A09750 /* ImageSheetCollectionViewCell.swift */; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */; };
@@ -88,16 +89,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetController.swift; sourceTree = "<group>"; };
+		492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ImagePickerSheetController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		492BF4EB1B8A3057000ECFAC /* ImageActionFontProviderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageActionFontProviderType.swift; sourceTree = "<group>"; };
+		4944CA841B8DB7F3007EA349 /* ImageActionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageActionCollectionViewCell.swift; sourceTree = "<group>"; };
 		494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
 		496DC6D11B86F6E90011AF73 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		4981CAFD1B8B246000A09750 /* ImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
+		4981CAFD1B8B246000A09750 /* ImagePreviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ImagePreviewCollectionViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4981CAFF1B8B246000A09750 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		4981CB001B8B246000A09750 /* ImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionView.swift; sourceTree = "<group>"; };
 		4981CB011B8B246000A09750 /* ImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
 		4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
-		4981CB081B8B255A00A09750 /* ImageSheetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSheetTableViewCell.swift; sourceTree = "<group>"; };
+		4981CB081B8B255A00A09750 /* ImageSheetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSheetCollectionViewCell.swift; sourceTree = "<group>"; };
 		49A408441B21853E00D6005C /* KIF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KIF.framework; path = ../Carthage/Build/iOS/KIF.framework; sourceTree = "<group>"; };
 		49A408461B21854300D6005C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		49A408481B2186D500D6005C /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -165,8 +167,9 @@
 		4981CAFC1B8B246000A09750 /* Sheet */ = {
 			isa = PBXGroup;
 			children = (
-				4981CB081B8B255A00A09750 /* ImageSheetTableViewCell.swift */,
-				4981CAFD1B8B246000A09750 /* ImagePreviewTableViewCell.swift */,
+				4981CB081B8B255A00A09750 /* ImageSheetCollectionViewCell.swift */,
+				4981CAFD1B8B246000A09750 /* ImagePreviewCollectionViewCell.swift */,
+				4944CA841B8DB7F3007EA349 /* ImageActionCollectionViewCell.swift */,
 				4981CAFE1B8B246000A09750 /* Preview */,
 			);
 			path = Sheet;
@@ -428,11 +431,12 @@
 				49DC4A751B14F1F600B4E78E /* AnimationController.swift in Sources */,
 				4981CB061B8B246000A09750 /* ImagePreviewFlowLayout.swift in Sources */,
 				49DC4A761B14F1F600B4E78E /* ImageAction.swift in Sources */,
-				4981CB031B8B246000A09750 /* ImagePreviewTableViewCell.swift in Sources */,
-				4981CB091B8B255A00A09750 /* ImageSheetTableViewCell.swift in Sources */,
+				4981CB031B8B246000A09750 /* ImagePreviewCollectionViewCell.swift in Sources */,
+				4981CB091B8B255A00A09750 /* ImageSheetCollectionViewCell.swift in Sources */,
 				492BF4E81B8A3022000ECFAC /* ImagePickerSheetController.swift in Sources */,
 				4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */,
 				4981CB051B8B246000A09750 /* ImagePickerCollectionView.swift in Sources */,
+				4944CA851B8DB7F3007EA349 /* ImageActionCollectionViewCell.swift in Sources */,
 				492BF4EC1B8A3057000ECFAC /* ImageActionFontProviderType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,22 +16,24 @@ private let collectionViewCheckmarkInset: CGFloat = 3.5
 @available(iOS 8.0, *)
 public class ImagePickerSheetController: UIViewController, ImageActionFontProviderType {
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.accessibilityIdentifier = "ImagePickerSheet"
-        tableView.backgroundColor = .clearColor()
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.alwaysBounceVertical = false
-        tableView.layoutMargins = UIEdgeInsetsZero
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
-        tableView.registerClass(ImageSheetTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImageSheetTableViewCell.self))
+    lazy private(set) var sheetCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         
-        return tableView
+        let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
+        collectionView.accessibilityIdentifier = "ImagePickerSheet"
+        collectionView.backgroundColor = .clearColor()
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.alwaysBounceVertical = false
+        collectionView.registerClass(ImagePreviewCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImagePreviewCollectionViewCell.self))
+        collectionView.registerClass(ImageActionCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageActionCollectionViewCell.self))
+        
+        return collectionView
     }()
     
-    private lazy var collectionView: ImagePickerCollectionView = {
+    private private(set) lazy var previewCollectionView: ImagePickerCollectionView = {
         let collectionView = ImagePickerCollectionView()
         collectionView.accessibilityIdentifier = "ImagePickerSheetPreview"
         collectionView.backgroundColor = .clearColor()
@@ -117,7 +119,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         super.loadView()
         
         view.addSubview(backgroundView)
-        view.addSubview(tableView)
+        view.addSubview(sheetCollectionView)
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -139,7 +141,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
                     dispatch_async(dispatch_get_main_queue()) {
                         self.fetchAssets()
                         
-                        self.tableView.reloadData()
+                        self.sheetCollectionView.reloadData()
                         self.view.setNeedsLayout()
                         
                         // Explicitely disable animations so it wouldn't animate either
@@ -173,7 +175,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
     }
     
     private func reloadActionRows() {
-        tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+        sheetCollectionView.reloadSections(NSIndexSet(index: 1))
     }
     
     @objc private func cancel() {
@@ -192,7 +194,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         return 2
     }
     
-    private func numberOfSheetRowsInSection(section: Int) -> Int {
+    private func numberOfSheetItemsInSection(section: Int) -> Int {
         if section == 0 {
             return 1
         }
@@ -202,10 +204,36 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
 
     private func allSheetIndexPaths() -> [NSIndexPath] {
         let s = numberOfSheetSections()
-        return (0 ..< s).map { (self.numberOfSheetRowsInSection($0), $0) }
+        return (0 ..< s).map { (self.numberOfSheetItemsInSection($0), $0) }
                         .flatMap { numberOfRows, section in
                             (0 ..< numberOfRows).map { NSIndexPath(forRow: $0, inSection: section) }
                         }
+    }
+    
+    private func sizeForSheetItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
+        let height: CGFloat = {
+            if indexPath.section == 0 {
+                if assets.count > 0 {
+                    return imagePreviewHeight + 2 * collectionViewInset
+                }
+                
+                return 0
+            }
+            
+            let actionRowHeight: CGFloat
+            
+            if #available(iOS 9, *) {
+                actionRowHeight = 57
+            }
+            else {
+                actionRowHeight = 50
+            }
+            
+            let insets = attributesForRowAtIndexPath(indexPath).backgroundInsets
+            return actionRowHeight + insets.top + insets.bottom
+        }()
+        
+        return CGSize(width: view.bounds.width, height: height)
     }
     
     // MARK: - Images
@@ -278,7 +306,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         guard #available(iOS 9, *) else {
             return (.None, UIEdgeInsets())
         }
-        
+
         let defaultInset: CGFloat = 10
         let innerInset: CGFloat = 4
         var indexPaths = allSheetIndexPaths()
@@ -315,15 +343,16 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         reloadImagePreviewHeight()
         
         backgroundView.frame = view.bounds
+        sheetCollectionView.frame = view.bounds
         
-        let tableViewHeight = allSheetIndexPaths().map { self.tableView(tableView, heightForRowAtIndexPath: $0) }
-                                                  .reduce(0, combine: +)
-        let tableViewSize = CGSize(width: view.bounds.width, height: tableViewHeight)
+        let sheetHeight = allSheetIndexPaths().map { self.sizeForSheetItemAtIndexPath($0).height }
+                                              .reduce(0, combine: +)
+        let sheetSize = CGSize(width: view.bounds.width, height: sheetHeight)
         
         // This particular order is necessary so that the sheet is layed out
         // correctly with and without an enclosing popover
-        preferredContentSize = tableViewSize
-        tableView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-tableViewHeight), size: tableViewSize)
+        preferredContentSize = sheetSize
+        sheetCollectionView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-sheetHeight), size: sheetSize)
     }
     
     private func reloadImagePreviewHeight() {
@@ -351,75 +380,6 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
 
 }
 
-// MARK: - UITableViewDataSource
-
-extension ImagePickerSheetController: UITableViewDataSource {
-    
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return numberOfSheetSections()
-    }
-    
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberOfSheetRowsInSection(section)
-    }
-    
-    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            if assets.count > 0 {
-                return imagePreviewHeight + 2 * collectionViewInset
-            }
-            
-            return 0
-        }
-        
-        let actionRowHeight: CGFloat
-        
-        if #available(iOS 9, *) {
-            actionRowHeight = 57
-        }
-        else {
-            actionRowHeight = 50
-        }
-        
-        let insets = attributesForRowAtIndexPath(indexPath).backgroundInsets
-        return actionRowHeight + insets.top + insets.bottom
-    }
-    
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: ImageSheetTableViewCell
-        
-        if indexPath.section == 0 {
-            let previewCell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
-            previewCell.collectionView = collectionView
-            previewCell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
-            
-            cell = previewCell
-        }
-        else {
-            let action = actions[indexPath.row]
-            
-            cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImageSheetTableViewCell.self), forIndexPath: indexPath) as! ImageSheetTableViewCell
-            cell.textLabel?.textAlignment = .Center
-            cell.textLabel?.textColor = tableView.tintColor
-            cell.textLabel?.font = fontForAction(action)
-            cell.textLabel?.text = selectedImageIndices.count > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
-        }
-        
-        // iOS specific design
-        (cell.roundedCorners, cell.backgroundInsets) = attributesForRowAtIndexPath(indexPath)
-        
-        if #available(iOS 9, *) {
-            cell.backgroundColor = UIColor(white: 0.97, alpha: 1)
-        }
-        else {
-            cell.backgroundColor = .whiteColor()
-        }
-        
-        return cell
-    }
-    
-}
-
 // MARK: - UITableViewDelegate
 
 extension ImagePickerSheetController: UIScrollViewDelegate, UITableViewDelegate {
@@ -443,38 +403,78 @@ extension ImagePickerSheetController: UIScrollViewDelegate, UITableViewDelegate 
 extension ImagePickerSheetController: UICollectionViewDataSource {
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return assets.count
+        guard collectionView == sheetCollectionView else {
+            return assets.count
+        }
+        
+        return numberOfSheetSections()
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        guard collectionView == sheetCollectionView else {
+            return 1
+        }
+        
+        return numberOfSheetItemsInSection(section)
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageCollectionViewCell.self), forIndexPath: indexPath) as! ImageCollectionViewCell
-        
-        let asset = assets[indexPath.section]
-        let size = sizeForAsset(asset)
-        
-        requestImageForAsset(asset, size: size) { image in
-            cell.imageView.image = image
+        guard collectionView == sheetCollectionView else {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageCollectionViewCell.self), forIndexPath: indexPath) as! ImageCollectionViewCell
+            
+            let asset = assets[indexPath.section]
+            let size = sizeForAsset(asset)
+            
+            requestImageForAsset(asset, size: size) { image in
+                cell.imageView.image = image
+            }
+            
+            cell.selected = selectedImageIndices.contains(indexPath.section)
+            
+            return cell
         }
         
-        cell.selected = selectedImageIndices.contains(indexPath.section)
+        let cell: ImageSheetCollectionViewCell
+        
+        if indexPath.section == 0 {
+            let previewCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImagePreviewCollectionViewCell.self), forIndexPath: indexPath) as! ImagePreviewCollectionViewCell
+            previewCell.collectionView = previewCollectionView
+            
+            cell = previewCell
+        }
+        else {
+            let action = actions[indexPath.row]
+            let actionCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageActionCollectionViewCell.self), forIndexPath: indexPath) as! ImageActionCollectionViewCell
+            actionCell.textLabel.font = fontForAction(action)
+            actionCell.textLabel.text = selectedImageIndices.count > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
+            
+            cell = actionCell
+        }
+        
+        // iOS specific design
+        (cell.roundedCorners, cell.backgroundInsets) = attributesForRowAtIndexPath(indexPath)
+        
+        if #available(iOS 9, *) {
+            cell.backgroundColor = UIColor(white: 0.97, alpha: 1)
+        }
+        else {
+            cell.backgroundColor = .whiteColor()
+        }
         
         return cell
     }
     
-    public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
-        view.userInteractionEnabled = false
-        view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
-        view.selected = selectedImageIndices.contains(indexPath.section)
-        
-        supplementaryViews[indexPath.section] = view
-        
-        return view
-    }
+//    public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath:
+//        NSIndexPath) -> UICollectionReusableView {
+//        let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
+//        view.userInteractionEnabled = false
+//        view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
+//        view.selected = selectedImageIndices.contains(indexPath.section)
+//        
+//        supplementaryViews[indexPath.section] = view
+//        
+//        return view
+//    }
     
 }
 
@@ -506,17 +506,16 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         if !enlargedPreviews {
             enlargedPreviews = true
             
-            self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
+            previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
             
             view.setNeedsLayout()
             reloadImagePreviewHeight()
             UIView.animateWithDuration(0.3, animations: {
-                self.tableView.beginUpdates()
-                self.tableView.endUpdates()
+                self.sheetCollectionView.reloadData()
                 self.view.layoutIfNeeded()
             }, completion: { finished in
                 self.reloadActionRows()
-                self.collectionView.imagePreviewLayout.showsSupplementaryViews = true
+                self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
             })
         }
         else {
@@ -550,18 +549,20 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
 extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let asset = assets[indexPath.section]
+        guard collectionView == sheetCollectionView else {
+            return sizeForAsset(assets[indexPath.section])
+        }
         
-        return sizeForAsset(asset)
+        return sizeForSheetItemAtIndexPath(indexPath)
     }
-    
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let inset = 2.0 * collectionViewCheckmarkInset
-        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
-        let imageWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
-        
-        return CGSizeMake(imageWidth  + inset, size.height)
-    }
+//    
+//    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        let inset = 2.0 * collectionViewCheckmarkInset
+//        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
+//        let imageWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
+//        
+//        return CGSizeMake(imageWidth  + inset, size.height)
+//    }
     
 }
 

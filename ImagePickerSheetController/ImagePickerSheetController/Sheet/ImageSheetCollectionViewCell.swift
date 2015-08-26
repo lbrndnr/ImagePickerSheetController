@@ -1,5 +1,5 @@
 //
-//  ImageSheetTableViewCell.swift
+//  ImageSheetCollectionViewCell.swift
 //  ImagePickerSheetController
 //
 //  Created by Laurin Brandner on 24/08/15.
@@ -15,11 +15,12 @@ enum RoundedCorner {
     case None
 }
 
-class ImageSheetTableViewCell: UITableViewCell {
+class ImageSheetCollectionViewCell: UICollectionViewCell {
 
     var backgroundInsets = UIEdgeInsets() {
         didSet {
             reloadMask()
+            setNeedsLayout()
         }
     }
     
@@ -31,8 +32,8 @@ class ImageSheetTableViewCell: UITableViewCell {
     
     // MARK: - Initialization
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         initialize()
     }
     

@@ -29,12 +29,12 @@ class AnimationController: NSObject {
         
         containerView.addSubview(imagePickerSheetController.view)
         
-        let tableViewOriginY = imagePickerSheetController.tableView.frame.origin.y
-        imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
+        let sheetOriginY = imagePickerSheetController.sheetCollectionView.frame.origin.y
+        imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
         imagePickerSheetController.backgroundView.alpha = 0
         
         UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseOut, animations: { () -> Void in
-            self.imagePickerSheetController.tableView.frame.origin.y = tableViewOriginY
+            self.imagePickerSheetController.sheetCollectionView.frame.origin.y = sheetOriginY
             self.imagePickerSheetController.backgroundView.alpha = 1
         }, completion: { _ in
             context.completeTransition(true)
@@ -47,7 +47,7 @@ class AnimationController: NSObject {
         }
         
         UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseIn, animations: { () -> Void in
-            self.imagePickerSheetController.tableView.frame.origin.y = containerView.bounds.maxY
+            self.imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
             self.imagePickerSheetController.backgroundView.alpha = 0
         }, completion: { _ in
             self.imagePickerSheetController.view.removeFromSuperview()
