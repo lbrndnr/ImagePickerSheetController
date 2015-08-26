@@ -17,10 +17,7 @@ private let collectionViewCheckmarkInset: CGFloat = 3.5
 public class ImagePickerSheetController: UIViewController, ImageActionFontProviderType {
     
     lazy private(set) var sheetCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
-        
+        let layout = ImageSheetCollectionViewLayout()
         let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
         collectionView.accessibilityIdentifier = "ImagePickerSheet"
         collectionView.backgroundColor = .clearColor()
@@ -511,7 +508,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             view.setNeedsLayout()
             reloadImagePreviewHeight()
             UIView.animateWithDuration(0.3, animations: {
-                self.sheetCollectionView.reloadData()
+                self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
                 self.view.layoutIfNeeded()
             }, completion: { finished in
                 self.reloadActionRows()

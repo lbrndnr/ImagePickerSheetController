@@ -22,6 +22,7 @@
 		4981CB061B8B246000A09750 /* ImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB011B8B246000A09750 /* ImagePreviewFlowLayout.swift */; };
 		4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */; };
 		4981CB091B8B255A00A09750 /* ImageSheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB081B8B255A00A09750 /* ImageSheetCollectionViewCell.swift */; };
+		499E65CF1B8E317C005B807F /* ImageSheetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499E65CE1B8E317C005B807F /* ImageSheetCollectionViewLayout.swift */; settings = {ASSET_TAGS = (); }; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */; };
@@ -100,6 +101,7 @@
 		4981CB011B8B246000A09750 /* ImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
 		4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
 		4981CB081B8B255A00A09750 /* ImageSheetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSheetCollectionViewCell.swift; sourceTree = "<group>"; };
+		499E65CE1B8E317C005B807F /* ImageSheetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSheetCollectionViewLayout.swift; sourceTree = "<group>"; };
 		49A408441B21853E00D6005C /* KIF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KIF.framework; path = ../Carthage/Build/iOS/KIF.framework; sourceTree = "<group>"; };
 		49A408461B21854300D6005C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		49A408481B2186D500D6005C /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -170,6 +172,7 @@
 				4981CB081B8B255A00A09750 /* ImageSheetCollectionViewCell.swift */,
 				4981CAFD1B8B246000A09750 /* ImagePreviewCollectionViewCell.swift */,
 				4944CA841B8DB7F3007EA349 /* ImageActionCollectionViewCell.swift */,
+				499E65CE1B8E317C005B807F /* ImageSheetCollectionViewLayout.swift */,
 				4981CAFE1B8B246000A09750 /* Preview */,
 			);
 			path = Sheet;
@@ -431,6 +434,7 @@
 				49DC4A751B14F1F600B4E78E /* AnimationController.swift in Sources */,
 				4981CB061B8B246000A09750 /* ImagePreviewFlowLayout.swift in Sources */,
 				49DC4A761B14F1F600B4E78E /* ImageAction.swift in Sources */,
+				499E65CF1B8E317C005B807F /* ImageSheetCollectionViewLayout.swift in Sources */,
 				4981CB031B8B246000A09750 /* ImagePreviewCollectionViewCell.swift in Sources */,
 				4981CB091B8B255A00A09750 /* ImageSheetCollectionViewCell.swift in Sources */,
 				492BF4E81B8A3022000ECFAC /* ImagePickerSheetController.swift in Sources */,
