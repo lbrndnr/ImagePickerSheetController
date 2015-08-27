@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		492BF4E81B8A3022000ECFAC /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */; };
 		4944CA851B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		494505AC1B2201AF00EF9ADC /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */; };
 		494505AD1B22021D00EF9ADC /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
 		494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
+		494B3B711B8EF3CB004B467C /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */; settings = {ASSET_TAGS = (); }; };
 		495F89A81B394288006B9BA4 /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4981CB031B8B246000A09750 /* SheetPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */; };
@@ -89,9 +89,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ImagePickerSheetController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetActionCollectionViewCell.swift; sourceTree = "<group>"; };
 		494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
+		494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetController.swift; sourceTree = "<group>"; };
 		496DC6D11B86F6E90011AF73 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SheetPreviewCollectionViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4981CAFF1B8B246000A09750 /* PreviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -155,14 +155,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		492BF4E61B8A3022000ECFAC /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				492BF4E71B8A3022000ECFAC /* ImagePickerSheetController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
 		4981CAFC1B8B246000A09750 /* Sheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,9 +202,9 @@
 		49DC4A531B14F1BC00B4E78E /* ImagePickerSheetController */ = {
 			isa = PBXGroup;
 			children = (
+				494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */,
 				49DC4A6E1B14F1F600B4E78E /* ImagePickerAction.swift */,
 				49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */,
-				492BF4E61B8A3022000ECFAC /* Controller */,
 				4981CAFC1B8B246000A09750 /* Sheet */,
 				49DC4A7D1B14F22200B4E78E /* Images.xcassets */,
 				49DC4A541B14F1BC00B4E78E /* Supporting Files */,
@@ -431,10 +423,10 @@
 				49DC4A751B14F1F600B4E78E /* AnimationController.swift in Sources */,
 				4981CB061B8B246000A09750 /* PreviewCollectionViewLayout.swift in Sources */,
 				49DC4A761B14F1F600B4E78E /* ImagePickerAction.swift in Sources */,
+				494B3B711B8EF3CB004B467C /* ImagePickerSheetController.swift in Sources */,
 				499E65CF1B8E317C005B807F /* SheetCollectionViewLayout.swift in Sources */,
 				4981CB031B8B246000A09750 /* SheetPreviewCollectionViewCell.swift in Sources */,
 				4981CB091B8B255A00A09750 /* SheetCollectionViewCell.swift in Sources */,
-				492BF4E81B8A3022000ECFAC /* ImagePickerSheetController.swift in Sources */,
 				4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */,
 				4981CB051B8B246000A09750 /* PreviewCollectionView.swift in Sources */,
 				4944CA851B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift in Sources */,
