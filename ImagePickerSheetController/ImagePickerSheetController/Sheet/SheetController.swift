@@ -166,8 +166,8 @@ class SheetController: NSObject {
     }
     
     private func handleAction(action: ImagePickerAction) {
-        action.handle(numberOfSelectedImages)
         actionHandlingCallback?()
+        action.handle(numberOfSelectedImages)
     }
     
     func handleCancelAction() {
