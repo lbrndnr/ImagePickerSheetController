@@ -335,11 +335,7 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     func fontForAction(action: ImagePickerAction) -> UIFont {
-        guard #available(iOS 9, *) else {
-            return UIFont.systemFontOfSize(21)
-        }
-        
-        guard action.style == .Cancel else {
+        guard #available(iOS 9, *), action.style == .Cancel else {
             return UIFont.systemFontOfSize(21)
         }
         
@@ -462,14 +458,17 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
             cell = actionCell
         }
         
+        cell.separatorVisible = (indexPath.section == 1)
+        
         // iOS specific design
         (cell.roundedCorners, cell.backgroundInsets) = attributesForRowAtIndexPath(indexPath)
-        
         if #available(iOS 9, *) {
             cell.backgroundColor = UIColor(white: 0.97, alpha: 1)
+            cell.separatorColor = UIColor(white: 0.84, alpha: 1)
         }
         else {
             cell.backgroundColor = .whiteColor()
+            cell.separatorColor = UIColor(white: 0.784, alpha: 1)
         }
         
         return cell

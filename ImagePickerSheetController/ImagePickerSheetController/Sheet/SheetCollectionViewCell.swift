@@ -30,6 +30,26 @@ class SheetCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    var separatorVisible = false {
+        didSet {
+            reloadSeparator()
+        }
+    }
+    
+    var separatorColor = UIColor.blackColor() {
+        didSet {
+            separatorView?.backgroundColor = separatorColor
+        }
+    }
+    
+    var separatorHeight: CGFloat = 1 {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
+    private var separatorView: UIView?
+    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -52,9 +72,11 @@ class SheetCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         
         reloadMask()
+        
+        separatorView?.frame = CGRect(x: bounds.minY, y: bounds.maxY - separatorHeight, width: bounds.width, height: separatorHeight)
     }
     
-    // MARK: - Masking
+    // MARK: - Mask
     
     private func reloadMask() {
         if layer.mask == nil {
@@ -90,6 +112,24 @@ class SheetCollectionViewCell: UICollectionViewCell {
         }
         
         return UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radii, height: radii)).CGPath
+    }
+    
+    // MARK: - Separator
+    
+    private func reloadSeparator() {
+        if separatorVisible {
+            if separatorView == nil {
+                let view = UIView()
+                view.backgroundColor = separatorColor
+                    
+                addSubview(view)
+                separatorView = view
+            }
+        }
+        else {
+            separatorView?.removeFromSuperview()
+            separatorView = nil
+        }
     }
     
 }
