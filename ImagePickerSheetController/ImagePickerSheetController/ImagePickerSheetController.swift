@@ -9,8 +9,8 @@
 import Foundation
 import Photos
 
-private let collectionViewInset: CGFloat = 5
-private let collectionViewCheckmarkInset: CGFloat = 3.5
+private let previewCollectionViewInset: CGFloat = 5
+private let previewCheckmarkInset: CGFloat = 3.5
 
 @available(iOS 8.0, *)
 public class ImagePickerSheetController: UIViewController {
@@ -33,7 +33,7 @@ public class ImagePickerSheetController: UIViewController {
         collectionView.accessibilityIdentifier = "ImagePickerSheetPreview"
         collectionView.backgroundColor = .clearColor()
         collectionView.allowsMultipleSelection = true
-        collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(collectionViewInset, collectionViewInset, collectionViewInset, collectionViewInset)
+        collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(previewCollectionViewInset, previewCollectionViewInset, previewCollectionViewInset, previewCollectionViewInset)
         collectionView.imagePreviewLayout.showsSupplementaryViews = false
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -161,8 +161,8 @@ public class ImagePickerSheetController: UIViewController {
     private func sizeForAsset(asset: PHAsset) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
         
-        let maxImageSize = CGSize(width: sheetController.preferredSheetWidth - 2 * collectionViewInset,
-                                 height: sheetController.imagePreviewHeight - 2 * collectionViewInset)
+        let maxImageSize = CGSize(width: sheetController.preferredSheetWidth - 2 * previewCollectionViewInset,
+                                 height: sheetController.imagePreviewHeight - 2 * previewCollectionViewInset)
         
         var width = floor(proportion*maxImageSize.height)
         if enlargedPreviews {
@@ -253,7 +253,7 @@ public class ImagePickerSheetController: UIViewController {
         }
         
         let maxHeight: CGFloat = 300
-        let maxImageWidth = view.bounds.width - 2 * collectionViewInset
+        let maxImageWidth = view.bounds.width - 2 * previewCollectionViewInset
 
         let assetRatios = assets.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
                                 .map { $0.height / $0.width }
@@ -265,7 +265,7 @@ public class ImagePickerSheetController: UIViewController {
         
         // Just a sanity check, to make sure this doesn't exceed 300 points
         let scaledHeight = max(min(assetHeight, maxHeight), 200)
-        sheetController.imagePreviewHeight = scaledHeight + 2 * collectionViewInset
+        sheetController.imagePreviewHeight = scaledHeight + 2 * previewCollectionViewInset
     }
 
 }
@@ -301,7 +301,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         NSIndexPath) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
         view.userInteractionEnabled = false
-        view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
+        view.buttonInset = UIEdgeInsetsMake(0.0, previewCheckmarkInset, previewCheckmarkInset, 0.0)
         view.selected = selectedImageIndices.contains(indexPath.section)
         
         supplementaryViews[indexPath.section] = view
@@ -384,14 +384,14 @@ extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return sizeForAsset(assets[indexPath.section])
     }
-//
-//    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        let inset = 2.0 * collectionViewCheckmarkInset
-//        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forItem: 0, inSection: section))
-//        let imageWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
-//        
-//        return CGSizeMake(imageWidth  + inset, size.height)
-//    }
+
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let inset = 2.0 * previewCheckmarkInset
+        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forItem: 0, inSection: section))
+        let imageWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
+        
+        return CGSizeMake(imageWidth  + inset, size.height)
+    }
     
 }
 
