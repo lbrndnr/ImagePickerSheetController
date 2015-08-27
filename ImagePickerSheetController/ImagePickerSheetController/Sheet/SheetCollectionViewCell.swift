@@ -50,6 +50,24 @@ class SheetCollectionViewCell: UICollectionViewCell {
     
     private var separatorView: UIView?
     
+    override var highlighted: Bool {
+        didSet {
+            reloadBackgroundColor()
+        }
+    }
+    
+    var highlightedBackgroundColor: UIColor = .clearColor() {
+        didSet {
+            reloadBackgroundColor()
+        }
+    }
+    
+    var normalBackgroundColor: UIColor = .clearColor() {
+        didSet {
+            reloadBackgroundColor()
+        }
+    }
+    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -130,6 +148,12 @@ class SheetCollectionViewCell: UICollectionViewCell {
             separatorView?.removeFromSuperview()
             separatorView = nil
         }
+    }
+    
+    // MARK - Background
+    
+    private func reloadBackgroundColor() {
+        backgroundColor = highlighted ? highlightedBackgroundColor : normalBackgroundColor
     }
     
 }
