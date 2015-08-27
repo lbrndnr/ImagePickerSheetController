@@ -16,17 +16,10 @@ private let collectionViewCheckmarkInset: CGFloat = 3.5
 public class ImagePickerSheetController: UIViewController {
     
     private lazy var sheetController: SheetController = {
-        let layout = SheetCollectionViewLayout()
-        let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
-        collectionView.accessibilityIdentifier = "ImagePickerSheet"
-        collectionView.backgroundColor = .clearColor()
-        collectionView.alwaysBounceVertical = false
-        collectionView.registerClass(SheetPreviewCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(SheetPreviewCollectionViewCell.self))
-        collectionView.registerClass(SheetActionCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(SheetActionCollectionViewCell.self))
-        
-        let controller = SheetController(sheetCollectionView: collectionView, previewCollectionView: self.previewCollectionView)
-        collectionView.dataSource = controller
-        collectionView.delegate = controller
+        let controller = SheetController(previewCollectionView: self.previewCollectionView)
+        controller.actionHandlingCallback = { [weak self] in
+            self?.dismissViewControllerAnimated(true, completion: nil)
+        }
         
         return controller
     }()
@@ -71,11 +64,10 @@ public class ImagePickerSheetController: UIViewController {
     
     private var assets = [PHAsset]()
     
-    private var selectedImageIndices = [Int]()
-    
-    /// The number of the currently selected images.
-    public var numberOfSelectedImages: Int {
-        return selectedImageIndices.count
+    private var selectedImageIndices = [Int]() {
+        didSet {
+            sheetController.numberOfSelectedImages = selectedImageIndices.count
+        }
     }
     
     /// The selected image assets
@@ -83,7 +75,7 @@ public class ImagePickerSheetController: UIViewController {
         return selectedImageIndices.map { self.assets[$0] }
     }
     
-    /// Whether the preview row has been elarged. This is the case when at least once
+    /// Whether the image preview has been elarged. This is the case when at least once
     /// image has been selected.
     public private(set) var enlargedPreviews = false
     
@@ -161,12 +153,7 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     @objc private func cancel() {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-        
-        let cancelActions = actions.filter { $0.style == ImagePickerActionStyle.Cancel }
-        if let cancelAction = cancelActions.first {
-            cancelAction.handle(numberOfSelectedImages)
-        }
+        sheetController.handleCancelAction()
     }
     
     // MARK: - Images
@@ -329,7 +316,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
 extension ImagePickerSheetController: UICollectionViewDelegate {
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        let nextIndex = indexPath.row+1
+        let nextIndex = indexPath.item+1
         if nextIndex < assets.count {
             let asset = assets[nextIndex]
             let size = sizeForAsset(asset)
@@ -400,7 +387,7 @@ extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
 //
 //    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 //        let inset = 2.0 * collectionViewCheckmarkInset
-//        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forRow: 0, inSection: section))
+//        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forItem: 0, inSection: section))
 //        let imageWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
 //        
 //        return CGSizeMake(imageWidth  + inset, size.height)

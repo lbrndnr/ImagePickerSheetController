@@ -54,7 +54,7 @@ class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
             let numberOfSections = dataSource.numberOfSectionsInCollectionView?(collectionView) ?? 0
             
             for s in 0 ..< numberOfSections {
-                let indexPath = NSIndexPath(forRow: 0, inSection: s)
+                let indexPath = NSIndexPath(forItem: 0, inSection: s)
                 let size = delegate.collectionView?(collectionView, layout: self, sizeForItemAtIndexPath: indexPath) ?? CGSizeZero
                 
                 let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
