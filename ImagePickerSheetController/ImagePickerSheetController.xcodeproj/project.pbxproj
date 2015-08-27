@@ -166,10 +166,10 @@
 		4981CAFC1B8B246000A09750 /* Sheet */ = {
 			isa = PBXGroup;
 			children = (
+				499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */,
 				4981CB081B8B255A00A09750 /* SheetCollectionViewCell.swift */,
 				4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */,
 				4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */,
-				499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */,
 				4981CAFE1B8B246000A09750 /* Preview */,
 			);
 			path = Sheet;

@@ -13,10 +13,9 @@ public enum ImagePickerActionStyle {
     case Cancel
 }
 
-public typealias Title = Int -> String
-
 public class ImagePickerAction {
     
+    public typealias Title = Int -> String
     public typealias Handler = (ImagePickerAction) -> ()
     public typealias SecondaryHandler = (ImagePickerAction, Int) -> ()
     
@@ -67,7 +66,7 @@ public class ImagePickerAction {
     
 }
 
-func ?? (left: Title?, right: Title) -> Title {
+func ?? (left: ImagePickerAction.Title?, right: ImagePickerAction.Title) -> ImagePickerAction.Title {
     if let left = left {
         return left
     }
