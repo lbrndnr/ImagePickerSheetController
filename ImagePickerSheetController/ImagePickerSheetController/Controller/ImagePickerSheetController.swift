@@ -297,7 +297,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         }
     }
     
-    // MARK: - Layout
+    // MARK: - Design
     
     private func attributesForRowAtIndexPath(indexPath: NSIndexPath) -> (corners: RoundedCorner, backgroundInsets: UIEdgeInsets) {
         guard #available(iOS 9, *) else {
@@ -333,6 +333,20 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         
         return (.None, UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
     }
+    
+    func fontForAction(action: ImageAction) -> UIFont {
+        guard #available(iOS 9, *) else {
+            return UIFont.systemFontOfSize(21)
+        }
+        
+        guard action.style == .Cancel where #available(iOS 9, *) else {
+            return UIFont.systemFontOfSize(21)
+        }
+        
+        return UIFont.boldSystemFontOfSize(21)
+    }
+    
+    // MARK: - Layout
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
