@@ -1,5 +1,5 @@
 //
-//  ImagePickerCollectionView.swift
+//  PreviewCollectionView.swift
 //  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 07/09/14.
@@ -8,20 +8,20 @@
 
 import UIKit
 
-class ImagePickerCollectionView: UICollectionView {
+class PreviewCollectionView: UICollectionView {
     
     var bouncing: Bool {
         return contentOffset.x < -contentInset.left || contentOffset.x + frame.width > contentSize.width + contentInset.right
     }
     
-    var imagePreviewLayout: ImagePreviewFlowLayout {
-        return collectionViewLayout as! ImagePreviewFlowLayout
+    var imagePreviewLayout: PreviewCollectionViewLayout {
+        return collectionViewLayout as! PreviewCollectionViewLayout
     }
     
     // MARK: - Initialization
 
     init() {
-        super.init(frame: CGRectZero, collectionViewLayout: ImagePreviewFlowLayout())
+        super.init(frame: CGRectZero, collectionViewLayout: PreviewCollectionViewLayout())
         
         initialize()
     }

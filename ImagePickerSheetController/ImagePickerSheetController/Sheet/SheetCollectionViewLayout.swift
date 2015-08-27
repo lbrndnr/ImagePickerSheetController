@@ -1,5 +1,5 @@
 //
-//  ImageSheetCollectionViewLayout.swift
+//  SheetCollectionViewLayout.swift
 //  ImagePickerSheetController
 //
 //  Created by Laurin Brandner on 26/08/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageSheetCollectionViewLayout: UICollectionViewLayout {
+class SheetCollectionViewLayout: UICollectionViewLayout {
 
     private var layoutAttributes = [[UICollectionViewLayoutAttributes]]()
     private var invalidatedLayoutAttributes: [[UICollectionViewLayoutAttributes]]?

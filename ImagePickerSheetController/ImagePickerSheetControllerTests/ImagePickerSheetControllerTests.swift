@@ -48,8 +48,8 @@ class ImagePickerSheetControllerTests: XCTestCase {
     
     let actionTitle = "Action"
     
-    func beforeEachDismissalTest(actionTitle: String, style: ImageActionStyle) {
-        imageController.addAction(ImageAction(title: actionTitle, style: style))
+    func beforeEachDismissalTest(actionTitle: String, style: ImagePickerActionStyle) {
+        imageController.addAction(ImagePickerAction(title: actionTitle, style: style))
         presentImagePickerSheetController()
     }
     
@@ -77,19 +77,19 @@ class ImagePickerSheetControllerTests: XCTestCase {
     // MARK: - Adding Actions
     
     func testAddingTwoCancelActions() {
-        imageController.addAction(ImageAction(title: "Cancel1", style: .Cancel))
-        imageController.addAction(ImageAction(title: "Cancel2", style: .Cancel))
+        imageController.addAction(ImagePickerAction(title: "Cancel1", style: .Cancel))
+        imageController.addAction(ImagePickerAction(title: "Cancel2", style: .Cancel))
         
         expect(self.imageController.actions.filter { $0.style == .Cancel }.count).to(equal(1))
     }
     
     func testDisplayOfAddedActions() {
-        let actions: [(String, ImageActionStyle)] = [("Action1", .Default),
+        let actions: [(String, ImagePickerActionStyle)] = [("Action1", .Default),
                                                      ("Action2", .Default),
                                                      ("Cancel", .Cancel)]
         
         for (title, style) in actions {
-            imageController.addAction(ImageAction(title: title, style: style))
+            imageController.addAction(ImagePickerAction(title: title, style: style))
         }
         
         presentImagePickerSheetController()
@@ -103,16 +103,16 @@ class ImagePickerSheetControllerTests: XCTestCase {
         let cancelActionTitle = "Cancel"
         let defaultActionTitle = "Action"
         
-        imageController.addAction(ImageAction(title: cancelActionTitle, style: .Cancel))
-        imageController.addAction(ImageAction(title: defaultActionTitle))
+        imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .Cancel))
+        imageController.addAction(ImagePickerAction(title: defaultActionTitle))
         
         expect(self.imageController.actions.map { $0.title }).to(equal([defaultActionTitle, cancelActionTitle]))
     }
     
     // MARK: - Action Handling
     
-    var defaultAction: ImageAction!
-    var cancelAction: ImageAction!
+    var defaultAction: ImagePickerAction!
+    var cancelAction: ImagePickerAction!
     
     var defaultActionCalled: Int!
     var cancelActionCalled: Int!
@@ -121,12 +121,12 @@ class ImagePickerSheetControllerTests: XCTestCase {
         defaultActionCalled = 0
         cancelActionCalled = 0
         
-        defaultAction = ImageAction(title: "Action", handler: { _ in
+        defaultAction = ImagePickerAction(title: "Action", handler: { _ in
             self.defaultActionCalled = self.defaultActionCalled+1
         })
         imageController.addAction(defaultAction)
         
-        cancelAction = ImageAction(title: "Cancel", style: .Cancel, handler: { _ in
+        cancelAction = ImagePickerAction(title: "Cancel", style: .Cancel, handler: { _ in
             self.cancelActionCalled = self.cancelActionCalled+1
         })
         imageController.addAction(cancelAction)
@@ -164,7 +164,7 @@ class ImagePickerSheetControllerTests: XCTestCase {
     func testAdaptionOfActionTitles() {
         presentImagePickerSheetController()
         
-        imageController.addAction(ImageAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
+        imageController.addAction(ImagePickerAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
         
         let indexPath = NSIndexPath(forItem: 0, inSection: 0)
         tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)

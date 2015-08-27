@@ -1,5 +1,5 @@
 //
-//  ImageActionCollectionViewCell.swift
+//  SheetActionCollectionViewCell.swift
 //  ImagePickerSheetController
 //
 //  Created by Laurin Brandner on 26/08/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageActionCollectionViewCell: ImageSheetCollectionViewCell {
+class SheetActionCollectionViewCell: SheetCollectionViewCell {
 
     lazy private(set) var textLabel: UILabel = {
         let label = UILabel()

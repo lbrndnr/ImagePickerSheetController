@@ -1,5 +1,5 @@
 //
-//  ImagePreviewCollectionViewCell.swift
+//  SheetPreviewCollectionViewCell.swift
 //  ImagePickerSheetController
 //
 //  Created by Laurin Brandner on 06/09/14.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class ImagePreviewCollectionViewCell: ImageSheetCollectionViewCell {
+class SheetPreviewCollectionViewCell: SheetCollectionViewCell {
     
-    var collectionView: ImagePickerCollectionView? {
+    var collectionView: PreviewCollectionView? {
         willSet {
             if let collectionView = collectionView {
                 collectionView.removeFromSuperview()

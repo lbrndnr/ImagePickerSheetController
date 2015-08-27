@@ -1,5 +1,5 @@
 //
-//  ImageAction.swift
+//  ImagePickerAction.swift
 //  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 24/05/15.
@@ -8,17 +8,17 @@
 
 import Foundation
 
-public enum ImageActionStyle {
+public enum ImagePickerActionStyle {
     case Default
     case Cancel
 }
 
 public typealias Title = Int -> String
 
-public class ImageAction {
+public class ImagePickerAction {
     
-    public typealias Handler = (ImageAction) -> ()
-    public typealias SecondaryHandler = (ImageAction, Int) -> ()
+    public typealias Handler = (ImagePickerAction) -> ()
+    public typealias SecondaryHandler = (ImagePickerAction, Int) -> ()
     
     /// The title of the action's button.
     public let title: String
@@ -27,22 +27,22 @@ public class ImageAction {
     public let secondaryTitle: Title
     
     /// The style of the action. This is used to call a cancel handler when dismissing the controller by tapping the background.
-    public let style: ImageActionStyle
+    public let style: ImagePickerActionStyle
     
     let handler: Handler?
     let secondaryHandler: SecondaryHandler?
     
-    /// Initializes a new ImageAction. The secondary title and handler are used when at least 1 image has been selected.
+    /// Initializes a new ImagePickerAction. The secondary title and handler are used when at least 1 image has been selected.
     /// Secondary title defaults to title if not specified.
     /// Secondary Handler defaults to handler if both, the secondary handler and secondary title are not specified.
-    public convenience init(title: String, secondaryTitle: String? = nil, style: ImageActionStyle = .Default, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
+    public convenience init(title: String, secondaryTitle: String? = nil, style: ImagePickerActionStyle = .Default, handler: Handler? = nil, secondaryHandler: SecondaryHandler? = nil) {
         self.init(title: title, secondaryTitle: secondaryTitle.map { string in { _ in string }}, style: style, handler: handler, secondaryHandler: secondaryHandler)
     }
     
-    /// Initializes a new ImageAction. The secondary title and handler are used when at least 1 image has been selected.
+    /// Initializes a new ImagePickerAction. The secondary title and handler are used when at least 1 image has been selected.
     /// Secondary title defaults to title if not specified. Use the closure to format a title according to the selection.
     /// Secondary Handler defaults to handler if both, the secondary handler and secondary title are not specified.
-    public init(title: String, secondaryTitle: Title?, style: ImageActionStyle = .Default, handler: Handler? = nil, var secondaryHandler: SecondaryHandler? = nil) {
+    public init(title: String, secondaryTitle: Title?, style: ImagePickerActionStyle = .Default, handler: Handler? = nil, var secondaryHandler: SecondaryHandler? = nil) {
         if let handler = handler where secondaryTitle == nil && secondaryHandler == nil {
             secondaryHandler = { action, _ in
                 handler(action)

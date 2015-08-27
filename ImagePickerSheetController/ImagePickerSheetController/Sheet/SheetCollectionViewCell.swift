@@ -1,5 +1,5 @@
 //
-//  ImageSheetCollectionViewCell.swift
+//  SheetCollectionViewCell.swift
 //  ImagePickerSheetController
 //
 //  Created by Laurin Brandner on 24/08/15.
@@ -15,7 +15,7 @@ enum RoundedCorner {
     case None
 }
 
-class ImageSheetCollectionViewCell: UICollectionViewCell {
+class SheetCollectionViewCell: UICollectionViewCell {
 
     var backgroundInsets = UIEdgeInsets() {
         didSet {

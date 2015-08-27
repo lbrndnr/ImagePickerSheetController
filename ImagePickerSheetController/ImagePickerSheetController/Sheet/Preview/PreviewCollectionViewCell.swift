@@ -1,5 +1,5 @@
 //
-//  ImageCollectionViewCell.swift
+//  PreviewCollectionViewCell.swift
 //  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 06/09/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageCollectionViewCell: UICollectionViewCell {
+class PreviewCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()

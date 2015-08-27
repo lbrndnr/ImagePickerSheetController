@@ -1,5 +1,5 @@
 //
-//  ImagePreviewFlowLayout.swift
+//  PreviewCollectionViewLayout.swift
 //  ImagePickerSheet
 //
 //  Created by Laurin Brandner on 06/09/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImagePreviewFlowLayout: UICollectionViewFlowLayout {
+class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
     
     var invalidationCenteredIndexPath: NSIndexPath?
     

@@ -14,24 +14,24 @@ private let collectionViewInset: CGFloat = 5
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 
 @available(iOS 8.0, *)
-public class ImagePickerSheetController: UIViewController, ImageActionFontProviderType {
+public class ImagePickerSheetController: UIViewController {
     
     lazy private(set) var sheetCollectionView: UICollectionView = {
-        let layout = ImageSheetCollectionViewLayout()
+        let layout = SheetCollectionViewLayout()
         let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
         collectionView.accessibilityIdentifier = "ImagePickerSheet"
         collectionView.backgroundColor = .clearColor()
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.alwaysBounceVertical = false
-        collectionView.registerClass(ImagePreviewCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImagePreviewCollectionViewCell.self))
-        collectionView.registerClass(ImageActionCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageActionCollectionViewCell.self))
+        collectionView.registerClass(SheetPreviewCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(SheetPreviewCollectionViewCell.self))
+        collectionView.registerClass(SheetActionCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(SheetActionCollectionViewCell.self))
         
         return collectionView
     }()
     
-    private private(set) lazy var previewCollectionView: ImagePickerCollectionView = {
-        let collectionView = ImagePickerCollectionView()
+    private private(set) lazy var previewCollectionView: PreviewCollectionView = {
+        let collectionView = PreviewCollectionView()
         collectionView.accessibilityIdentifier = "ImagePickerSheetPreview"
         collectionView.backgroundColor = .clearColor()
         collectionView.allowsMultipleSelection = true
@@ -41,7 +41,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
-        collectionView.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageCollectionViewCell.self))
+        collectionView.registerClass(PreviewCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(PreviewCollectionViewCell.self))
         collectionView.registerClass(PreviewSupplementaryView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self))
         
         return collectionView
@@ -57,7 +57,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
     }()
     
     /// All the actions in the same order as they were added. The first action is shown at the top.
-    public private(set) var actions = [ImageAction]() {
+    public private(set) var actions = [ImagePickerAction]() {
         didSet {
             if isViewLoaded() {
                 reloadActionRows()
@@ -158,7 +158,7 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
     /// Adds an new action.
     /// If the passed action is of type Cancel, any pre-existing Cancel actions will be removed.
     /// Always arranges the actions so that the Cancel action appears at the bottom.
-    public func addAction(action: ImageAction) {
+    public func addAction(action: ImagePickerAction) {
         if action.style == .Cancel {
             actions = actions.filter { $0.style != .Cancel }
         }
@@ -334,12 +334,12 @@ public class ImagePickerSheetController: UIViewController, ImageActionFontProvid
         return (.None, UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
     }
     
-    func fontForAction(action: ImageAction) -> UIFont {
+    func fontForAction(action: ImagePickerAction) -> UIFont {
         guard #available(iOS 9, *) else {
             return UIFont.systemFontOfSize(21)
         }
         
-        guard action.style == .Cancel where #available(iOS 9, *) else {
+        guard action.style == .Cancel else {
             return UIFont.systemFontOfSize(21)
         }
         
@@ -431,7 +431,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         guard collectionView == sheetCollectionView else {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageCollectionViewCell.self), forIndexPath: indexPath) as! ImageCollectionViewCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PreviewCollectionViewCell.self), forIndexPath: indexPath) as! PreviewCollectionViewCell
             
             let asset = assets[indexPath.section]
             let size = sizeForAsset(asset)
@@ -445,17 +445,17 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
             return cell
         }
         
-        let cell: ImageSheetCollectionViewCell
+        let cell: SheetCollectionViewCell
         
         if indexPath.section == 0 {
-            let previewCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImagePreviewCollectionViewCell.self), forIndexPath: indexPath) as! ImagePreviewCollectionViewCell
+            let previewCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(SheetPreviewCollectionViewCell.self), forIndexPath: indexPath) as! SheetPreviewCollectionViewCell
             previewCell.collectionView = previewCollectionView
             
             cell = previewCell
         }
         else {
             let action = actions[indexPath.row]
-            let actionCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageActionCollectionViewCell.self), forIndexPath: indexPath) as! ImageActionCollectionViewCell
+            let actionCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(SheetActionCollectionViewCell.self), forIndexPath: indexPath) as! SheetActionCollectionViewCell
             actionCell.textLabel.font = fontForAction(action)
             actionCell.textLabel.text = selectedImageIndices.count > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
             
