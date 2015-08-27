@@ -252,7 +252,7 @@ public class ImagePickerSheetController: UIViewController {
             return
         }
         
-        let maxHeight: CGFloat = 300
+        let maxHeight: CGFloat = 400
         let maxImageWidth = view.bounds.width - 2 * previewCollectionViewInset
 
         let assetRatios = assets.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }

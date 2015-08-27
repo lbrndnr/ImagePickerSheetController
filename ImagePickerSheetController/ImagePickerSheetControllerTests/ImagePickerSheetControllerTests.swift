@@ -191,7 +191,6 @@ class ImagePickerSheetControllerTests: XCTestCase {
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
-        expect(self.imageController.numberOfSelectedImages).to(equal(count))
         expect(self.imageController.selectedImageAssets.count).to(equal(count))
     }
     
@@ -214,7 +213,6 @@ class ImagePickerSheetControllerTests: XCTestCase {
         let indexPath = NSIndexPath(forItem: 0, inSection: 0)
         tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         
-        expect(self.imageController.numberOfSelectedImages).to(equal(2))
         expect(self.imageController.selectedImageAssets.count).to(equal(2))
         
         let selectedAssets = imageController.selectedImageAssets
@@ -236,7 +234,6 @@ class ImagePickerSheetControllerTests: XCTestCase {
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
-        expect(self.imageController.numberOfSelectedImages).to(equal(maxSelection))
         expect(self.imageController.selectedImageAssets.count).to(equal(maxSelection))
         
         let selectedAssets = imageController.selectedImageAssets

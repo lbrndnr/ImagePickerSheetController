@@ -177,6 +177,9 @@ class SheetController: NSObject {
         if let cancelAction = cancelAction {
             handleAction(cancelAction)
         }
+        else {
+            actionHandlingCallback?()
+        }
     }
     
 }
