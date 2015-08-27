@@ -68,14 +68,29 @@ class SheetCollectionViewLayout: UICollectionViewLayout {
                                .filter { CGRectIntersectsRect(rect, $0.frame) }
     }
     
+    private func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath, allAttributes: [[UICollectionViewLayoutAttributes]]) -> UICollectionViewLayoutAttributes? {
+        guard allAttributes.count > indexPath.section && allAttributes[indexPath.section].count > indexPath.item else {
+            return nil
+        }
+        
+        return allAttributes[indexPath.section][indexPath.item]
+    }
+    
+    private func invalidatedLayoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let invalidatedLayoutAttributes = invalidatedLayoutAttributes else {
+            return nil
+        }
+        
+        return layoutAttributesForItemAtIndexPath(indexPath, allAttributes: invalidatedLayoutAttributes)
+    }
+    
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return layoutAttributes[indexPath.section][indexPath.item]
+        return layoutAttributesForItemAtIndexPath(indexPath, allAttributes: layoutAttributes)
     }
     
     override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let invalidatedItemAttributes = invalidatedLayoutAttributes?[itemIndexPath.section][itemIndexPath.item]
-        return invalidatedItemAttributes ?? finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath)
-    }
+        return invalidatedLayoutAttributesForItemAtIndexPath(itemIndexPath) ?? layoutAttributesForItemAtIndexPath(itemIndexPath)
+     }
     
     override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         return layoutAttributesForItemAtIndexPath(itemIndexPath)
