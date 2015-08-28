@@ -262,7 +262,7 @@ public class ImagePickerSheetController: UIViewController {
                                       .sort(>)
         let assetHeight = round(assetHeights.first ?? 0)
         
-        // Just a sanity check, to make sure this doesn't exceed 300 points
+        // Just a sanity check, to make sure this doesn't exceed 400 points
         let scaledHeight = max(min(assetHeight, maxHeight), 200)
         sheetController.imagePreviewHeight = scaledHeight + 2 * previewCollectionViewInset
     }
