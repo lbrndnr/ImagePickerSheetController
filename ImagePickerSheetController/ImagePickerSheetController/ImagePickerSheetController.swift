@@ -341,9 +341,17 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             
             previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
             
+            let animationDuration: NSTimeInterval
+            if #available(iOS 9, *) {
+                animationDuration = 0.2
+            }
+            else {
+                animationDuration = 0.3
+            }
+            
             view.setNeedsLayout()
             reloadImagePreviewHeight()
-            UIView.animateWithDuration(0.3, animations: {
+            UIView.animateWithDuration(animationDuration, animations: {
                 self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
                 self.view.layoutIfNeeded()
             }, completion: { finished in
