@@ -28,11 +28,7 @@ class SheetController: NSObject {
     
     var previewCollectionView: PreviewCollectionView
     
-    var actions = [ImagePickerAction]() {
-        didSet {
-            reloadActionItems()
-        }
-    }
+    private(set) var actions = [ImagePickerAction]()
     
     var actionHandlingCallback: (() -> ())?
     
@@ -163,6 +159,8 @@ class SheetController: NSObject {
             let cancelAction = actions.removeAtIndex(index)
             actions.append(cancelAction)
         }
+        
+        reloadActionItems()
     }
     
     private func handleAction(action: ImagePickerAction) {

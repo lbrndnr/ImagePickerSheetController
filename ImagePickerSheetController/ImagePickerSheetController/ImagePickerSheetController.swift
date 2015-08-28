@@ -150,6 +150,7 @@ public class ImagePickerSheetController: UIViewController {
     /// Always arranges the actions so that the Cancel action appears at the bottom.
     public func addAction(action: ImagePickerAction) {
         sheetController.addAction(action)
+        view.setNeedsLayout()
     }
     
     @objc private func cancel() {
@@ -225,11 +226,9 @@ public class ImagePickerSheetController: UIViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        reloadImagePreviewHeight()
-        
         backgroundView.frame = view.bounds
-        sheetCollectionView.frame = view.bounds
         
+        reloadImagePreviewHeight()
         let sheetHeight = sheetController.preferredSheetHeight
         let sheetSize = CGSize(width: view.bounds.width, height: sheetHeight)
         
@@ -338,8 +337,10 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         
         if !enlargedPreviews {
             enlargedPreviews = true
-            
             previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
+            reloadImagePreviewHeight()
+            
+            view.setNeedsLayout()
             
             let animationDuration: NSTimeInterval
             if #available(iOS 9, *) {
@@ -348,9 +349,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             else {
                 animationDuration = 0.3
             }
-            
-            view.setNeedsLayout()
-            reloadImagePreviewHeight()
+        
             UIView.animateWithDuration(animationDuration, animations: {
                 self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
                 self.view.layoutIfNeeded()
