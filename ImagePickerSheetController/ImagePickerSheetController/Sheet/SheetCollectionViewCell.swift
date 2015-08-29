@@ -20,6 +20,7 @@ class SheetCollectionViewCell: UICollectionViewCell {
     var backgroundInsets = UIEdgeInsets() {
         didSet {
             reloadMask()
+            reloadSeparator()
             setNeedsLayout()
         }
     }
@@ -148,7 +149,7 @@ class SheetCollectionViewCell: UICollectionViewCell {
     // MARK: - Separator
     
     private func reloadSeparator() {
-        if separatorVisible {
+        if separatorVisible && backgroundInsets.bottom < separatorHeight {
             if separatorView == nil {
                 let view = UIView()
                 view.backgroundColor = separatorColor
