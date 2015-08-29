@@ -127,7 +127,7 @@ public class ImagePickerSheetController: UIViewController {
                 if status == .Authorized {
                     dispatch_async(dispatch_get_main_queue()) {
                         self.fetchAssets()
-                        
+                        self.previewCollectionView.reloadData()
                         self.sheetCollectionView.reloadData()
                         self.view.setNeedsLayout()
                         
