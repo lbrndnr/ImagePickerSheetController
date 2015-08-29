@@ -68,6 +68,19 @@ class SheetCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    private var needsMasking: Bool {
+        guard backgroundInsets == UIEdgeInsets() else {
+            return true
+        }
+        
+        switch roundedCorners {
+        case .None:
+            return false
+        default:
+            return true
+        }
+    }
+    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -97,7 +110,7 @@ class SheetCollectionViewCell: UICollectionViewCell {
     // MARK: - Mask
     
     private func reloadMask() {
-        if layer.mask == nil {
+        if needsMasking && layer.mask == nil {
             let maskLayer = CAShapeLayer()
             maskLayer.frame = bounds
             maskLayer.lineWidth = 0
