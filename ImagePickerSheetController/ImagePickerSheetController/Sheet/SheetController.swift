@@ -41,6 +41,9 @@ class SheetController: NSObject {
     }
     
     var preferredSheetWidth: CGFloat {
+        guard #available(iOS 9, *) else {
+            return sheetCollectionView.bounds.width
+        }
         return sheetCollectionView.bounds.width - 2 * defaultInset
     }
     
