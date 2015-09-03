@@ -275,6 +275,41 @@ public class ImagePickerSheetController: UIViewController {
         let scaledHeight = max(min(assetHeight, maxHeight), 200)
         maximumImagePreviewHeight = scaledHeight + 2 * previewCollectionViewInset
     }
+    
+    // MARK: -
+    
+    func enlargePreviewsByCenteringToIndexPath(indexPath: NSIndexPath?) {
+        previewCollectionView.indexPathsForVisibleItems()
+                             .forEach { indexPath in
+                                 let asset = assets[indexPath.section]
+                                 let cell = previewCollectionView.cellForItemAtIndexPath(indexPath) as! PreviewCollectionViewCell
+                                 requestImageForAsset(asset, enlarged: true) { image in
+                                    cell.imageView.image = image
+                                 }
+                             }
+        
+        enlargedPreviews = true
+        previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
+        reloadCurrentImagePreviewHeight(invalidateLayout: false)
+        
+        view.setNeedsLayout()
+        
+        let animationDuration: NSTimeInterval
+        if #available(iOS 9, *) {
+            animationDuration = 0.2
+        }
+        else {
+            animationDuration = 0.3
+        }
+        
+        UIView.animateWithDuration(animationDuration, animations: {
+            self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
+            self.view.layoutIfNeeded()
+        }, completion: { finished in
+            self.sheetController.reloadActionItems()
+            self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
+        })
+    }
 
 }
 
@@ -349,27 +384,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         selectedImageIndices.append(indexPath.section)
         
         if !enlargedPreviews {
-            enlargedPreviews = true
-            previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
-            reloadCurrentImagePreviewHeight(invalidateLayout: false)
-            
-            view.setNeedsLayout()
-            
-            let animationDuration: NSTimeInterval
-            if #available(iOS 9, *) {
-                animationDuration = 0.2
-            }
-            else {
-                animationDuration = 0.3
-            }
-        
-            UIView.animateWithDuration(animationDuration, animations: {
-                self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
-                self.view.layoutIfNeeded()
-            }, completion: { finished in
-                self.sheetController.reloadActionItems()
-                self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
-            })
+            enlargePreviewsByCenteringToIndexPath(indexPath)
         }
         else {
             if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
