@@ -79,6 +79,9 @@ public class ImagePickerSheetController: UIViewController {
     /// image has been selected.
     public private(set) var enlargedPreviews = false
     
+    private let minimumImagePreviewHeight: CGFloat = 129
+    private var maximumImagePreviewHeight: CGFloat = 129
+    
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
     
     private let imageManager = PHCachingImageManager()
@@ -115,7 +118,7 @@ public class ImagePickerSheetController: UIViewController {
         preferredContentSize = CGSize(width: 400, height: view.frame.height)
         
         if PHPhotoLibrary.authorizationStatus() == .Authorized {
-            fetchAssets()
+            prepareAssets()
         }
     }
     
@@ -126,7 +129,7 @@ public class ImagePickerSheetController: UIViewController {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .Authorized {
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.fetchAssets()
+                        self.prepareAssets()
                         self.previewCollectionView.reloadData()
                         self.sheetCollectionView.reloadData()
                         self.view.setNeedsLayout()
@@ -159,11 +162,12 @@ public class ImagePickerSheetController: UIViewController {
     
     // MARK: - Images
     
-    private func sizeForAsset(asset: PHAsset) -> CGSize {
+    private func sizeForAsset(asset: PHAsset, enlarged: Bool) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
+        let imagePreviewHeight = enlarged ? maximumImagePreviewHeight : minimumImagePreviewHeight
         
         let maxImageSize = CGSize(width: sheetController.preferredSheetWidth - 2 * previewCollectionViewInset,
-                                 height: sheetController.imagePreviewHeight - 2 * previewCollectionViewInset)
+                                 height: imagePreviewHeight - 2 * previewCollectionViewInset)
         
         var width = floor(proportion*maxImageSize.height)
         if enlargedPreviews {
@@ -178,6 +182,12 @@ public class ImagePickerSheetController: UIViewController {
         return CGSize(width: scale*size.width, height: scale*size.height)
     }
     
+    private func prepareAssets() {
+        fetchAssets()
+        reloadMaximumImagePreviewHeight()
+        reloadCurrentImagePreviewHeight()
+    }
+    
     private func fetchAssets() {
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -190,11 +200,8 @@ public class ImagePickerSheetController: UIViewController {
         }
     }
     
-    private func requestImageForAsset(asset: PHAsset, size: CGSize? = nil, deliveryMode: PHImageRequestOptionsDeliveryMode = .Opportunistic, completion: (image: UIImage?) -> Void) {
-        var targetSize = PHImageManagerMaximumSize
-        if let size = size {
-            targetSize = targetSizeForAssetOfSize(size)
-        }
+    private func requestImageForAsset(asset: PHAsset, enlarged: Bool, deliveryMode: PHImageRequestOptionsDeliveryMode = .Opportunistic, completion: (image: UIImage?) -> ()) {
+        let targetSize = targetSizeForAssetOfSize(sizeForAsset(asset, enlarged: enlarged))
         
         let options = PHImageRequestOptions()
         options.deliveryMode = deliveryMode;
@@ -213,10 +220,10 @@ public class ImagePickerSheetController: UIViewController {
         }
     }
     
-    private func prefetchImagesForAsset(asset: PHAsset, size: CGSize) {
+    private func prefetchImagesForAsset(asset: PHAsset, enlarged: Bool) {
         // Not necessary to cache image because PHImageManager won't return burst images
         if !asset.representsBurst {
-            let targetSize = targetSizeForAssetOfSize(size)
+            let targetSize = targetSizeForAssetOfSize(sizeForAsset(asset, enlarged: enlarged))
             imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: nil)
         }
     }
@@ -228,7 +235,9 @@ public class ImagePickerSheetController: UIViewController {
         
         backgroundView.frame = view.bounds
         
-        reloadImagePreviewHeight()
+        reloadMaximumImagePreviewHeight()
+        reloadCurrentImagePreviewHeight()
+        
         let sheetHeight = sheetController.preferredSheetHeight
         let sheetSize = CGSize(width: view.bounds.width, height: sheetHeight)
         
@@ -238,19 +247,19 @@ public class ImagePickerSheetController: UIViewController {
         sheetCollectionView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-sheetHeight), size: sheetSize)
     }
     
-    private func reloadImagePreviewHeight() {
-        guard assets.count > 0 else {
+    private func reloadCurrentImagePreviewHeight() {
+        if assets.count <= 0 {
             sheetController.imagePreviewHeight = 0
-            return
         }
-        
-        let minHeight: CGFloat = 129
-        
-        guard enlargedPreviews else {
-            sheetController.imagePreviewHeight = minHeight
-            return
+        else if assets.count > 0 && enlargedPreviews {
+            sheetController.imagePreviewHeight = maximumImagePreviewHeight
         }
-        
+        else {
+            sheetController.imagePreviewHeight = minimumImagePreviewHeight
+        }
+    }
+    
+    private func reloadMaximumImagePreviewHeight() {
         let maxHeight: CGFloat = 400
         let maxImageWidth = view.bounds.width - 2 * previewCollectionViewInset
 
@@ -264,7 +273,7 @@ public class ImagePickerSheetController: UIViewController {
         
         // Just a sanity check, to make sure this doesn't exceed 400 points
         let scaledHeight = max(min(assetHeight, maxHeight), 200)
-        sheetController.imagePreviewHeight = scaledHeight + 2 * previewCollectionViewInset
+        maximumImagePreviewHeight = scaledHeight + 2 * previewCollectionViewInset
     }
 
 }
@@ -285,9 +294,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PreviewCollectionViewCell.self), forIndexPath: indexPath) as! PreviewCollectionViewCell
         
         let asset = assets[indexPath.section]
-        let size = sizeForAsset(asset)
-        
-        requestImageForAsset(asset, size: size) { image in
+        requestImageForAsset(asset, enlarged: enlargedPreviews) { image in
             cell.imageView.image = image
         }
         
@@ -315,12 +322,18 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
 extension ImagePickerSheetController: UICollectionViewDelegate {
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        // If the previews are not enlarged, prefetch the enlarged version
+        // in case the user selects it -> instant high res images
+        if !enlargedPreviews {
+            let asset = assets[indexPath.item]
+            prefetchImagesForAsset(asset, enlarged: true)
+        }
+        
+        // Prefetch the next image
         let nextIndex = indexPath.item+1
         if nextIndex < assets.count {
             let asset = assets[nextIndex]
-            let size = sizeForAsset(asset)
-            
-            self.prefetchImagesForAsset(asset, size: size)
+            self.prefetchImagesForAsset(asset, enlarged: enlargedPreviews)
         }
     }
     
@@ -338,7 +351,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         if !enlargedPreviews {
             enlargedPreviews = true
             previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
-            reloadImagePreviewHeight()
+            reloadCurrentImagePreviewHeight()
             
             view.setNeedsLayout()
             
@@ -389,7 +402,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
 extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return sizeForAsset(assets[indexPath.section])
+        return sizeForAsset(assets[indexPath.section], enlarged: enlargedPreviews)
     }
 
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
