@@ -32,7 +32,7 @@ class SheetController: NSObject {
     
     var actionHandlingCallback: (() -> ())?
     
-    var imagePreviewHeight: CGFloat = 0
+    private(set) var imagePreviewHeight: CGFloat = 0
     var numberOfSelectedImages = 0
     
     var preferredSheetHeight: CGFloat {
@@ -180,6 +180,15 @@ class SheetController: NSObject {
         }
         else {
             actionHandlingCallback?()
+        }
+    }
+    
+    // MARK: - 
+    
+    func setImagePreviewHeight(height: CGFloat, invalidateLayout: Bool) {
+        imagePreviewHeight = height
+        if invalidateLayout {
+            sheetCollectionView.collectionViewLayout.invalidateLayout()
         }
     }
     

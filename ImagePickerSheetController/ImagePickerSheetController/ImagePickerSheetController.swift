@@ -185,7 +185,7 @@ public class ImagePickerSheetController: UIViewController {
     private func prepareAssets() {
         fetchAssets()
         reloadMaximumImagePreviewHeight()
-        reloadCurrentImagePreviewHeight()
+        reloadCurrentImagePreviewHeight(invalidateLayout: false)
     }
     
     private func fetchAssets() {
@@ -236,7 +236,7 @@ public class ImagePickerSheetController: UIViewController {
         backgroundView.frame = view.bounds
         
         reloadMaximumImagePreviewHeight()
-        reloadCurrentImagePreviewHeight()
+        reloadCurrentImagePreviewHeight(invalidateLayout: true)
         
         let sheetHeight = sheetController.preferredSheetHeight
         let sheetSize = CGSize(width: view.bounds.width, height: sheetHeight)
@@ -247,15 +247,15 @@ public class ImagePickerSheetController: UIViewController {
         sheetCollectionView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY-sheetHeight), size: sheetSize)
     }
     
-    private func reloadCurrentImagePreviewHeight() {
+    private func reloadCurrentImagePreviewHeight(invalidateLayout invalidate: Bool) {
         if assets.count <= 0 {
-            sheetController.imagePreviewHeight = 0
+            sheetController.setImagePreviewHeight(0, invalidateLayout: invalidate)
         }
         else if assets.count > 0 && enlargedPreviews {
-            sheetController.imagePreviewHeight = maximumImagePreviewHeight
+            sheetController.setImagePreviewHeight(maximumImagePreviewHeight, invalidateLayout: invalidate)
         }
         else {
-            sheetController.imagePreviewHeight = minimumImagePreviewHeight
+            sheetController.setImagePreviewHeight(minimumImagePreviewHeight, invalidateLayout: invalidate)
         }
     }
     
@@ -351,7 +351,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         if !enlargedPreviews {
             enlargedPreviews = true
             previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
-            reloadCurrentImagePreviewHeight()
+            reloadCurrentImagePreviewHeight(invalidateLayout: false)
             
             view.setNeedsLayout()
             
