@@ -44,6 +44,8 @@ public class ImagePickerSheetController: UIViewController {
         return collectionView
     }()
     
+    private var supplementaryViews = [Int: PreviewSupplementaryView]()
+    
     lazy var backgroundView: UIView = {
         let view = UIView()
         view.accessibilityIdentifier = "ImagePickerSheetBackground"
@@ -61,16 +63,6 @@ public class ImagePickerSheetController: UIViewController {
     /// Maximum selection of images.
     public var maximumSelection: Int?
     
-    private var assets = [PHAsset]()
-    
-    private lazy var requestOptions: PHImageRequestOptions = {
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .HighQualityFormat
-        options.resizeMode = .Fast
-        
-        return options
-    }()
-    
     private var selectedImageIndices = [Int]() {
         didSet {
             sheetController.numberOfSelectedImages = selectedImageIndices.count
@@ -82,14 +74,24 @@ public class ImagePickerSheetController: UIViewController {
         return selectedImageIndices.map { self.assets[$0] }
     }
     
+    private var assets = [PHAsset]()
+    
+    private lazy var requestOptions: PHImageRequestOptions = {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .HighQualityFormat
+        options.resizeMode = .Fast
+        
+        return options
+    }()
+    
+    private let imageManager = PHCachingImageManager()
+    
     /// Whether the image preview has been elarged. This is the case when at least once
     /// image has been selected.
     public private(set) var enlargedPreviews = false
     
     private let minimumPreviewHeight: CGFloat = 129
     private var maximumPreviewHeight: CGFloat = 129
-    
-    private var supplementaryViews = [Int: PreviewSupplementaryView]()
     
     private var previewCheckmarkInset: CGFloat {
         guard #available(iOS 9, *) else {
@@ -98,8 +100,6 @@ public class ImagePickerSheetController: UIViewController {
         
         return 12.5
     }
-    
-    private let imageManager = PHCachingImageManager()
     
     // MARK: - Initialization
     
@@ -284,7 +284,7 @@ public class ImagePickerSheetController: UIViewController {
     
     // MARK: -
     
-    func enlargePreviewsByCenteringToIndexPath(indexPath: NSIndexPath?) {
+    func enlargePreviewsByCenteringToIndexPath(indexPath: NSIndexPath?, completion: (Bool -> ())?) {
         enlargedPreviews = true
         previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
         reloadCurrentPreviewHeight(invalidateLayout: false)
@@ -302,12 +302,9 @@ public class ImagePickerSheetController: UIViewController {
         UIView.animateWithDuration(animationDuration, animations: {
             self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
             self.view.layoutIfNeeded()
-        }, completion: { finished in
-            self.sheetController.reloadActionItems()
-            self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
-        })
+        }, completion: completion)
     }
-
+    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -375,7 +372,10 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         selectedImageIndices.append(indexPath.section)
         
         if !enlargedPreviews {
-            enlargePreviewsByCenteringToIndexPath(indexPath)
+            enlargePreviewsByCenteringToIndexPath(indexPath) { _ in
+                self.sheetController.reloadActionItems()
+                self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
+            }
         }
         else {
             // scrollToItemAtIndexPath doesn't work reliably
