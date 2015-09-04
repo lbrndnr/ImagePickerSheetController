@@ -389,6 +389,8 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             }
         }
         
+        // Just to make sure the image is only selected once
+        selectedImageIndices = selectedImageIndices.filter { $0 != indexPath.section }
         selectedImageIndices.append(indexPath.section)
         
         if !enlargedPreviews {
