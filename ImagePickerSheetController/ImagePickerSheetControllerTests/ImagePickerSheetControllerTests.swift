@@ -80,7 +80,7 @@ class ImagePickerSheetControllerTests: XCTestCase {
         imageController.addAction(ImagePickerAction(title: "Cancel1", style: .Cancel))
         imageController.addAction(ImagePickerAction(title: "Cancel2", style: .Cancel))
         
-        expect(self.imageController.actions.filter { $0.style == .Cancel }.count).to(equal(1))
+        expect(self.imageController.actions.filter { $0.style == .Cancel }.count) == 1
     }
     
     func testDisplayOfAddedActions() {
@@ -95,7 +95,7 @@ class ImagePickerSheetControllerTests: XCTestCase {
         presentImagePickerSheetController()
         
         for (title, _) in actions {
-            self.tester().waitForViewWithAccessibilityLabel(title)
+            tester().waitForViewWithAccessibilityLabel(title)
         }
     }
     
@@ -106,7 +106,7 @@ class ImagePickerSheetControllerTests: XCTestCase {
         imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .Cancel))
         imageController.addAction(ImagePickerAction(title: defaultActionTitle))
         
-        expect(self.imageController.actions.map { $0.title }).to(equal([defaultActionTitle, cancelActionTitle]))
+        expect(self.imageController.actions.map { $0.title }) == [defaultActionTitle, cancelActionTitle]
     }
     
     // MARK: - Action Handling
@@ -139,8 +139,8 @@ class ImagePickerSheetControllerTests: XCTestCase {
         
         tester().tapViewWithAccessibilityLabel(defaultAction.title)
         
-        expect(self.defaultActionCalled).to(equal(1))
-        expect(self.cancelActionCalled).to(equal(0))
+        expect(self.defaultActionCalled) == 1
+        expect(self.cancelActionCalled) == 0
     }
     
     func testCancelActionHandlingWhenTappingAction() {
@@ -148,17 +148,17 @@ class ImagePickerSheetControllerTests: XCTestCase {
         
         tester().tapViewWithAccessibilityLabel(cancelAction.title)
         
-        expect(self.defaultActionCalled).to(equal(0))
-        expect(self.cancelActionCalled).to(equal(1))
+        expect(self.defaultActionCalled) == 0
+        expect(self.cancelActionCalled) == 1
     }
     
     func testCancelActionHandlingWhenTappingBackground() {
         beforeEachActionHandlingTest()
         
-        self.tester().tapViewWithAccessibilityIdentifier(imageControllerBackgroundViewIdentifier)
+        tester().tapViewWithAccessibilityIdentifier(imageControllerBackgroundViewIdentifier)
         
-        expect(self.defaultActionCalled).to(equal(0))
-        expect(self.cancelActionCalled).to(equal(1))
+        expect(self.defaultActionCalled) == 0
+        expect(self.cancelActionCalled) == 1
     }
     
     func testAdaptionOfActionTitles() {
@@ -193,7 +193,7 @@ class ImagePickerSheetControllerTests: XCTestCase {
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
-        expect(self.imageController.selectedImageAssets.count).to(equal(count))
+        expect(self.imageController.selectedImageAssets.count) == count
     }
     
     func testImageSelectionWithoutLimit() {
@@ -203,7 +203,7 @@ class ImagePickerSheetControllerTests: XCTestCase {
         let selectedAssets = imageController.selectedImageAssets
         result.enumerateObjectsUsingBlock { obj, idx, _ in
             if let asset = obj as? PHAsset where idx < 3 {
-                expect(asset.localIdentifier).to(equal(selectedAssets[idx].localIdentifier))
+                expect(asset.localIdentifier) == selectedAssets[idx].localIdentifier
             }
         }
     }
@@ -215,12 +215,12 @@ class ImagePickerSheetControllerTests: XCTestCase {
         let indexPath = NSIndexPath(forItem: 0, inSection: 0)
         tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         
-        expect(self.imageController.selectedImageAssets.count).to(equal(2))
+        expect(self.imageController.selectedImageAssets.count) == 2
         
         let selectedAssets = imageController.selectedImageAssets
         result.enumerateObjectsUsingBlock { obj, idx, _ in
             if let asset = obj as? PHAsset where idx < 3 && idx > 0 {
-                expect(asset.localIdentifier).to(equal(selectedAssets[idx-1].localIdentifier))
+                expect(asset.localIdentifier) == selectedAssets[idx-1].localIdentifier
             }
         }
     }
@@ -236,12 +236,12 @@ class ImagePickerSheetControllerTests: XCTestCase {
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
-        expect(self.imageController.selectedImageAssets.count).to(equal(maxSelection))
+        expect(self.imageController.selectedImageAssets.count) == maxSelection
         
         let selectedAssets = imageController.selectedImageAssets
         result.enumerateObjectsUsingBlock { obj, idx, _ in
             if let asset = obj as? PHAsset where idx < 3 && idx > 0 {
-                expect(asset.localIdentifier).to(equal(selectedAssets[idx-1].localIdentifier))
+                expect(asset.localIdentifier) == selectedAssets[idx-1].localIdentifier
             }
         }
     }
