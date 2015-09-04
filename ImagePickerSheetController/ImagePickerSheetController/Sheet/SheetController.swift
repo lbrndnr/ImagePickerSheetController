@@ -32,7 +32,7 @@ class SheetController: NSObject {
     
     var actionHandlingCallback: (() -> ())?
     
-    private(set) var imagePreviewHeight: CGFloat = 0
+    private(set) var previewHeight: CGFloat = 0
     var numberOfSelectedImages = 0
     
     var preferredSheetHeight: CGFloat {
@@ -81,7 +81,7 @@ class SheetController: NSObject {
     private func sizeForSheetItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
         let height: CGFloat = {
             if indexPath.section == 0 {
-                return imagePreviewHeight
+                return previewHeight
             }
             
             let actionItemHeight: CGFloat
@@ -185,8 +185,8 @@ class SheetController: NSObject {
     
     // MARK: - 
     
-    func setImagePreviewHeight(height: CGFloat, invalidateLayout: Bool) {
-        imagePreviewHeight = height
+    func setPreviewHeight(height: CGFloat, invalidateLayout: Bool) {
+        previewHeight = height
         if invalidateLayout {
             sheetCollectionView.collectionViewLayout.invalidateLayout()
         }
