@@ -116,6 +116,12 @@ public class ImagePickerSheetController: UIViewController {
     private func initialize() {
         modalPresentationStyle = .Custom
         transitioningDelegate = self
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "cancel", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     // MARK: - View Lifecycle
