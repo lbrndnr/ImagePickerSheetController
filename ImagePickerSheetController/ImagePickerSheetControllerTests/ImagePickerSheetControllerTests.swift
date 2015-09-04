@@ -167,10 +167,8 @@ class ImagePickerSheetControllerTests: XCTestCase {
     }
     
     func testAdaptionOfActionTitles() {
-        presentImagePickerSheetController()
-        
         imageController.addAction(ImagePickerAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
-        tester().waitForViewWithAccessibilityLabel("Action")
+        presentImagePickerSheetController()
         
         let indexPath = NSIndexPath(forItem: 0, inSection: 0)
         tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
