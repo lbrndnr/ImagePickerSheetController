@@ -186,6 +186,14 @@ public class ImagePickerSheetController: UIViewController {
         fetchAssets()
         reloadMaximumImagePreviewHeight()
         reloadCurrentImagePreviewHeight(invalidateLayout: false)
+        
+        // Filter out the assets that are too thin. This can't be done before becuase
+        // we don't know how tall the images should be
+        let minImageWidth = 2 * previewCheckmarkInset + (PreviewSupplementaryView.checkmarkImage?.size.width ?? 0)
+        assets = assets.filter { asset in
+            let size = sizeForAsset(asset, enlarged: true)
+            return size.width >= minImageWidth
+        }
     }
     
     private func fetchAssets() {
