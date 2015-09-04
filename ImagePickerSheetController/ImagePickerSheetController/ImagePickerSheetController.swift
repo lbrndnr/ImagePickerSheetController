@@ -10,7 +10,6 @@ import Foundation
 import Photos
 
 private let previewCollectionViewInset: CGFloat = 5
-private let previewCheckmarkInset: CGFloat = 3.5
 
 @available(iOS 8.0, *)
 public class ImagePickerSheetController: UIViewController {
@@ -83,6 +82,14 @@ public class ImagePickerSheetController: UIViewController {
     private var maximumImagePreviewHeight: CGFloat = 129
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
+    
+    private var previewCheckmarkInset: CGFloat {
+        guard #available(iOS 9, *) else {
+            return 3.5
+        }
+        
+        return 12.5
+    }
     
     private let imageManager = PHCachingImageManager()
     
