@@ -395,6 +395,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             enlargePreviewsByCenteringToIndexPath(indexPath)
         }
         else {
+            // scrollToItemAtIndexPath doesn't work reliably
             if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
                 var contentOffset = CGPointMake(cell.frame.midX - collectionView.frame.width / 2.0, 0.0)
                 contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)

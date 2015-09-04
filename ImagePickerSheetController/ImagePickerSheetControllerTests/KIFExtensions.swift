@@ -40,7 +40,6 @@ extension KIFUITestActor {
         tapItemAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: collectionViewIdentifier)
         return
         
-        
         let collectionView = waitForViewWithAccessibilityIdentifier(collectionViewIdentifier) as! UICollectionView
         
         let cellAttributes = collectionView.layoutAttributesForItemAtIndexPath(indexPath)

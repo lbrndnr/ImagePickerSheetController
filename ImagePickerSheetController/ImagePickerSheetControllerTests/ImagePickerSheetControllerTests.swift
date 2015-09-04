@@ -11,7 +11,7 @@ import XCTest
 import KIF
 import Nimble
 import Photos
-import ImagePickerSheetController
+@testable import ImagePickerSheetController
 
 let imageControllerViewIdentifier = "ImagePickerSheet"
 let imageControllerBackgroundViewIdentifier = "ImagePickerSheetBackground"
@@ -21,6 +21,9 @@ class ImagePickerSheetControllerTests: XCTestCase {
     
     let rootViewController = UIApplication.sharedApplication().windows.first!.rootViewController!
     var imageController: ImagePickerSheetController!
+    
+    let defaultActionTitle = "Action"
+    let cancelActionTitle = "Cancel"
     
     // MARK: - Setup
     
@@ -46,29 +49,27 @@ class ImagePickerSheetControllerTests: XCTestCase {
     
     // MARK: - Dismissal
     
-    let actionTitle = "Action"
-    
     func beforeEachDismissalTest(actionTitle: String, style: ImagePickerActionStyle) {
         imageController.addAction(ImagePickerAction(title: actionTitle, style: style))
         presentImagePickerSheetController()
     }
     
     func testDismissalByTappingDefaultAction() {
-        beforeEachDismissalTest(actionTitle, style: .Default)
+        beforeEachDismissalTest(defaultActionTitle, style: .Default)
         
-        tester().tapViewWithAccessibilityLabel(actionTitle)
+        tester().tapViewWithAccessibilityLabel(defaultActionTitle)
         tester().waitForAbsenceOfViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
     }
     
     func testDismissalByTappingCancelAction() {
-        beforeEachDismissalTest(actionTitle, style: .Cancel)
+        beforeEachDismissalTest(defaultActionTitle, style: .Cancel)
         
-        tester().tapViewWithAccessibilityLabel(actionTitle)
+        tester().tapViewWithAccessibilityLabel(defaultActionTitle)
         tester().waitForAbsenceOfViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
     }
     
     func testDismissalByTappingBackground() {
-        beforeEachDismissalTest(actionTitle, style: .Default)
+        beforeEachDismissalTest(defaultActionTitle, style: .Default)
         
         tester().tapViewWithAccessibilityIdentifier(imageControllerBackgroundViewIdentifier)
         tester().waitForAbsenceOfViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
@@ -85,8 +86,8 @@ class ImagePickerSheetControllerTests: XCTestCase {
     
     func testDisplayOfAddedActions() {
         let actions: [(String, ImagePickerActionStyle)] = [("Action1", .Default),
-                                                     ("Action2", .Default),
-                                                     ("Cancel", .Cancel)]
+                                                           ("Action2", .Default),
+                                                           ("Cancel", .Cancel)]
         
         for (title, style) in actions {
             imageController.addAction(ImagePickerAction(title: title, style: style))
@@ -100,13 +101,17 @@ class ImagePickerSheetControllerTests: XCTestCase {
     }
     
     func testActionOrdering() {
-        let cancelActionTitle = "Cancel"
-        let defaultActionTitle = "Action"
-        
         imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .Cancel))
         imageController.addAction(ImagePickerAction(title: defaultActionTitle))
         
         expect(self.imageController.actions.map { $0.title }) == [defaultActionTitle, cancelActionTitle]
+    }
+    
+    func testAddingActionAfterPresentation() {
+        presentImagePickerSheetController()
+        
+        imageController.addAction(ImagePickerAction(title: defaultActionTitle))
+        tester().waitForViewWithAccessibilityLabel(defaultActionTitle)
     }
     
     // MARK: - Action Handling
@@ -165,7 +170,6 @@ class ImagePickerSheetControllerTests: XCTestCase {
         presentImagePickerSheetController()
         
         imageController.addAction(ImagePickerAction(title: "Action", secondaryTitle: { "Secondary \($0)" }))
-        
         tester().waitForViewWithAccessibilityLabel("Action")
         
         let indexPath = NSIndexPath(forItem: 0, inSection: 0)
