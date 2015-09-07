@@ -12,6 +12,7 @@
 		494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
 		494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
 		494B3B711B8EF3CB004B467C /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */; settings = {ASSET_TAGS = (); }; };
+		495E5F551B9DE84D004729E6 /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49665AD71B8F2DC6005AA666 /* SheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49665AD61B8F2DC6005AA666 /* SheetController.swift */; settings = {ASSET_TAGS = (); }; };
 		4981CB031B8B246000A09750 /* SheetPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */; };
@@ -20,7 +21,6 @@
 		4981CB061B8B246000A09750 /* PreviewCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB011B8B246000A09750 /* PreviewCollectionViewLayout.swift */; };
 		4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */; };
 		4981CB091B8B255A00A09750 /* SheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB081B8B255A00A09750 /* SheetCollectionViewCell.swift */; };
-		4989232E1B9B05C500D68C8E /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4989232D1B9B05B700D68C8E /* KIF.framework */; };
 		4989232F1B9B05CB00D68C8E /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		499E65CF1B8E317C005B807F /* SheetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */; settings = {ASSET_TAGS = (); }; };
 		49A93AE81B9CC0F100EE8A40 /* PresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AE71B9CC0F100EE8A40 /* PresentationTests.swift */; settings = {ASSET_TAGS = (); }; };
@@ -46,48 +46,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		498923221B9B05B700D68C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 498923181B9B05B700D68C8E /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EABD46AA1857A0C700A5F081;
-			remoteInfo = KIF;
-		};
-		498923241B9B05B700D68C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 498923181B9B05B700D68C8E /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB72047C1680DDAD00278DA2;
-			remoteInfo = "KIF-OCUnit";
-		};
-		498923261B9B05B700D68C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 498923181B9B05B700D68C8E /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB60ECC1177F8C83005A041A;
-			remoteInfo = "Test Host";
-		};
-		498923281B9B05B700D68C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 498923181B9B05B700D68C8E /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EABD46CD1857A0F300A5F081;
-			remoteInfo = "KIF Tests";
-		};
-		4989232A1B9B05B700D68C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 498923181B9B05B700D68C8E /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB60ECEB177F8DB3005A041A;
-			remoteInfo = "KIF Tests-OCUnit";
-		};
-		4989232C1B9B05B700D68C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 498923181B9B05B700D68C8E /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9CC9673B1AD4B1B600576D13;
-			remoteInfo = KIFFramework;
-		};
 		49DC4A5E1B14F1BC00B4E78E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49DC4A481B14F1BC00B4E78E /* Project object */;
@@ -148,7 +106,6 @@
 		4981CB011B8B246000A09750 /* PreviewCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionViewLayout.swift; sourceTree = "<group>"; };
 		4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
 		4981CB081B8B255A00A09750 /* SheetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetCollectionViewCell.swift; sourceTree = "<group>"; };
-		498923181B9B05B700D68C8E /* KIF.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KIF.xcodeproj; path = ../../Carthage/Checkouts/KIF/KIF.xcodeproj; sourceTree = "<group>"; };
 		499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetCollectionViewLayout.swift; sourceTree = "<group>"; };
 		49A408441B21853E00D6005C /* KIF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KIF.framework; path = ../Carthage/Build/iOS/KIF.framework; sourceTree = "<group>"; };
 		49A408461B21854300D6005C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -191,7 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4989232E1B9B05C500D68C8E /* KIF.framework in Frameworks */,
+				495E5F551B9DE84D004729E6 /* KIF.framework in Frameworks */,
 				49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */,
 				494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */,
 				494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */,
@@ -232,19 +189,6 @@
 				4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */,
 			);
 			path = Preview;
-			sourceTree = "<group>";
-		};
-		498923191B9B05B700D68C8E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				498923231B9B05B700D68C8E /* libKIF.a */,
-				498923251B9B05B700D68C8E /* libKIF-OCUnit.a */,
-				498923271B9B05B700D68C8E /* Test Host.app */,
-				498923291B9B05B700D68C8E /* KIF Tests - XCTest.xctest */,
-				4989232B1B9B05B700D68C8E /* KIF Tests-OCUnit.octest */,
-				4989232D1B9B05B700D68C8E /* KIF.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		49DC4A471B14F1BC00B4E78E = {
@@ -308,7 +252,6 @@
 		49DC4A611B14F1BC00B4E78E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				498923181B9B05B700D68C8E /* KIF.xcodeproj */,
 				49DC4A621B14F1BC00B4E78E /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -452,12 +395,6 @@
 			mainGroup = 49DC4A471B14F1BC00B4E78E;
 			productRefGroup = 49DC4A521B14F1BC00B4E78E /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 498923191B9B05B700D68C8E /* Products */;
-					ProjectRef = 498923181B9B05B700D68C8E /* KIF.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				49DC4A501B14F1BC00B4E78E /* ImagePickerSheetController */,
@@ -466,51 +403,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		498923231B9B05B700D68C8E /* libKIF.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libKIF.a;
-			remoteRef = 498923221B9B05B700D68C8E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		498923251B9B05B700D68C8E /* libKIF-OCUnit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libKIF-OCUnit.a";
-			remoteRef = 498923241B9B05B700D68C8E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		498923271B9B05B700D68C8E /* Test Host.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Test Host.app";
-			remoteRef = 498923261B9B05B700D68C8E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		498923291B9B05B700D68C8E /* KIF Tests - XCTest.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "KIF Tests - XCTest.xctest";
-			remoteRef = 498923281B9B05B700D68C8E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4989232B1B9B05B700D68C8E /* KIF Tests-OCUnit.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "KIF Tests-OCUnit.octest";
-			remoteRef = 4989232A1B9B05B700D68C8E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4989232D1B9B05B700D68C8E /* KIF.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = KIF.framework;
-			remoteRef = 4989232C1B9B05B700D68C8E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		49DC4A4F1B14F1BC00B4E78E /* Resources */ = {
