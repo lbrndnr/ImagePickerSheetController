@@ -47,6 +47,15 @@ class ActionHandlingTests: ImagePickerSheetControllerTests {
         expect(self.cancelActionCalled) == 0
     }
     
+    func testSecondaryActionHandling() {
+        presentImagePickerSheetController()
+        
+        tester().tapViewWithAccessibilityLabel(defaultAction.title)
+        
+        expect(self.defaultActionCalled) == 1
+        expect(self.cancelActionCalled) == 0
+    }
+    
     func testCancelActionHandlingWhenTappingAction() {
         presentImagePickerSheetController()
         
