@@ -356,6 +356,8 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PreviewCollectionViewCell.self), forIndexPath: indexPath) as! PreviewCollectionViewCell
         
         let asset = assets[indexPath.section]
+        cell.videoIndicatorView.hidden = asset.mediaType != .Video
+
         requestImageForAsset(asset) { image in
             cell.imageView.image = image
         }
