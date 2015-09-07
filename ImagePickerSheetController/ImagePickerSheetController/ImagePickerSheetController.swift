@@ -11,6 +11,13 @@ import Photos
 
 private let previewCollectionViewInset: CGFloat = 5
 
+/// The media type an instance of ImagePickerSheetController can display
+public enum ImagePickerMediaType {
+    case Image
+    case Video
+    case ImageAndVideo
+}
+
 @available(iOS 8.0, *)
 public class ImagePickerSheetController: UIViewController {
     
@@ -74,6 +81,9 @@ public class ImagePickerSheetController: UIViewController {
         return selectedImageIndices.map { self.assets[$0] }
     }
     
+    /// The media type of the displayed assets
+    public let mediaType: ImagePickerMediaType
+    
     private var assets = [PHAsset]()
     
     private lazy var requestOptions: PHImageRequestOptions = {
@@ -103,12 +113,14 @@ public class ImagePickerSheetController: UIViewController {
     
     // MARK: - Initialization
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    public init(mediaType: ImagePickerMediaType) {
+        self.mediaType = mediaType
+        super.init(nibName: nil, bundle: nil)
         initialize()
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
+        self.mediaType = .ImageAndVideo
         super.init(coder: aDecoder)
         initialize()
     }
@@ -209,10 +221,25 @@ public class ImagePickerSheetController: UIViewController {
     private func fetchAssets() {
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let result = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        
+        switch mediaType {
+        case .Image:
+            options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.Image.rawValue)
+        case .Video:
+            options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.Video.rawValue)
+        case .ImageAndVideo:
+            options.predicate = NSPredicate(format: "mediaType = %d OR mediaType = %d", PHAssetMediaType.Image.rawValue, PHAssetMediaType.Video.rawValue)
+        }
+        
+        let fetchLimit = 50
+        if #available(iOS 9, *) {
+            options.fetchLimit = fetchLimit
+        }
+        
+        let result = PHAsset.fetchAssetsWithOptions(options)
         
         result.enumerateObjectsUsingBlock { obj, _, _ in
-            if let asset = obj as? PHAsset where self.assets.count < 50 {
+            if let asset = obj as? PHAsset where  self.assets.count < fetchLimit {
                 self.assets.append(asset)
             }
         }
@@ -329,6 +356,8 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PreviewCollectionViewCell.self), forIndexPath: indexPath) as! PreviewCollectionViewCell
         
         let asset = assets[indexPath.section]
+        cell.videoIndicatorView.hidden = asset.mediaType != .Video
+
         requestImageForAsset(asset) { image in
             cell.imageView.image = image
         }
