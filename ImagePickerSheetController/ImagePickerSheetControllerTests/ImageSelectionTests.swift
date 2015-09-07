@@ -84,7 +84,7 @@ class ImageSelectionWithLimitTests: ImageSelectionTests {
         
         let selectedAssets = imageController.selectedImageAssets
         result.enumerateObjectsUsingBlock { obj, idx, _ in
-            if let asset = obj as? PHAsset where idx < self.count && idx > 0 {
+            if let asset = obj as? PHAsset where idx < maxSelection && idx > 0 {
                 expect(asset.localIdentifier) == selectedAssets[idx-1].localIdentifier
             }
         }
