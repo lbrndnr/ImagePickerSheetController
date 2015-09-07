@@ -37,7 +37,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.presentViewController(controller, animated: true, completion: nil)
         }
         
-        let controller = ImagePickerSheetController()
+        let controller = ImagePickerSheetController(mediaType: .ImageAndVideo)
         controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
             presentImagePickerController(.Camera)
         }, secondaryHandler: { _, numberOfPhotos in
