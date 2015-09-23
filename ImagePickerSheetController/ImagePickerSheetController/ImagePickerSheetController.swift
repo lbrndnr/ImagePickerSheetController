@@ -454,12 +454,10 @@ extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: size.width * scale, height: currentImagePreviewHeight)
     }
 
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let inset = 2.0 * previewCheckmarkInset
-        let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forItem: 0, inSection: section))
+   public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let inset = 2.0 * collectionViewCheckmarkInset
         let imageWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
-        
-        return CGSizeMake(imageWidth  + inset, size.height)
+        return CGSizeMake(imageWidth  + inset, tableViewEnlargedPreviewRowHeight - inset)
     }
     
 }
