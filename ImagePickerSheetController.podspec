@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ImagePickerSheetController"
-  s.version      = "0.1.7"
+  s.version      = "0.9"
   s.summary      = "ImagePickerSheetController is like the custom photo action sheet in iMessage just without the glitches."
 
   s.description  = <<-DESC
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "ImagePickerSheetController/ImagePickerSheetController/*.swift"
+  s.source_files  = "ImagePickerSheetController/ImagePickerSheetController/**/*.swift"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

@@ -7,24 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4944CA851B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		494505AC1B2201AF00EF9ADC /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */; };
-		494505AD1B22021D00EF9ADC /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
 		494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
-		495F89A81B394288006B9BA4 /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		494B3B711B8EF3CB004B467C /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */; settings = {ASSET_TAGS = (); }; };
+		495E5F551B9DE84D004729E6 /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		495F89AA1B394288006B9BA4 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		49665AD71B8F2DC6005AA666 /* SheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49665AD61B8F2DC6005AA666 /* SheetController.swift */; settings = {ASSET_TAGS = (); }; };
+		4981CB031B8B246000A09750 /* SheetPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */; };
+		4981CB041B8B246000A09750 /* PreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFF1B8B246000A09750 /* PreviewCollectionViewCell.swift */; };
+		4981CB051B8B246000A09750 /* PreviewCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB001B8B246000A09750 /* PreviewCollectionView.swift */; };
+		4981CB061B8B246000A09750 /* PreviewCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB011B8B246000A09750 /* PreviewCollectionViewLayout.swift */; };
+		4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */; };
+		4981CB091B8B255A00A09750 /* SheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB081B8B255A00A09750 /* SheetCollectionViewCell.swift */; };
+		4989232F1B9B05CB00D68C8E /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		499E65CF1B8E317C005B807F /* SheetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */; settings = {ASSET_TAGS = (); }; };
+		49A93AE81B9CC0F100EE8A40 /* PresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AE71B9CC0F100EE8A40 /* PresentationTests.swift */; settings = {ASSET_TAGS = (); }; };
+		49A93AF11B9CC15A00EE8A40 /* DismissalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF01B9CC15A00EE8A40 /* DismissalTests.swift */; settings = {ASSET_TAGS = (); }; };
+		49A93AF31B9CCB3900EE8A40 /* AddingActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF21B9CCB3900EE8A40 /* AddingActionTests.swift */; settings = {ASSET_TAGS = (); }; };
+		49A93AF51B9CCBA900EE8A40 /* ActionHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF41B9CCBA900EE8A40 /* ActionHandlingTests.swift */; settings = {ASSET_TAGS = (); }; };
+		49A93AF71B9CCC9500EE8A40 /* ImageSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF61B9CCC9500EE8A40 /* ImageSelectionTests.swift */; settings = {ASSET_TAGS = (); }; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
-		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */; };
+		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */; };
 		49DC4A751B14F1F600B4E78E /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */; };
-		49DC4A761B14F1F600B4E78E /* ImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6E1B14F1F600B4E78E /* ImageAction.swift */; };
-		49DC4A771B14F1F600B4E78E /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6F1B14F1F600B4E78E /* ImageCollectionViewCell.swift */; };
-		49DC4A781B14F1F600B4E78E /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A701B14F1F600B4E78E /* ImagePickerCollectionView.swift */; };
-		49DC4A791B14F1F600B4E78E /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A711B14F1F600B4E78E /* ImagePickerSheetController.swift */; };
-		49DC4A7A1B14F1F600B4E78E /* ImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A721B14F1F600B4E78E /* ImagePreviewFlowLayout.swift */; };
-		49DC4A7B1B14F1F600B4E78E /* ImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A731B14F1F600B4E78E /* ImagePreviewTableViewCell.swift */; };
-		49DC4A7C1B14F1F600B4E78E /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A741B14F1F600B4E78E /* PreviewSupplementaryView.swift */; };
+		49DC4A761B14F1F600B4E78E /* ImagePickerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A6E1B14F1F600B4E78E /* ImagePickerAction.swift */; };
 		49DC4A7E1B14F22200B4E78E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49DC4A7D1B14F22200B4E78E /* Images.xcassets */; };
 		49DC4A801B14F2EF00B4E78E /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A7F1B14F2EF00B4E78E /* Photos.framework */; };
 		49DC4A8B1B14F31500B4E78E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A8A1B14F31500B4E78E /* AppDelegate.swift */; };
@@ -33,7 +41,6 @@
 		49DC4AA81B14F3B800B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4AA91B14F3B800B4E78E /* ImagePickerSheetController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49DC4AAF1B14FB9A00B4E78E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; };
-		49DC4AB01B14FB9A00B4E78E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4AAE1B14FB9A00B4E78E /* Quick.framework */; };
 		49F3118A1B15074100ACD6A7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 49F3118C1B15074100ACD6A7 /* Localizable.stringsdict */; };
 		49F3118D1B15074400ACD6A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49F3118F1B15074400ACD6A7 /* Localizable.strings */; };
 /* End PBXBuildFile section */
@@ -69,9 +76,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				495F89A81B394288006B9BA4 /* KIF.framework in CopyFiles */,
+				4989232F1B9B05CB00D68C8E /* KIF.framework in CopyFiles */,
 				495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */,
-				495F89AA1B394288006B9BA4 /* Quick.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,24 +95,34 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetActionCollectionViewCell.swift; sourceTree = "<group>"; };
 		494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
+		494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetController.swift; sourceTree = "<group>"; };
+		49665AD61B8F2DC6005AA666 /* SheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetController.swift; sourceTree = "<group>"; };
+		496DC6D11B86F6E90011AF73 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SheetPreviewCollectionViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4981CAFF1B8B246000A09750 /* PreviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		4981CB001B8B246000A09750 /* PreviewCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionView.swift; sourceTree = "<group>"; };
+		4981CB011B8B246000A09750 /* PreviewCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionViewLayout.swift; sourceTree = "<group>"; };
+		4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
+		4981CB081B8B255A00A09750 /* SheetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetCollectionViewCell.swift; sourceTree = "<group>"; };
+		499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetCollectionViewLayout.swift; sourceTree = "<group>"; };
 		49A408441B21853E00D6005C /* KIF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KIF.framework; path = ../Carthage/Build/iOS/KIF.framework; sourceTree = "<group>"; };
 		49A408461B21854300D6005C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		49A408481B2186D500D6005C /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
+		49A93AE71B9CC0F100EE8A40 /* PresentationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationTests.swift; sourceTree = "<group>"; };
+		49A93AF01B9CC15A00EE8A40 /* DismissalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissalTests.swift; sourceTree = "<group>"; };
+		49A93AF21B9CCB3900EE8A40 /* AddingActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingActionTests.swift; sourceTree = "<group>"; };
+		49A93AF41B9CCBA900EE8A40 /* ActionHandlingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionHandlingTests.swift; sourceTree = "<group>"; };
+		49A93AF61B9CCC9500EE8A40 /* ImageSelectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSelectionTests.swift; sourceTree = "<group>"; };
 		49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImagePickerSheetController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49DC4A551B14F1BC00B4E78E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheetController.h; sourceTree = "<group>"; };
 		49DC4A5C1B14F1BC00B4E78E /* ImagePickerSheetControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImagePickerSheetControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49DC4A621B14F1BC00B4E78E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetControllerSpec.swift; sourceTree = "<group>"; };
+		49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetControllerTests.swift; sourceTree = "<group>"; };
 		49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
-		49DC4A6E1B14F1F600B4E78E /* ImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAction.swift; sourceTree = "<group>"; };
-		49DC4A6F1B14F1F600B4E78E /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		49DC4A701B14F1F600B4E78E /* ImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionView.swift; sourceTree = "<group>"; };
-		49DC4A711B14F1F600B4E78E /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetController.swift; sourceTree = "<group>"; };
-		49DC4A721B14F1F600B4E78E /* ImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
-		49DC4A731B14F1F600B4E78E /* ImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
-		49DC4A741B14F1F600B4E78E /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
+		49DC4A6E1B14F1F600B4E78E /* ImagePickerAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerAction.swift; sourceTree = "<group>"; };
 		49DC4A7D1B14F22200B4E78E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		49DC4A7F1B14F2EF00B4E78E /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		49DC4A861B14F31500B4E78E /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,7 +131,6 @@
 		49DC4A8C1B14F31500B4E78E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		49DC4A941B14F31500B4E78E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
-		49DC4AAE1B14FB9A00B4E78E /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		49F3118B1B15074100ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		49F3118E1B15074400ACD6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,12 +148,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				495E5F551B9DE84D004729E6 /* KIF.framework in Frameworks */,
 				49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */,
 				494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */,
-				494505AD1B22021D00EF9ADC /* KIF.framework in Frameworks */,
 				494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */,
 				49DC4AAF1B14FB9A00B4E78E /* Nimble.framework in Frameworks */,
-				49DC4AB01B14FB9A00B4E78E /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +167,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4981CAFC1B8B246000A09750 /* Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				49665AD61B8F2DC6005AA666 /* SheetController.swift */,
+				499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */,
+				4981CB081B8B255A00A09750 /* SheetCollectionViewCell.swift */,
+				4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */,
+				4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */,
+				4981CAFE1B8B246000A09750 /* Preview */,
+			);
+			path = Sheet;
+			sourceTree = "<group>";
+		};
+		4981CAFE1B8B246000A09750 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				4981CB001B8B246000A09750 /* PreviewCollectionView.swift */,
+				4981CB011B8B246000A09750 /* PreviewCollectionViewLayout.swift */,
+				4981CAFF1B8B246000A09750 /* PreviewCollectionViewCell.swift */,
+				4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
 		49DC4A471B14F1BC00B4E78E = {
 			isa = PBXGroup;
 			children = (
@@ -177,14 +215,10 @@
 		49DC4A531B14F1BC00B4E78E /* ImagePickerSheetController */ = {
 			isa = PBXGroup;
 			children = (
+				49DC4A6E1B14F1F600B4E78E /* ImagePickerAction.swift */,
 				49DC4A6D1B14F1F600B4E78E /* AnimationController.swift */,
-				49DC4A6E1B14F1F600B4E78E /* ImageAction.swift */,
-				49DC4A6F1B14F1F600B4E78E /* ImageCollectionViewCell.swift */,
-				49DC4A701B14F1F600B4E78E /* ImagePickerCollectionView.swift */,
-				49DC4A711B14F1F600B4E78E /* ImagePickerSheetController.swift */,
-				49DC4A721B14F1F600B4E78E /* ImagePreviewFlowLayout.swift */,
-				49DC4A731B14F1F600B4E78E /* ImagePreviewTableViewCell.swift */,
-				49DC4A741B14F1F600B4E78E /* PreviewSupplementaryView.swift */,
+				494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */,
+				4981CAFC1B8B246000A09750 /* Sheet */,
 				49DC4A7D1B14F22200B4E78E /* Images.xcassets */,
 				49DC4A541B14F1BC00B4E78E /* Supporting Files */,
 			);
@@ -203,7 +237,12 @@
 		49DC4A601B14F1BC00B4E78E /* ImagePickerSheetControllerTests */ = {
 			isa = PBXGroup;
 			children = (
-				49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift */,
+				49A93AE71B9CC0F100EE8A40 /* PresentationTests.swift */,
+				49A93AF01B9CC15A00EE8A40 /* DismissalTests.swift */,
+				49A93AF21B9CCB3900EE8A40 /* AddingActionTests.swift */,
+				49A93AF41B9CCBA900EE8A40 /* ActionHandlingTests.swift */,
+				49A93AF61B9CCC9500EE8A40 /* ImageSelectionTests.swift */,
+				49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */,
 				494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */,
 				49DC4A611B14F1BC00B4E78E /* Supporting Files */,
 			);
@@ -242,12 +281,12 @@
 		49DC4AB11B14FBAD00B4E78E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				496DC6D11B86F6E90011AF73 /* CoreMedia.framework */,
 				49A408481B2186D500D6005C /* IOKit.framework */,
 				49A408461B21854300D6005C /* CoreGraphics.framework */,
 				49A408441B21853E00D6005C /* KIF.framework */,
 				49DC4A7F1B14F2EF00B4E78E /* Photos.framework */,
 				49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */,
-				49DC4AAE1B14FB9A00B4E78E /* Quick.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -330,7 +369,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Laurin Brandner";
 				TargetAttributes = {
 					49DC4A501B14F1BC00B4E78E = {
@@ -398,14 +437,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49DC4A7A1B14F1F600B4E78E /* ImagePreviewFlowLayout.swift in Sources */,
-				49DC4A7B1B14F1F600B4E78E /* ImagePreviewTableViewCell.swift in Sources */,
-				49DC4A771B14F1F600B4E78E /* ImageCollectionViewCell.swift in Sources */,
+				4981CB041B8B246000A09750 /* PreviewCollectionViewCell.swift in Sources */,
 				49DC4A751B14F1F600B4E78E /* AnimationController.swift in Sources */,
-				49DC4A781B14F1F600B4E78E /* ImagePickerCollectionView.swift in Sources */,
-				49DC4A791B14F1F600B4E78E /* ImagePickerSheetController.swift in Sources */,
-				49DC4A761B14F1F600B4E78E /* ImageAction.swift in Sources */,
-				49DC4A7C1B14F1F600B4E78E /* PreviewSupplementaryView.swift in Sources */,
+				4981CB061B8B246000A09750 /* PreviewCollectionViewLayout.swift in Sources */,
+				49DC4A761B14F1F600B4E78E /* ImagePickerAction.swift in Sources */,
+				494B3B711B8EF3CB004B467C /* ImagePickerSheetController.swift in Sources */,
+				49665AD71B8F2DC6005AA666 /* SheetController.swift in Sources */,
+				499E65CF1B8E317C005B807F /* SheetCollectionViewLayout.swift in Sources */,
+				4981CB031B8B246000A09750 /* SheetPreviewCollectionViewCell.swift in Sources */,
+				4981CB091B8B255A00A09750 /* SheetCollectionViewCell.swift in Sources */,
+				4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */,
+				4981CB051B8B246000A09750 /* PreviewCollectionView.swift in Sources */,
+				4944CA851B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +457,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				494505AC1B2201AF00EF9ADC /* KIFExtensions.swift in Sources */,
-				49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerSpec.swift in Sources */,
+				49A93AE81B9CC0F100EE8A40 /* PresentationTests.swift in Sources */,
+				49A93AF51B9CCBA900EE8A40 /* ActionHandlingTests.swift in Sources */,
+				49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift in Sources */,
+				49A93AF11B9CC15A00EE8A40 /* DismissalTests.swift in Sources */,
+				49A93AF31B9CCB3900EE8A40 /* AddingActionTests.swift in Sources */,
+				49A93AF71B9CCC9500EE8A40 /* ImageSelectionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +545,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -576,6 +625,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -593,6 +643,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -609,6 +660,7 @@
 				);
 				INFOPLIST_FILE = ImagePickerSheetControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
@@ -621,6 +673,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../Carthage/Build/iOS";
 				INFOPLIST_FILE = ImagePickerSheetControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
@@ -636,6 +689,7 @@
 				);
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -646,6 +700,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

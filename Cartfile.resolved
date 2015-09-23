@@ -1,3 +1,2 @@
-github "kif-framework/KIF" "v3.2.3"
-github "Quick/Nimble" "199b4012165f37b36e3a53e92618173d76b32b91"
-github "Quick/Quick" "682bb956a5bbd3ea7217208ec2a79f78dbab0697"
+github "larcus94/KIF" "c6a3ce99baab225848e6ab975956454e1d49ee6a"
+github "Quick/Nimble" "v2.0.0-rc.3"

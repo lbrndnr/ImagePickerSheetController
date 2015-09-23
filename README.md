@@ -15,18 +15,18 @@ ImagePickerSheetController is a component that replicates the custom photo actio
 ### Example
 
 ```swift
-let controller = ImagePickerSheetController()
-controller.addAction(ImageAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
+let controller = ImagePickerSheetController(mediaType: .ImageAndVideo)
+controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
 	presentImagePickerController(.Camera)
 }, secondaryHandler: { _, numberOfPhotos in
 	println("Comment \(numberOfPhotos) photos")
 }))
-controller.addAction(ImageAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "Action Title"), $0) as String}, handler: { _ in
+controller.addAction(ImagePickerAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "Action Title"), $0) as String}, handler: { _ in
 	presentImagePickerController(.PhotoLibrary)
 }, secondaryHandler: { _, numberOfPhotos in
 	println("Send \(controller.selectedImageAssets)")
 }))
-controller.addAction(ImageAction(title: NSLocalizedString("Cancel", comment: "Action Title"), style: .Cancel, handler: { _ in
+controller.addAction(ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), style: .Cancel, handler: { _ in
 	println("Cancelled")
 }))
             
