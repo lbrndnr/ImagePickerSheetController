@@ -308,7 +308,7 @@ public class ImagePickerSheetController: UIViewController {
         let assetHeights = assetRatios.map { $0 * maxImageWidth }
                                       .filter { $0 < maxImageWidth && $0 < maxHeight } // Make sure the preview isn't too high eg for squares
                                       .sort(>)
-        let assetHeight = round(assetHeights.first ?? 0)
+        let assetHeight = ceil(assetHeights.first ?? 0)
         
         // Just a sanity check, to make sure this doesn't exceed 400 points
         let scaledHeight = max(min(assetHeight, maxHeight), 200)
