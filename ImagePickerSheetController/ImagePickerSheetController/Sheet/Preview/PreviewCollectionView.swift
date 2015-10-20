@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PreviewCollectionView: UICollectionView {
+@objc class PreviewCollectionView: UICollectionView {
     
     var bouncing: Bool {
         return contentOffset.x < -contentInset.left || contentOffset.x + frame.width > contentSize.width + contentInset.right

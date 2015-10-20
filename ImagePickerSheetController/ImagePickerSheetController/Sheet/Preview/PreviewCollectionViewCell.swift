@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PreviewCollectionViewCell: UICollectionViewCell {
+@objc class PreviewCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
+@objc class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
     
     var invalidationCenteredIndexPath: NSIndexPath?
     

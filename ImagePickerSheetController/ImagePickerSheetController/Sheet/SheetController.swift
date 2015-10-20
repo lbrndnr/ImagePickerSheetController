@@ -10,7 +10,7 @@ import UIKit
 
 private let defaultInset: CGFloat = 10
 
-class SheetController: NSObject {
+@objc class SheetController: NSObject {
     
     private(set) lazy var sheetCollectionView: UICollectionView = {
         let layout = SheetCollectionViewLayout()

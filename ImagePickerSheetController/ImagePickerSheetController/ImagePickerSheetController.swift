@@ -12,13 +12,13 @@ import Photos
 private let previewCollectionViewInset: CGFloat = 5
 
 /// The media type an instance of ImagePickerSheetController can display
-public enum ImagePickerMediaType {
+@objc public enum ImagePickerMediaType : Int {
     case Image
     case Video
     case ImageAndVideo
 }
 
-@available(iOS 8.0, *)
+@objc @available(iOS 8.0, *)
 public class ImagePickerSheetController: UIViewController {
     
     private lazy var sheetController: SheetController = {

@@ -10,7 +10,7 @@ import UIKit
 
 let KVOContext = UnsafeMutablePointer<()>()
 
-class SheetActionCollectionViewCell: SheetCollectionViewCell {
+@objc class SheetActionCollectionViewCell: SheetCollectionViewCell {
     
     lazy private(set) var textLabel: UILabel = {
         let label = UILabel()
