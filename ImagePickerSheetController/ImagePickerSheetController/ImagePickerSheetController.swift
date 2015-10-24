@@ -253,9 +253,6 @@ public class ImagePickerSheetController: UIViewController {
                     if data != nil {
                         self.assets.append(asset)
                     }
-                    else {
-                        stop.initialize(true)
-                    }
                 }
             }
         }
