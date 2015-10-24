@@ -237,10 +237,26 @@ public class ImagePickerSheetController: UIViewController {
         }
         
         let result = PHAsset.fetchAssetsWithOptions(options)
+        let requestOptions = PHImageRequestOptions()
+        requestOptions.synchronous = true
+        requestOptions.deliveryMode = .FastFormat
         
-        result.enumerateObjectsUsingBlock { obj, _, _ in
-            if let asset = obj as? PHAsset where  self.assets.count < fetchLimit {
-                self.assets.append(asset)
+        result.enumerateObjectsUsingBlock { asset, _, stop in
+            defer {
+                if self.assets.count > fetchLimit {
+                    stop.initialize(true)
+                }
+            }
+            
+            if let asset = asset as? PHAsset {
+                self.imageManager.requestImageDataForAsset(asset, options: requestOptions) { data, _, _, info in
+                    if data != nil {
+                        self.assets.append(asset)
+                    }
+                    else {
+                        stop.initialize(true)
+                    }
+                }
             }
         }
     }
