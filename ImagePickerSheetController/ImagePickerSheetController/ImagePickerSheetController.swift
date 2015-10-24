@@ -247,6 +247,7 @@ public class ImagePickerSheetController: UIViewController {
     
     private func requestImageForAsset(asset: PHAsset, completion: (image: UIImage?) -> ()) {
         let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
+        requestOptions.synchronous = true
         
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
@@ -263,6 +264,7 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     private func prefetchImagesForAsset(asset: PHAsset) {
+        requestOptions.synchronous = false
         let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
         imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: requestOptions)
     }
