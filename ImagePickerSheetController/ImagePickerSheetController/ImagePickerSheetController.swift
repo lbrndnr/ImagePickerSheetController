@@ -267,6 +267,47 @@ public class ImagePickerSheetController: UIViewController {
         imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: requestOptions)
     }
     
+    public func fetchURLForSelectedPhotos(completion: (urls: [NSURL]) -> ()) {
+        let selectedAssets = self.selectedImageAssets
+        
+        var assetsURL : [NSURL] = []
+        var count = 0
+        
+        for asset:PHAsset in selectedAssets {
+            self.requestImageForAsset(asset, completion: { (image) -> () in
+                if let imageURL : NSURL = self.saveImageOnDisk(image!) {
+                    assetsURL.append(imageURL)
+                    
+                    count++;
+                    if (self.selectedImageAssets.count == count){
+                        completion(urls: assetsURL);
+                    }
+                }
+            })
+        }
+        
+    }
+    
+    
+    private func saveImageOnDisk(image: UIImage) -> NSURL? {
+        let nsDocumentDirectory = NSSearchPathDirectory.DocumentDirectory
+        let nsUserDomainMask = NSSearchPathDomainMask.UserDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        
+        if paths.count > 0 {
+            
+            let dirURL = NSURL(string: paths[0])
+            let writeURL = dirURL!.URLByAppendingPathComponent(NSProcessInfo.processInfo().globallyUniqueString)
+            
+            UIImageJPEGRepresentation(image, 0.6)!.writeToURL(writeURL, atomically: true)
+            
+            return writeURL
+        }
+        
+        return nil
+    }
+
+    
     // MARK: - Layout
     
     public override func viewDidLayoutSubviews() {
