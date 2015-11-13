@@ -67,6 +67,9 @@ public class ImagePickerSheetController: UIViewController {
         return sheetController.actions
     }
     
+    /// If set to true, after taping on preview image it enlarges
+    public var enableEnlargedPreviews: Bool = true;
+    
     /// Maximum selection of images.
     public var maximumSelection: Int?
     
@@ -359,7 +362,8 @@ public class ImagePickerSheetController: UIViewController {
     // MARK: -
     
     func enlargePreviewsByCenteringToIndexPath(indexPath: NSIndexPath?, completion: (Bool -> ())?) {
-        enlargedPreviews = true
+        enlargedPreviews = enableEnlargedPreviews
+    
         previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
         reloadCurrentPreviewHeight(invalidateLayout: false)
         
