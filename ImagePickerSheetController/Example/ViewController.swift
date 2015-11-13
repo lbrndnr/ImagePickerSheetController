@@ -38,7 +38,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         let controller = ImagePickerSheetController(mediaType: .ImageAndVideo)
-        controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
+        controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle:nil, handler: { _ in
             presentImagePickerController(.Camera)
         }, secondaryHandler: { _, numberOfPhotos in
             print("Comment \(numberOfPhotos) photos")
@@ -48,10 +48,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }, secondaryHandler: { _, numberOfPhotos in
             print("Send \(controller.selectedImageAssets)")
         }))
-        controller.addAction(ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), style: .Cancel, handler: { _ in
+        controller.addAction(ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), secondaryTitle:nil, style: .Cancel, handler: { _ in
             print("Cancelled")
         }))
-        
+        controller.enableEnlargedPreviews = false;
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             controller.modalPresentationStyle = .Popover
             controller.popoverPresentationController?.sourceView = view
