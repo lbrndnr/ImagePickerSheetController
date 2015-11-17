@@ -299,8 +299,8 @@ public class ImagePickerSheetController: UIViewController {
         
         if paths.count > 0 {
             
-            let dirURL = NSURL(string: paths[0])
-            let writeURL = dirURL!.URLByAppendingPathComponent(NSProcessInfo.processInfo().globallyUniqueString)
+            let dirURL = NSURL(fileURLWithPath:paths[0])
+            let writeURL = dirURL.URLByAppendingPathComponent(NSProcessInfo.processInfo().globallyUniqueString)
             
             UIImageJPEGRepresentation(image, 0.6)!.writeToURL(writeURL, atomically: true)
             
