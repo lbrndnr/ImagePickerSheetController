@@ -13,12 +13,16 @@ import ImagePickerSheetController
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: View Lifecycle
+    var imageView: UIImageView?;
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "presentImagePickerSheet:")
         view.addGestureRecognizer(tapRecognizer)
+        
+        imageView = UIImageView(frame: self.view.bounds);
+        self.view.addSubview(imageView!)
     }
     
     // MARK: Other Methods
@@ -46,7 +50,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         controller.addAction(ImagePickerAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "Action Title"), $0) as String}, handler: { _ in
             presentImagePickerController(.PhotoLibrary)
         }, secondaryHandler: { _, numberOfPhotos in
-            print("Send \(controller.selectedImageAssets)")
+            controller.fetchURLForSelectedPhotos({ (urls) -> () in
+                if let data = NSData(contentsOfURL: urls[0]) {
+                    let image = UIImage(data: data)
+                    self.imageView!.image = image;
+                }
+                
+            })
         }))
         controller.addAction(ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), secondaryTitle:nil, style: .Cancel, handler: { _ in
             print("Cancelled")
