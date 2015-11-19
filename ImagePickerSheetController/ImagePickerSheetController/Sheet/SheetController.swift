@@ -27,6 +27,7 @@ class SheetController: NSObject {
     }()
     
     var previewCollectionView: PreviewCollectionView
+    private weak var imagePicker: ImagePickerSheetController?
     
     private(set) var actions = [ImagePickerAction]()
     
@@ -49,8 +50,9 @@ class SheetController: NSObject {
     
     // MARK: - Initialization
     
-    init(previewCollectionView: PreviewCollectionView) {
+    init(previewCollectionView: PreviewCollectionView, imagePicker: ImagePickerSheetController) {
         self.previewCollectionView = previewCollectionView
+        self.imagePicker = imagePicker
         
         super.init()
     }
@@ -251,7 +253,13 @@ extension SheetController: UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         
-        handleAction(actions[indexPath.item])
+        let action = actions[indexPath.item]
+        
+        if action.reset {
+            imagePicker?.resetSelection()
+        }
+        
+        handleAction(action)
     }
     
 }

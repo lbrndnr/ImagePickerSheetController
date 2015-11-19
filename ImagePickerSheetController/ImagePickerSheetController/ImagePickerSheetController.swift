@@ -22,7 +22,7 @@ public enum ImagePickerMediaType {
 public class ImagePickerSheetController: UIViewController {
     
     private lazy var sheetController: SheetController = {
-        let controller = SheetController(previewCollectionView: self.previewCollectionView)
+        let controller = SheetController(previewCollectionView: self.previewCollectionView, imagePicker: self)
         controller.actionHandlingCallback = { [weak self] in
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -194,6 +194,14 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     // MARK: - Images
+    
+    public func resetSelection() {
+        for index in selectedImageIndices {
+            supplementaryViews[index]?.selected = false
+        }
+        selectedImageIndices = []
+        sheetController.reloadActionItems()
+    }
     
     private func sizeForAsset(asset: PHAsset, scale: CGFloat = 1) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
