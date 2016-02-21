@@ -167,8 +167,6 @@ public class ImagePickerSheetController: UIViewController {
                         self.sheetCollectionView.reloadData()
                         self.view.setNeedsLayout()
                         
-                        // Explicitely disable animations so it wouldn't animate either
-                        // if it was in a popover
                         CATransaction.begin()
                         CATransaction.setDisableActions(true)
                         self.view.layoutIfNeeded()
