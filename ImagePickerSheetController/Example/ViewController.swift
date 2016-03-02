@@ -28,6 +28,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: Other Methods
     
     func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
+        
         let presentImagePickerController: UIImagePickerControllerSourceType -> () = { source in
             let controller = UIImagePickerController()
             controller.delegate = self
@@ -42,6 +43,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         let controller = ImagePickerSheetController(mediaType: .ImageAndVideo)
+        controller.maximumSelection = 3
+        
         controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle:nil, handler: { _ in
             presentImagePickerController(.Camera)
         }, secondaryHandler: { _, numberOfPhotos in
