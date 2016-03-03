@@ -33,7 +33,7 @@ class AnimationController: NSObject {
         imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
         imagePickerSheetController.backgroundView.alpha = 0
         
-        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animateWithDuration(transitionDuration(context), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.9, options: .BeginFromCurrentState, animations: { () -> Void in
             self.imagePickerSheetController.sheetCollectionView.frame.origin.y = sheetOriginY
             self.imagePickerSheetController.backgroundView.alpha = 1
         }, completion: { _ in
@@ -46,7 +46,7 @@ class AnimationController: NSObject {
             return
         }
         
-        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(transitionDuration(context), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1.0, options: .BeginFromCurrentState, animations: { () -> Void in
             self.imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
             self.imagePickerSheetController.backgroundView.alpha = 0
         }, completion: { _ in
