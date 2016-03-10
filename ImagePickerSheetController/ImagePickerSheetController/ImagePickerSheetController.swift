@@ -285,6 +285,7 @@ public class ImagePickerSheetController: UIViewController {
     private func requestImageForAsset(asset: PHAsset, completion: (image: UIImage?) -> ()) {
         
         let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
+        requestOptions.synchronous = true
         
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
@@ -474,14 +475,6 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension ImagePickerSheetController: UICollectionViewDelegate {
-    
-    public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        let nextIndex = indexPath.item+1
-        if nextIndex < assets.count {
-            let asset = assets[nextIndex]
-            self.prefetchImagesForAsset(asset)
-        }
-    }
     
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         

@@ -33,12 +33,7 @@ import UIKit
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // Setting the frame of the collectionView this large avoids a small animation glitch when resizing the previews. You'll get a beer from @larcus94 if you'll get it to work without this workaround :)
-        
-        if let collectionView = collectionView {
-            collectionView.frame = CGRect(x: -bounds.width, y: bounds.minY, width: 3 * bounds.width, height: bounds.height)
-            collectionView.contentInset = UIEdgeInsetsMake(0.0, bounds.width + backgroundInsets.left, 0.0, bounds.width + backgroundInsets.right)
-        }
+        collectionView?.frame = UIEdgeInsetsInsetRect(bounds, backgroundInsets)
     }
     
 }
