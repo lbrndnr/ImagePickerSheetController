@@ -32,7 +32,7 @@ public class ImagePickerSheetController: UIViewController {
         if !self.isPresentedAsPopover {
             view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
         }
-
+        
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "cancel"))
         
         return view
@@ -282,21 +282,23 @@ public class ImagePickerSheetController: UIViewController {
         self.assets = result.objectsAtIndexes(NSIndexSet(indexesInRange: NSRange(location: 0, length: amount))) as? [PHAsset] ?? []
     }
     
-    private func requestImageForAsset(asset: PHAsset, completion: (image: UIImage?) -> ()) {
+    private func requestImageForAsset(asset: PHAsset, completion: (image: UIImage?, requestId:PHImageRequestID?) -> ()) -> PHImageRequestID {
         
         let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
         requestOptions.synchronous = false
         
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
-            imageManager.requestImageDataForAsset(asset, options: requestOptions) { data, _, _, _ in
+            return imageManager.requestImageDataForAsset(asset, options: requestOptions) { data, _, _, dict in
                 let image = data.flatMap { UIImage(data: $0) }
-                completion(image: image)
+                let requestId = dict?[PHImageResultRequestIDKey] as? NSNumber
+                completion(image: image, requestId: requestId?.intValue)
             }
         }
         else {
-            imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: requestOptions) { image, _ in
-                completion(image: image)
+            return imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: requestOptions) { image, dict in
+                let requestId = dict?[PHImageResultRequestIDKey] as? NSNumber
+                completion(image: image, requestId: requestId?.intValue)
             }
         }
     }
@@ -315,7 +317,7 @@ public class ImagePickerSheetController: UIViewController {
         var count = 0
         
         for asset:PHAsset in selectedAssets {
-            self.requestImageForAsset(asset, completion: { (image) -> () in
+            self.requestImageForAsset(asset, completion: { (image, requestId) -> () in
                 if let imageURL : NSURL = self.saveImageOnDisk(image!) {
                     assetsURL.append(imageURL)
                     
@@ -447,10 +449,16 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PreviewCollectionViewCell.self), forIndexPath: indexPath) as! PreviewCollectionViewCell
         
         let asset = assets[indexPath.section]
+        if let id = cell.requestId {
+            imageManager.cancelImageRequest(id)
+            cell.requestId = nil
+        }
         cell.videoIndicatorView.hidden = asset.mediaType != .Video
         
-        requestImageForAsset(asset) { image in
-            cell.imageView.image = image
+        cell.requestId = requestImageForAsset(asset) { image, requestId in
+            if requestId == cell.requestId || cell.requestId == nil {
+                cell.imageView.image = image
+            }
         }
         
         cell.selected = selectedImageIndices.contains(indexPath.section)
@@ -460,6 +468,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
     
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath:
         NSIndexPath) -> UICollectionReusableView {
+            
             let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
             view.userInteractionEnabled = false
             view.buttonInset = UIEdgeInsetsMake(0.0, previewCheckmarkInset, previewCheckmarkInset, 0.0)

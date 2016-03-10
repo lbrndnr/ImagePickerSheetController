@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import Photos
 
 @objc class PreviewCollectionViewCell: UICollectionViewCell {
+       
+    var requestId:PHImageRequestID?
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
