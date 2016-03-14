@@ -331,7 +331,6 @@ public class ImagePickerSheetController: UIViewController {
         
     }
     
-    
     private func saveImageOnDisk(image: UIImage) -> NSURL? {
         
         let nsDocumentDirectory = NSSearchPathDirectory.DocumentDirectory
@@ -351,19 +350,25 @@ public class ImagePickerSheetController: UIViewController {
         return nil
     }
     
-    
     // MARK: - Layout
-    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        backgroundView.frame = view.bounds
+        if let window = UIApplication.sharedApplication().windows.first {
+            
+            let windowFrame = window.bounds
+            let offset = view.convertRect(view.bounds, toView: nil)
+            backgroundView.frame = CGRect(x: -offset.origin.x, y: -offset.origin.y, width: windowFrame.width, height: windowFrame.height)
+            
+        } else {
+            backgroundView.frame = view.bounds
+        }
         
         reloadMaximumPreviewHeight()
         reloadCurrentPreviewHeight(invalidateLayout: true)
         
         let sheetHeight = sheetController.preferredSheetHeight
-        let sheetSize = CGSize(width: view.bounds.width, height: sheetHeight)
+        let sheetSize = CGSize(width: max(view.bounds.width, 320), height: sheetHeight)
         
         // This particular order is necessary so that the sheet is layed out
         // correctly with and without an enclosing popover
