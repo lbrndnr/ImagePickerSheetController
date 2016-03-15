@@ -73,9 +73,9 @@ private let defaultInset: CGFloat = 10
     private func allIndexPaths() -> [NSIndexPath] {
         let s = numberOfSections()
         return (0 ..< s).map { (self.numberOfItemsInSection($0), $0) }
-                        .flatMap { numberOfItems, section in
-                            (0 ..< numberOfItems).map { NSIndexPath(forItem: $0, inSection: section) }
-                        }
+            .flatMap { numberOfItems, section in
+                (0 ..< numberOfItems).map { NSIndexPath(forItem: $0, inSection: section) }
+        }
     }
     
     private func sizeForSheetItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
@@ -116,7 +116,7 @@ private let defaultInset: CGFloat = 10
         }
         
         let cancelIndexPath = actions.indexOf { $0.style == ImagePickerActionStyle.Cancel }
-                                     .map { NSIndexPath(forItem: $0, inSection: 1) }
+            .map { NSIndexPath(forItem: $0, inSection: 1) }
         
         
         if let cancelIndexPath = cancelIndexPath {
@@ -146,7 +146,6 @@ private let defaultInset: CGFloat = 10
     }
     
     // MARK: - Actions
-    
     func reloadActionItems() {
         sheetCollectionView.reloadSections(NSIndexSet(index: 1))
     }
@@ -172,10 +171,8 @@ private let defaultInset: CGFloat = 10
     }
     
     func handleCancelAction() {
-        let cancelAction = actions.filter { $0.style == ImagePickerActionStyle.Cancel }
-                                  .first
         
-        if let cancelAction = cancelAction {
+        if let cancelAction = (actions.filter { $0.style == ImagePickerActionStyle.Cancel }).first {
             handleAction(cancelAction)
         }
         else {
@@ -183,7 +180,7 @@ private let defaultInset: CGFloat = 10
         }
     }
     
-    // MARK: - 
+    // MARK: -
     
     func setPreviewHeight(height: CGFloat, invalidateLayout: Bool) {
         previewHeight = height

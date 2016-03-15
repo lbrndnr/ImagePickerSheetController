@@ -53,7 +53,7 @@ public class ImagePickerSheetController: UIViewController {
         collectionView.backgroundColor = .clearColor()
         collectionView.allowsMultipleSelection = true
         collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(previewCollectionViewInset, previewCollectionViewInset, previewCollectionViewInset, previewCollectionViewInset)
-        collectionView.imagePreviewLayout.showsSupplementaryViews = false
+        collectionView.imagePreviewLayout.showsSupplementaryViews = true
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -66,13 +66,17 @@ public class ImagePickerSheetController: UIViewController {
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
     
-    private var selectedImageIndices = [Int]() {
+    //    private var selectedImageIndices:[Int] {
+    //
+    //        return assets.filter({selectedAssets.contains($0)}).flatMap({ assets.indexOf($0) })
+    //    }
+    
+    private var selectedAssets:[PHAsset] = [] {
         didSet {
-            sheetController.numberOfSelectedImages = selectedImageIndices.count
+            sheetController.numberOfSelectedImages = selectedAssets.count
         }
     }
-    
-    private var assets = [PHAsset]()
+    private var assets:[PHAsset] = []
     
     private lazy var requestOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
@@ -125,14 +129,14 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     /// If set to true, after taping on preview image it enlarges
-    public var enableEnlargedPreviews: Bool = true;
+    public var enableEnlargedPreviews: Bool = true
     
     /// Maximum selection of images.
     public var maximumSelection: Int?
     
     /// The selected image assets
     public var selectedImageAssets: [PHAsset] {
-        return selectedImageIndices.map { self.assets[$0] }
+        return selectedAssets
     }
     
     /// The media type of the displayed assets
@@ -144,11 +148,15 @@ public class ImagePickerSheetController: UIViewController {
     
     // MARK: - Initialization
     
-    public init(mediaType: ImagePickerMediaType) {
+    public init(mediaType: ImagePickerMediaType, selectedAssets:[PHAsset] = []) {
         
         self.mediaType = mediaType
+        self.selectedAssets = selectedAssets
+        
         super.init(nibName: nil, bundle: nil)
         initialize()
+        
+        self.sheetController.numberOfSelectedImages = selectedAssets.count
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -279,7 +287,15 @@ public class ImagePickerSheetController: UIViewController {
         
         let result = PHAsset.fetchAssetsWithOptions(options)
         let amount = min(result.count, imageLimit)
+        
         self.assets = result.objectsAtIndexes(NSIndexSet(indexesInRange: NSRange(location: 0, length: amount))) as? [PHAsset] ?? []
+        sheetController.reloadActionItems()
+        
+        for asset in selectedAssets {
+            if let index = assets.indexOf(asset) {
+                previewCollectionView.selectItemAtIndexPath(NSIndexPath(forItem: 0, inSection: index), animated: false, scrollPosition: .None)
+            }
+        }
     }
     
     private func requestImageForAsset(asset: PHAsset, completion: (image: UIImage?, requestId:PHImageRequestID?) -> ()) -> PHImageRequestID {
@@ -321,14 +337,13 @@ public class ImagePickerSheetController: UIViewController {
                 if let imageURL : NSURL = self.saveImageOnDisk(image!) {
                     assetsURL.append(imageURL)
                     
-                    count++;
+                    count++
                     if (self.selectedImageAssets.count == count){
-                        completion(urls: assetsURL);
+                        completion(urls: assetsURL)
                     }
                 }
             })
         }
-        
     }
     
     private func saveImageOnDisk(image: UIImage) -> NSURL? {
@@ -351,6 +366,7 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     // MARK: - Layout
+    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -368,7 +384,7 @@ public class ImagePickerSheetController: UIViewController {
         reloadCurrentPreviewHeight(invalidateLayout: true)
         
         let sheetHeight = sheetController.preferredSheetHeight
-        let sheetSize = CGSize(width: max(view.bounds.width, 320), height: sheetHeight)
+        let sheetSize = CGSize(width: view.bounds.width, height: sheetHeight)
         
         // This particular order is necessary so that the sheet is layed out
         // correctly with and without an enclosing popover
@@ -465,8 +481,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
                 cell.imageView.image = image
             }
         }
-        
-        cell.selected = selectedImageIndices.contains(indexPath.section)
+        cell.selected = selectedAssets.contains(asset)
         
         return cell
     }
@@ -474,16 +489,16 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath:
         NSIndexPath) -> UICollectionReusableView {
             
+            let asset = assets[indexPath.section]
             let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
             view.userInteractionEnabled = false
             view.buttonInset = UIEdgeInsetsMake(0.0, previewCheckmarkInset, previewCheckmarkInset, 0.0)
-            view.selected = selectedImageIndices.contains(indexPath.section)
             
             supplementaryViews[indexPath.section] = view
+            view.selected = selectedAssets.contains(asset)
             
             return view
     }
-    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -493,25 +508,27 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if let maximumSelection = maximumSelection {
-            if selectedImageIndices.count >= maximumSelection, let previousItemIndex = selectedImageIndices.first {
+            if selectedAssets.count >= maximumSelection, let previousAsset = selectedAssets.first, previousItemIndex = assets.indexOf(previousAsset) {
                 
                 let previousItemIndexPath = NSIndexPath(forItem: 0, inSection: previousItemIndex)
                 
                 supplementaryViews[previousItemIndex]?.selected = false
-                selectedImageIndices.removeAtIndex(0)
+                selectedAssets.remove(previousAsset)
                 collectionView.deselectItemAtIndexPath(previousItemIndexPath, animated: true)
             }
         }
         
+        let asset = assets[indexPath.section]
         // Just to make sure the image is only selected once
-        selectedImageIndices = selectedImageIndices.filter { $0 != indexPath.section }
-        selectedImageIndices.append(indexPath.section)
+        if !selectedAssets.contains(asset) {
+            selectedAssets.append(asset)
+        }
         
         if !enlargedPreviews {
-            enlargePreviewsByCenteringToIndexPath(indexPath) { _ in
-                self.sheetController.reloadActionItems()
-                self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
-            }
+            //            enlargePreviewsByCenteringToIndexPath(indexPath) { _ in
+            self.sheetController.reloadActionItems()
+            self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
+            //            }
         }
         else {
             // scrollToItemAtIndexPath doesn't work reliably
@@ -530,14 +547,14 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
     }
     
     public func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        if let index = selectedImageIndices.indexOf(indexPath.section) {
-            selectedImageIndices.removeAtIndex(index)
+        
+        if let asset = assets.objectAtIndex(indexPath.section) {
+            selectedAssets.remove(asset)
             sheetController.reloadActionItems()
         }
         
         supplementaryViews[indexPath.section]?.selected = false
     }
-    
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -559,7 +576,6 @@ extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
         let checkmarkWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
         return CGSizeMake(checkmarkWidth + 2 * previewCheckmarkInset, sheetController.previewHeight - 2 * previewCollectionViewInset)
     }
-    
 }
 
 // MARK: - UIViewControllerTransitioningDelegate
@@ -574,4 +590,22 @@ extension ImagePickerSheetController: UIViewControllerTransitioningDelegate {
         return AnimationController(imagePickerSheetController: self, presenting: false)
     }
     
+}
+
+private extension Array where Element : Equatable {
+    
+    func objectAtIndex(index:Int) -> Element? {
+        
+        if self.count > index {
+            return self[index]
+        }
+        return nil
+    }
+    
+    mutating func remove(element:Element) {
+        
+        if let index = self.indexOf(element) {
+            self.removeAtIndex(index)
+        }
+    }
 }

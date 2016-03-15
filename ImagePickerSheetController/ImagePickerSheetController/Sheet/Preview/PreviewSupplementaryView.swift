@@ -13,7 +13,6 @@ import UIKit
     private let button: UIButton = {
         let button = UIButton()
         button.tintColor = .whiteColor()
-        button.userInteractionEnabled = false
         button.setImage(PreviewSupplementaryView.checkmarkImage, forState: .Normal)
         button.setImage(PreviewSupplementaryView.selectedCheckmarkImage, forState: .Selected)
         
@@ -77,6 +76,7 @@ import UIKit
     
     private func reloadButtonBackgroundColor() {
         button.backgroundColor = (selected) ? tintColor : nil
+        button.alpha = selected ? 1 : 0.5
     }
     
     // MARK: - Layout
