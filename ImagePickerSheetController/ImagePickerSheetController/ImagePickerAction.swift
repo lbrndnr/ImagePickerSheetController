@@ -28,8 +28,17 @@ public class ImagePickerAction {
     /// The style of the action. This is used to call a cancel handler when dismissing the controller by tapping the background.
     public let style: ImagePickerActionStyle
     
-    let handler: Handler
-    let secondaryHandler: SecondaryHandler
+    private let handler: Handler?
+    private let secondaryHandler: SecondaryHandler?
+    
+    /// Initializes a new cancel ImagePickerAction
+    public init(cancelTitle: String) {
+        self.title = cancelTitle
+        self.secondaryTitle = { _ in cancelTitle }
+        self.style = .Cancel
+        self.handler = nil
+        self.secondaryHandler = nil
+    }
     
     /// Initializes a new ImagePickerAction. The secondary title and handler are used when at least 1 image has been selected.
     /// Secondary title defaults to title if not specified.
@@ -41,7 +50,8 @@ public class ImagePickerAction {
     /// Initializes a new ImagePickerAction. The secondary title and handler are used when at least 1 image has been selected.
     /// Secondary title defaults to title if not specified. Use the closure to format a title according to the selection.
     /// Secondary handler defaults to handler if not specified
-    public init(title: String, secondaryTitle: Title?, style: ImagePickerActionStyle = .Default, handler: Handler, var secondaryHandler: SecondaryHandler? = nil) {
+    public init(title: String, secondaryTitle: Title?, style: ImagePickerActionStyle = .Default, handler: Handler, secondaryHandler secondaryHandlerOrNil: SecondaryHandler? = nil) {
+        var secondaryHandler = secondaryHandlerOrNil
         if secondaryHandler == nil {
             secondaryHandler = { action, _ in
                 handler(action)
@@ -52,15 +62,15 @@ public class ImagePickerAction {
         self.secondaryTitle = secondaryTitle ?? { _ in title }
         self.style = style
         self.handler = handler
-        self.secondaryHandler = secondaryHandler!
+        self.secondaryHandler = secondaryHandler
     }
     
     func handle(numberOfImages: Int = 0) {
         if numberOfImages > 0 {
-            secondaryHandler(self, numberOfImages)
+            secondaryHandler?(self, numberOfImages)
         }
         else {
-            handler(self)
+            handler?(self)
         }
     }
     

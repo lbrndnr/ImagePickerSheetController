@@ -8,7 +8,7 @@
 
 import UIKit
 
-let KVOContext = UnsafeMutablePointer<()>()
+private var KVOContext = 0
 
 class SheetActionCollectionViewCell: SheetCollectionViewCell {
     
@@ -35,7 +35,7 @@ class SheetActionCollectionViewCell: SheetCollectionViewCell {
     }
     
     private func initialize() {
-        textLabel.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions(rawValue: 0), context: KVOContext)
+        textLabel.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions(rawValue: 0), context: &KVOContext)
     }
     
     deinit {
@@ -45,7 +45,7 @@ class SheetActionCollectionViewCell: SheetCollectionViewCell {
     // MARK: - Accessibility
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard context == KVOContext else {
+        guard context == &KVOContext else {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
             return
         }

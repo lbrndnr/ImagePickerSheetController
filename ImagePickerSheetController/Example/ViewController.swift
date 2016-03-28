@@ -17,7 +17,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "presentImagePickerSheet:")
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.presentImagePickerSheet(_:)))
         view.addGestureRecognizer(tapRecognizer)
     }
     
@@ -48,9 +48,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }, secondaryHandler: { _, numberOfPhotos in
             print("Send \(controller.selectedImageAssets)")
         }))
-        controller.addAction(ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), style: .Cancel, handler: { _ in
-            print("Cancelled")
-        }))
+        controller.addAction(ImagePickerAction(cancelTitle: NSLocalizedString("Cancel", comment: "Action Title")))
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             controller.modalPresentationStyle = .Popover
