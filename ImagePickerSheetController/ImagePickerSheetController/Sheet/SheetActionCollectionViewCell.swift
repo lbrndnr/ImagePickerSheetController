@@ -10,7 +10,7 @@ import UIKit
 
 private var KVOContext = 0
 
-@objc class SheetActionCollectionViewCell: SheetCollectionViewCell {
+class SheetActionCollectionViewCell: SheetCollectionViewCell {
     
     lazy private(set) var textLabel: UILabel = {
         let label = UILabel()

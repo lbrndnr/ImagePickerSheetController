@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-@objc class PreviewCollectionViewCell: UICollectionViewCell {
+class PreviewCollectionViewCell: UICollectionViewCell {
        
     var requestId:PHImageRequestID?
     

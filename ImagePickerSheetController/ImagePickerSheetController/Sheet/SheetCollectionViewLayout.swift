@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class SheetCollectionViewLayout: UICollectionViewLayout {
+class SheetCollectionViewLayout: UICollectionViewLayout {
 
     private var layoutAttributes = [[UICollectionViewLayoutAttributes]]()
     private var invalidatedLayoutAttributes: [[UICollectionViewLayoutAttributes]]?

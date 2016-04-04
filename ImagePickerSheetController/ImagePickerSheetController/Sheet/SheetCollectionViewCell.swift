@@ -15,7 +15,7 @@ enum RoundedCorner {
     case None
 }
 
-@objc class SheetCollectionViewCell: UICollectionViewCell {
+class SheetCollectionViewCell: UICollectionViewCell {
 
     var backgroundInsets = UIEdgeInsets() {
         didSet {

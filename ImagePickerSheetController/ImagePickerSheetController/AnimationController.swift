@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class AnimationController: NSObject {
+class AnimationController: NSObject {
     
     let imagePickerSheetController: ImagePickerSheetController
     let presenting: Bool

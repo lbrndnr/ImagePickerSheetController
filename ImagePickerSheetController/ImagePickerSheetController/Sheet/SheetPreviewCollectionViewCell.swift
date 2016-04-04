@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class SheetPreviewCollectionViewCell: SheetCollectionViewCell {
+class SheetPreviewCollectionViewCell: SheetCollectionViewCell {
     
     var collectionView: PreviewCollectionView? {
         willSet {

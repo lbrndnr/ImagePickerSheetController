@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class PreviewSupplementaryView: UICollectionReusableView {
+class PreviewSupplementaryView: UICollectionReusableView {
     
     private let button: UIButton = {
         let button = UIButton()
