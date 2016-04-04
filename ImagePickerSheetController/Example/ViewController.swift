@@ -18,7 +18,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "presentImagePickerSheet:")
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.presentImagePickerSheet(_:)))
         view.addGestureRecognizer(tapRecognizer)
         
         imageView = UIImageView(frame: self.view.bounds);
@@ -45,26 +45,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let controller = ImagePickerSheetController(mediaType: .ImageAndVideo)
         controller.maximumSelection = 3
         
-        controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle:nil, handler: { _ in
+        controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
             presentImagePickerController(.Camera)
-        }, secondaryHandler: { _, numberOfPhotos in
-            print("Comment \(numberOfPhotos) photos")
+            }, secondaryHandler: { _, numberOfPhotos in
+                print("Comment \(numberOfPhotos) photos")
         }))
+
         controller.addAction(ImagePickerAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "Action Title"), $0) as String}, handler: { _ in
             presentImagePickerController(.PhotoLibrary)
         }, secondaryHandler: { _, numberOfPhotos in
-            controller.fetchURLForSelectedPhotos({ (urls) -> () in
-                if let data = NSData(contentsOfURL: urls[0]) {
-                    let image = UIImage(data: data)
-                    self.imageView!.image = image;
-                }
-                
-            })
+            
+            print("Send \(controller.selectedImageAssets)")
         }))
-        controller.addAction(ImagePickerAction(title: NSLocalizedString("Cancel", comment: "Action Title"), secondaryTitle:nil, style: .Cancel, handler: { _ in
-            print("Cancelled")
-        }))
+
         controller.enableEnlargedPreviews = false;
+
+        controller.addAction(ImagePickerAction(cancelTitle: NSLocalizedString("Cancel", comment: "Action Title")))
+        
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             controller.modalPresentationStyle = .Popover
             controller.popoverPresentationController?.sourceView = view

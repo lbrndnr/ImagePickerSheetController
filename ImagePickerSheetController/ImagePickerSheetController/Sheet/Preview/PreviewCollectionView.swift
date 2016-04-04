@@ -33,7 +33,7 @@ import UIKit
     }
     
     private func initialize() {
-        panGestureRecognizer.addTarget(self, action: "handlePanGesture:")
+        panGestureRecognizer.addTarget(self, action: #selector(PreviewCollectionView.handlePanGesture(_:)))
     }
     
     // MARK: - Panning

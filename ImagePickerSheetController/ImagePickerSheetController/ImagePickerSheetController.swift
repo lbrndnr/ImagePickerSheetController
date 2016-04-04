@@ -12,32 +12,19 @@ import Photos
 private let previewCollectionViewInset: CGFloat = 5
 
 /// The media type an instance of ImagePickerSheetController can display
-@objc public enum ImagePickerMediaType : Int {
+public enum ImagePickerMediaType : Int {
     case Image
     case Video
     case ImageAndVideo
 }
 
-@objc @available(iOS 8.0, *)
+@available(iOS 8.0, *)
 public class ImagePickerSheetController: UIViewController {
     
     var sheetCollectionView: UICollectionView {
         return sheetController.sheetCollectionView
     }
-    
-    lazy var backgroundView: UIView = {
-        let view = UIView()
-        view.accessibilityIdentifier = "ImagePickerSheetBackground"
-        
-        if !self.isPresentedAsPopover {
-            view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
-        }
-        
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "cancel"))
-        
-        return view
-    }()
-    
+
     private lazy var sheetController: SheetController = {
         let controller = SheetController(previewCollectionView: self.previewCollectionView)
         controller.actionHandlingCallback = { [weak self] in
@@ -66,10 +53,23 @@ public class ImagePickerSheetController: UIViewController {
     
     private var supplementaryViews = [Int: PreviewSupplementaryView]()
     
-    //    private var selectedImageIndices:[Int] {
-    //
-    //        return assets.filter({selectedAssets.contains($0)}).flatMap({ assets.indexOf($0) })
-    //    }
+    lazy var backgroundView: UIView = {
+        
+        let view = UIView()
+        view.accessibilityIdentifier = "ImagePickerSheetBackground"
+        
+        if !self.isPresentedAsPopover {
+            view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
+        }
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ImagePickerSheetController.cancel)))
+        
+        return view
+    }()
+    
+    /// All the actions. The first action is shown at the top.
+    public var actions: [ImagePickerAction] {
+        return sheetController.actions
+    }
     
     private var selectedAssets:[PHAsset] = [] {
         didSet {
@@ -123,11 +123,6 @@ public class ImagePickerSheetController: UIViewController {
     /// Specify the preferred status bar style
     public var statusBarStyle:UIStatusBarStyle?
     
-    /// All the actions. The first action is shown at the top.
-    public var actions: [ImagePickerAction] {
-        return sheetController.actions
-    }
-    
     /// If set to true, after taping on preview image it enlarges
     public var enableEnlargedPreviews: Bool = true
     
@@ -171,7 +166,7 @@ public class ImagePickerSheetController: UIViewController {
         modalPresentationStyle = .Custom
         transitioningDelegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "cancel", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImagePickerSheetController.cancel), name: UIApplicationDidEnterBackgroundNotification, object: nil)
     }
     
     deinit {
@@ -323,46 +318,6 @@ public class ImagePickerSheetController: UIViewController {
         
         let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
         imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: requestOptions)
-    }
-    
-    public func fetchURLForSelectedPhotos(completion: (urls: [NSURL]) -> ()) {
-        
-        let selectedAssets = self.selectedImageAssets
-        
-        var assetsURL : [NSURL] = []
-        var count = 0
-        
-        for asset:PHAsset in selectedAssets {
-            self.requestImageForAsset(asset, completion: { (image, requestId) -> () in
-                if let imageURL : NSURL = self.saveImageOnDisk(image!) {
-                    assetsURL.append(imageURL)
-                    
-                    count++
-                    if (self.selectedImageAssets.count == count){
-                        completion(urls: assetsURL)
-                    }
-                }
-            })
-        }
-    }
-    
-    private func saveImageOnDisk(image: UIImage) -> NSURL? {
-        
-        let nsDocumentDirectory = NSSearchPathDirectory.DocumentDirectory
-        let nsUserDomainMask = NSSearchPathDomainMask.UserDomainMask
-        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-        
-        if paths.count > 0 {
-            
-            let dirURL = NSURL(fileURLWithPath:paths[0])
-            let writeURL = dirURL.URLByAppendingPathComponent(NSProcessInfo.processInfo().globallyUniqueString)
-            
-            UIImageJPEGRepresentation(image, 0.6)!.writeToURL(writeURL, atomically: true)
-            
-            return writeURL
-        }
-        
-        return nil
     }
     
     // MARK: - Layout
