@@ -34,6 +34,7 @@ class SheetController: NSObject {
     
     private(set) var previewHeight: CGFloat = 0
     var numberOfSelectedImages = 0
+    var contentType = ImagePickerMediaType.Image
     
     var preferredSheetHeight: CGFloat {
         return allIndexPaths().map { self.sizeForSheetItemAtIndexPath($0).height }
@@ -217,7 +218,7 @@ extension SheetController: UICollectionViewDataSource {
             let action = actions[indexPath.item]
             let actionCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(SheetActionCollectionViewCell.self), forIndexPath: indexPath) as! SheetActionCollectionViewCell
             actionCell.textLabel.font = fontForAction(action)
-            actionCell.textLabel.text = numberOfSelectedImages > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
+            actionCell.textLabel.text = numberOfSelectedImages > 0 ? action.secondaryTitle(numberOfSelectedImages, contentType) : action.title
             
             cell = actionCell
         }

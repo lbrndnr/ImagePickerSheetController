@@ -15,7 +15,7 @@ public enum ImagePickerActionStyle {
 
 public class ImagePickerAction {
     
-    public typealias Title = Int -> String
+    public typealias Title = (Int, ImagePickerMediaType)  -> String
     public typealias Handler = (ImagePickerAction) -> ()
     public typealias SecondaryHandler = (ImagePickerAction, Int) -> ()
     
@@ -65,7 +65,7 @@ public class ImagePickerAction {
         self.secondaryHandler = secondaryHandler
     }
     
-    func handle(numberOfImages: Int = 0) {
+    func handle(numberOfImages: Int = 0, contentType: ImagePickerMediaType = .Image) {
         if numberOfImages > 0 {
             secondaryHandler?(self, numberOfImages)
         }
