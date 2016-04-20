@@ -16,6 +16,7 @@ public enum ImagePickerMediaType : Int {
     case Image
     case Video
     case ImageAndVideo
+    case None
 }
 
 @available(iOS 8.0, *)
@@ -27,6 +28,7 @@ public class ImagePickerSheetController: UIViewController {
 
     private lazy var sheetController: SheetController = {
         let controller = SheetController(previewCollectionView: self.previewCollectionView)
+        controller.displayPreview = self.mediaType != .None;
         controller.actionHandlingCallback = { [weak self] in
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -86,7 +88,14 @@ public class ImagePickerSheetController: UIViewController {
         return options
     }()
     
-    private let imageManager = PHCachingImageManager()
+    private lazy var imageManager: PHCachingImageManager? = {
+    
+        if self.mediaType == .None {
+            return nil
+        }
+        
+        return PHCachingImageManager();
+    }()
     
     private let minimumPreviewHeight: CGFloat = 129
     private var maximumPreviewHeight: CGFloat = 129
@@ -187,10 +196,15 @@ public class ImagePickerSheetController: UIViewController {
         
         super.viewWillAppear(animated)
         
-        preferredContentSize = CGSize(width: 400, height: view.frame.height)
-        
-        if PHPhotoLibrary.authorizationStatus() == .Authorized {
-            prepareAssets()
+        if mediaType == .None {
+//            previewCollectionView.removeFromSuperview()
+            
+        } else {
+            preferredContentSize = CGSize(width: 400, height: view.frame.height)
+            
+            if PHPhotoLibrary.authorizationStatus() == .Authorized {
+                prepareAssets()
+            }
         }
     }
     
@@ -249,6 +263,10 @@ public class ImagePickerSheetController: UIViewController {
     
     private func prepareAssets() {
         
+        if mediaType == .None {
+            return
+        }
+        
         fetchAssets()
         reloadMaximumPreviewHeight()
         reloadCurrentPreviewHeight(invalidateLayout: false)
@@ -274,6 +292,8 @@ public class ImagePickerSheetController: UIViewController {
             options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.Video.rawValue)
         case .ImageAndVideo:
             options.predicate = NSPredicate(format: "mediaType = %d OR mediaType = %d", PHAssetMediaType.Image.rawValue, PHAssetMediaType.Video.rawValue)
+        case .None: return;
+            
         }
         
         if #available(iOS 9, *) {
@@ -295,29 +315,34 @@ public class ImagePickerSheetController: UIViewController {
     
     private func requestImageForAsset(asset: PHAsset, completion: (image: UIImage?, requestId:PHImageRequestID?) -> ()) -> PHImageRequestID {
         
-        let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
-        requestOptions.synchronous = false
+        if let manager = self.imageManager  {
+            let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
+            requestOptions.synchronous = false
+            
+            // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
+            if asset.representsBurst {
+                return manager.requestImageDataForAsset(asset, options: requestOptions) { data, _, _, dict in
+                    let image = data.flatMap { UIImage(data: $0) }
+                    let requestId = dict?[PHImageResultRequestIDKey] as? NSNumber
+                    completion(image: image, requestId: requestId?.intValue)
+                }
+            }
+            else {
+                return manager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: requestOptions) { image, dict in
+                    let requestId = dict?[PHImageResultRequestIDKey] as? NSNumber
+                    completion(image: image, requestId: requestId?.intValue)
+                }
+            }
+        }
         
-        // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
-        if asset.representsBurst {
-            return imageManager.requestImageDataForAsset(asset, options: requestOptions) { data, _, _, dict in
-                let image = data.flatMap { UIImage(data: $0) }
-                let requestId = dict?[PHImageResultRequestIDKey] as? NSNumber
-                completion(image: image, requestId: requestId?.intValue)
-            }
-        }
-        else {
-            return imageManager.requestImageForAsset(asset, targetSize: targetSize, contentMode: .AspectFill, options: requestOptions) { image, dict in
-                let requestId = dict?[PHImageResultRequestIDKey] as? NSNumber
-                completion(image: image, requestId: requestId?.intValue)
-            }
-        }
+        return 0
     }
     
     private func prefetchImagesForAsset(asset: PHAsset) {
-        
-        let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
-        imageManager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: requestOptions)
+        if let manager = self.imageManager {
+            let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
+            manager.startCachingImagesForAssets([asset], targetSize: targetSize, contentMode: .AspectFill, options: requestOptions)
+        }
     }
     
     // MARK: - Layout
@@ -414,7 +439,7 @@ public class ImagePickerSheetController: UIViewController {
 extension ImagePickerSheetController: UICollectionViewDataSource {
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return assets.count
+        return self.mediaType == .None ? 0 : assets.count
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -424,19 +449,22 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PreviewCollectionViewCell.self), forIndexPath: indexPath) as! PreviewCollectionViewCell
         
-        let asset = assets[indexPath.section]
-        if let id = cell.requestId {
-            imageManager.cancelImageRequest(id)
-            cell.requestId = nil
-        }
-        cell.videoIndicatorView.hidden = asset.mediaType != .Video
-        
-        cell.requestId = requestImageForAsset(asset) { image, requestId in
-            if requestId == cell.requestId || cell.requestId == nil {
-                cell.imageView.image = image
+        if let imageManager = self.imageManager {
+            let asset = assets[indexPath.section]
+            if let id = cell.requestId {
+                imageManager.cancelImageRequest(id)
+                cell.requestId = nil
             }
+            cell.videoIndicatorView.hidden = asset.mediaType != .Video
+            
+            cell.requestId = requestImageForAsset(asset) { image, requestId in
+                if requestId == cell.requestId || cell.requestId == nil {
+                    cell.imageView.image = image
+                }
+            }
+            
+            cell.selected = selectedAssets.contains(asset)
         }
-        cell.selected = selectedAssets.contains(asset)
         
         return cell
     }
