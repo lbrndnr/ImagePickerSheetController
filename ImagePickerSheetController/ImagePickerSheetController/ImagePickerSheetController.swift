@@ -41,6 +41,7 @@ public class ImagePickerSheetController: UIViewController {
     
     private lazy var sheetController: SheetController = {
         let controller = SheetController(previewCollectionView: self.previewCollectionView)
+        controller.displayPreview = self.mediaType != .None;
         controller.actionHandlingCallback = { [weak self] in
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
