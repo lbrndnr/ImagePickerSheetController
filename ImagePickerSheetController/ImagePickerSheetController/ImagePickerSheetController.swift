@@ -186,7 +186,7 @@ public class ImagePickerSheetController: UIViewController {
         super.viewWillAppear(animated)
         
         if mediaType == .None {
-            previewCollectionView.removeFromSuperview()
+//            previewCollectionView.removeFromSuperview()
             
         } else {
             preferredContentSize = CGSize(width: 400, height: view.frame.height)
@@ -251,6 +251,10 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     private func prepareAssets() {
+        
+        if mediaType == .None {
+            return
+        }
         
         fetchAssets()
         reloadMaximumPreviewHeight()
