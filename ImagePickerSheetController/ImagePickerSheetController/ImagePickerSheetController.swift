@@ -277,6 +277,8 @@ public class ImagePickerSheetController: UIViewController {
             options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.Video.rawValue)
         case .ImageAndVideo:
             options.predicate = NSPredicate(format: "mediaType = %d OR mediaType = %d", PHAssetMediaType.Image.rawValue, PHAssetMediaType.Video.rawValue)
+        case .None: return
+            
         }
         
         if #available(iOS 9, *) {
