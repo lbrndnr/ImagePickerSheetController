@@ -186,7 +186,7 @@ public class ImagePickerSheetController: UIViewController {
         super.viewWillAppear(animated)
         
         if mediaType == .None {
-            sheetCollectionView.removeFromSuperview()
+            previewCollectionView.removeFromSuperview()
             
         } else {
             preferredContentSize = CGSize(width: 400, height: view.frame.height)
@@ -277,7 +277,7 @@ public class ImagePickerSheetController: UIViewController {
             options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.Video.rawValue)
         case .ImageAndVideo:
             options.predicate = NSPredicate(format: "mediaType = %d OR mediaType = %d", PHAssetMediaType.Image.rawValue, PHAssetMediaType.Video.rawValue)
-        case .None: return
+        case .None: return;
             
         }
         
