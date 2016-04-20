@@ -16,6 +16,7 @@ private let previewCollectionViewInset: CGFloat = 5
     case Image
     case Video
     case ImageAndVideo
+    case None
 }
 
 @objc @available(iOS 8.0, *)
@@ -184,10 +185,15 @@ public class ImagePickerSheetController: UIViewController {
         
         super.viewWillAppear(animated)
         
-        preferredContentSize = CGSize(width: 400, height: view.frame.height)
-        
-        if PHPhotoLibrary.authorizationStatus() == .Authorized {
-            prepareAssets()
+        if mediaType == .None {
+            sheetCollectionView.removeFromSuperview()
+            
+        } else {
+            preferredContentSize = CGSize(width: 400, height: view.frame.height)
+            
+            if PHPhotoLibrary.authorizationStatus() == .Authorized {
+                prepareAssets()
+            }
         }
     }
     
