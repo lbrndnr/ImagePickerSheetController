@@ -347,7 +347,9 @@ public class ImagePickerSheetController: UIViewController {
         }
         
         UIView.animateWithDuration(animationDuration, animations: {
-            self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
+            UIView.performWithoutAnimation({
+                self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
+            })
             self.view.layoutIfNeeded()
         }, completion: completion)
     }
