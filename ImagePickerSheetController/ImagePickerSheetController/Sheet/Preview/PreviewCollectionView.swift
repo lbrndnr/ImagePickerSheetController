@@ -11,7 +11,9 @@ import UIKit
 class PreviewCollectionView: UICollectionView {
     
     var bouncing: Bool {
-        return contentOffset.x < -contentInset.left || contentOffset.x + frame.width > contentSize.width + contentInset.right
+        if contentOffset.x < -contentInset.left { return true }
+        if contentOffset.x + frame.width > contentSize.width + contentInset.right { return true }
+        return false
     }
     
     var imagePreviewLayout: PreviewCollectionViewLayout {
