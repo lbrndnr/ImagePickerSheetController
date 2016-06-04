@@ -23,8 +23,8 @@ Pod::Spec.new do |s|
                    ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIAlertController which makes its usage simple and concise.
                    DESC
 
-  s.homepage     = "https://github.com/larcus94/ImagePickerSheetController"
-  s.screenshot  = "https://raw.githubusercontent.com/larcus94/ImagePickerSheetController/master/Screenshots/Nature.png"
+  s.homepage     = "https://github.com/lbrndnr/ImagePickerSheetController"
+  s.screenshot  = "https://raw.githubusercontent.com/lbrndnr/ImagePickerSheetController/master/Screenshots/Nature.png"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
   #
 
   s.author             = { "Laurin Brandner" => "hello@laurinbrandner.ch" }
-  s.social_media_url   = "http://twitter.com/larcus94"
+  s.social_media_url   = "http://twitter.com/lbrndnr"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -69,7 +69,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/larcus94/ImagePickerSheetController.git", :tag => s.version }
+  s.source       = { :git => "https://github.com/lbrndnr/ImagePickerSheetController.git", :tag => s.version }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
