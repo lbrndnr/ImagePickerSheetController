@@ -72,10 +72,11 @@ class SheetController: NSObject {
     
     private func allIndexPaths() -> [NSIndexPath] {
         let s = numberOfSections()
-        return (0 ..< s).map { (self.numberOfItemsInSection($0), $0) }
-                        .flatMap { numberOfItems, section in
-                            (0 ..< numberOfItems).map { NSIndexPath(forItem: $0, inSection: section) }
-                        }
+        let itemsWithSections = (0 ..< s).map { (self.numberOfItemsInSection($0), $0) }
+        let itemIndexes = itemsWithSections.flatMap { numberOfItems, section in
+            (0 ..< numberOfItems).map({ NSIndexPath(forItem: $0, inSection: section) }) }
+        
+        return itemIndexes
     }
     
     private func sizeForSheetItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
