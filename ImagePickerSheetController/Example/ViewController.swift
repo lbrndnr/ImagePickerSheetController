@@ -23,6 +23,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // MARK: Other Methods
     
+    func stringFromMediaType(mediaType: ImagePickerMediaType) -> String {
+        switch mediaType {
+        case .Image:
+            return "Photo"
+            
+        case .Video:
+            return "Video"
+            
+        default:
+            return "Object"
+        }
+    }
+    
+    
     func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
         let presentImagePickerController: UIImagePickerControllerSourceType -> () = { source in
             let controller = UIImagePickerController()
@@ -43,7 +57,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }, secondaryHandler: { _, numberOfPhotos in
             print("Comment \(numberOfPhotos) photos")
         }))
-        controller.addAction(ImagePickerAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("ImagePickerSheet.button1.Send %lu Photo", comment: "Action Title"), $0) as String}, handler: { _ in
+        controller.addAction(ImagePickerAction(title: NSLocalizedString("Photo Library", comment: "Action Title"), secondaryTitle: { NSString.localizedStringWithFormat(NSLocalizedString("Send %lu %@", comment: "Action Title"), $0, "\(self.stringFromMediaType($1))\($0 != 1 ? "s" : "")" ) as String}, handler: { _ in
             presentImagePickerController(.PhotoLibrary)
         }, secondaryHandler: { _, numberOfPhotos in
             print("Send \(controller.selectedImageAssets)")

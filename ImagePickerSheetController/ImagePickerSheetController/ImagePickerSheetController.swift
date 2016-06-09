@@ -72,6 +72,27 @@ public class ImagePickerSheetController: UIViewController {
     
     private var selectedImageIndices = [Int]() {
         didSet {
+            var images = false
+            var videos = false
+            for (_, section) in selectedImageIndices.enumerate() {
+                let asset = assets[section]
+                switch asset.mediaType {
+                case .Image:
+                    images = true
+                    
+                case .Video:
+                    videos = true
+                    
+                default: break
+                }
+            }
+            var mediaType = ImagePickerMediaType.Image
+            if (videos && !images) {
+                mediaType = .Video
+            } else if (videos && images) {
+                mediaType = .ImageAndVideo
+            }
+            sheetController.contentType = mediaType
             sheetController.numberOfSelectedImages = selectedImageIndices.count
         }
     }
