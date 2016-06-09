@@ -315,14 +315,14 @@ public class ImagePickerSheetController: UIViewController {
     private func reloadMaximumPreviewHeight() {
         let maxHeight: CGFloat = 400
         let maxImageWidth = sheetController.preferredSheetWidth - 2 * previewCollectionViewInset
-
-        let assetRatios = assets.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
-                                .map { $0.height / $0.width }
-            
+        
+        let sizes = assets
+            .map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
+        let assetRatios = sizes.map { $0.height / $0.width }
         let assetHeights = assetRatios.map { $0 * maxImageWidth }
-                                      .filter { $0 < maxImageWidth && $0 < maxHeight } // Make sure the preview isn't too high eg for squares
-                                      .sort(>)
-        let assetHeight = ceil(assetHeights.first ?? 0)
+        let validAssetHeights = assetHeights
+            .filter { $0 < maxImageWidth && $0 < maxHeight } // Make sure the preview isn't too high eg for squares
+        let assetHeight = ceil(validAssetHeights.maxElement() ?? 0)
         
         // Just a sanity check, to make sure this doesn't exceed 400 points
         let scaledHeight = max(min(assetHeight, maxHeight), 200)
