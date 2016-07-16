@@ -75,16 +75,22 @@ public class ImagePickerSheetController: UIViewController {
             sheetController.numberOfSelectedImages = selectedImageIndices.count
         }
     }
-    
+
     /// The selected image assets
     public var selectedImageAssets: [PHAsset] {
-        return selectedImageIndices.map { self.assets[$0] }
+        return selectedImageIndices.map {
+            let asset = PHAsset()
+            if case let asset? = self.fetchedResults?[$0] as? PHAsset {
+                return asset
+            }
+            return asset
+        }
     }
     
     /// The media type of the displayed assets
     public let mediaType: ImagePickerMediaType
     
-    private var assets = [PHAsset]()
+    private var fetchedResults: PHFetchResult?
     
     private lazy var requestOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
@@ -124,7 +130,7 @@ public class ImagePickerSheetController: UIViewController {
         super.init(coder: aDecoder)
         initialize()
     }
-    
+   
     private func initialize() {
         modalPresentationStyle = .Custom
         transitioningDelegate = self
@@ -212,10 +218,10 @@ public class ImagePickerSheetController: UIViewController {
         // Filter out the assets that are too thin. This can't be done before becuase
         // we don't know how tall the images should be
         let minImageWidth = 2 * previewCheckmarkInset + (PreviewSupplementaryView.checkmarkImage?.size.width ?? 0)
-        assets = assets.filter { asset in
-            let size = sizeForAsset(asset)
-            return size.width >= minImageWidth
-        }
+//        assets = assets.filter { asset in
+//            let size = sizeForAsset(asset)
+//            return size.width >= minImageWidth
+//        }
     }
     
     private func fetchAssets() {
@@ -237,23 +243,19 @@ public class ImagePickerSheetController: UIViewController {
         }
         
         let result = PHAsset.fetchAssetsWithOptions(options)
+        self.fetchedResults = result
         let requestOptions = PHImageRequestOptions()
         requestOptions.synchronous = true
         requestOptions.deliveryMode = .FastFormat
         
-        result.enumerateObjectsUsingBlock { asset, _, stop in
-            defer {
-                if self.assets.count > fetchLimit {
-                    stop.initialize(true)
-                }
+        result.enumerateObjectsUsingBlock { asset, idx, stop in
+            
+            if idx == fetchLimit {
+                stop.initialize(true)
             }
             
             if let asset = asset as? PHAsset {
-                self.imageManager.requestImageDataForAsset(asset, options: requestOptions) { data, _, _, info in
-                    if data != nil {
-                        self.assets.append(asset)
-                    }
-                }
+                self.prefetchImagesForAsset(asset)
             }
         }
     }
@@ -261,6 +263,7 @@ public class ImagePickerSheetController: UIViewController {
     private func requestImageForAsset(asset: PHAsset, completion: (image: UIImage?) -> ()) {
         let targetSize = sizeForAsset(asset, scale: UIScreen.mainScreen().scale)
         requestOptions.synchronous = true
+        requestOptions.deliveryMode = .FastFormat
         
         // Workaround because PHImageManager.requestImageForAsset doesn't work for burst images
         if asset.representsBurst {
@@ -301,10 +304,10 @@ public class ImagePickerSheetController: UIViewController {
     }
     
     private func reloadCurrentPreviewHeight(invalidateLayout invalidate: Bool) {
-        if assets.count <= 0 {
+        if self.fetchedResults?.count <= 0 {
             sheetController.setPreviewHeight(0, invalidateLayout: invalidate)
         }
-        else if assets.count > 0 && enlargedPreviews {
+        else if self.fetchedResults?.count  > 0 && enlargedPreviews {
             sheetController.setPreviewHeight(maximumPreviewHeight, invalidateLayout: invalidate)
         }
         else {
@@ -315,26 +318,21 @@ public class ImagePickerSheetController: UIViewController {
     private func reloadMaximumPreviewHeight() {
         let maxHeight: CGFloat = 400
         let maxImageWidth = sheetController.preferredSheetWidth - 2 * previewCollectionViewInset
+        
+        guard let results = self.fetchedResults as? [PHAsset] else {
+            return
+        }
 
-        let assetRatios = assets.map { (asset: PHAsset) -> CGSize in
-                CGSize(width: max(asset.pixelHeight, asset.pixelWidth), height: min(asset.pixelHeight, asset.pixelWidth))
-            }.map { (size: CGSize) -> CGFloat in
-                size.height / size.width
-            }
-
-        let assetHeights = assetRatios.map { (ratio: CGFloat) -> CGFloat in ratio * maxImageWidth }
-                                      .filter { (height: CGFloat) -> Bool in height < maxImageWidth && height < maxHeight } // Make sure the preview isn't too high eg for squares
+        let assetRatios = results.map { CGSize(width: max($0.pixelHeight, $0.pixelWidth), height: min($0.pixelHeight, $0.pixelWidth)) }
+                                .map { $0.height / $0.width }
+            
+        let assetHeights = assetRatios.map { $0 * maxImageWidth }
+                                      .filter { $0 < maxImageWidth && $0 < maxHeight } // Make sure the preview isn't too high eg for squares
                                       .sort(>)
-        let assetHeight: CGFloat
-        if let first = assetHeights.first {
-            assetHeight = first
-        }
-        else {
-            assetHeight = 0
-        }
-
+        let assetHeight = ceil(assetHeights.first ?? 0)
+        
         // Just a sanity check, to make sure this doesn't exceed 400 points
-        let scaledHeight: CGFloat = max(min(assetHeight, maxHeight), 200)
+        let scaledHeight = max(min(assetHeight, maxHeight), 200)
         maximumPreviewHeight = scaledHeight + 2 * previewCollectionViewInset
     }
     
@@ -355,7 +353,6 @@ public class ImagePickerSheetController: UIViewController {
             animationDuration = 0.3
         }
         
-        self.sheetCollectionView.collectionViewLayout.invalidateLayout()
         UIView.animateWithDuration(animationDuration, animations: {
             self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
             self.view.layoutIfNeeded()
@@ -369,7 +366,7 @@ public class ImagePickerSheetController: UIViewController {
 extension ImagePickerSheetController: UICollectionViewDataSource {
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return assets.count
+        return self.fetchedResults?.count ?? 0
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -379,10 +376,12 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(PreviewCollectionViewCell.self), forIndexPath: indexPath) as! PreviewCollectionViewCell
         
-        let asset = assets[indexPath.section]
-        cell.videoIndicatorView.hidden = asset.mediaType != .Video
+        guard let fetchedAsset = self.fetchedResults?[indexPath.section] as? PHAsset else {
+            return cell
+        }
+        cell.videoIndicatorView.hidden = fetchedAsset.mediaType != .Video
 
-        requestImageForAsset(asset) { image in
+        requestImageForAsset(fetchedAsset) { image in
             cell.imageView.image = image
         }
         
@@ -460,7 +459,9 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
 extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let asset = assets[indexPath.section]
+        guard let result = fetchedResults, asset = result[indexPath.section] as? PHAsset else {
+            return CGSizeZero
+        }
         let size = sizeForAsset(asset)
         
         // Scale down to the current preview height, sizeForAsset returns the original size
