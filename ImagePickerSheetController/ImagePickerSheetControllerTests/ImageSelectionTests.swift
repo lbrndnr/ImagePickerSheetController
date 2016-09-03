@@ -14,11 +14,11 @@ import ImagePickerSheetController
 
 class ImageSelectionTests: ImagePickerSheetControllerTests {
     
-    let result: PHFetchResult = {
+    let result: PHFetchResult = { () -> PHFetchResult<PHAsset> in 
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         
-        return PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        return PHAsset.fetchAssets(with: .image, options: options)
     }()
     
     let count = 3
@@ -37,7 +37,7 @@ class ImageSelectionWithoutLimitTests: ImageSelectionTests {
         super.setUp()
         
         for i in 0 ..< count {
-            let indexPath = NSIndexPath(forItem: 0, inSection: i)
+            let indexPath = IndexPath(item: 0, section: i)
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
@@ -46,22 +46,22 @@ class ImageSelectionWithoutLimitTests: ImageSelectionTests {
     
     func testImageSelection() {
         let selectedAssets = imageController.selectedImageAssets
-        result.enumerateObjectsUsingBlock { obj, idx, _ in
-            if let asset = obj as? PHAsset where idx < 3 {
+        result.enumerateObjects { obj, idx, _ in
+            if let asset = obj as? PHAsset , idx < 3 {
                 expect(asset.localIdentifier) == selectedAssets[idx].localIdentifier
             }
         }
     }
     
     func testImageDeselection() {
-        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+        let indexPath = IndexPath(item: 0, section: 0)
         tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         
         expect(self.imageController.selectedImageAssets.count) == count - 1
         
         let selectedAssets = imageController.selectedImageAssets
-        result.enumerateObjectsUsingBlock { obj, idx, _ in
-            if let asset = obj as? PHAsset where idx < self.count && idx > 0 {
+        result.enumerateObjects { obj, idx, _ in
+            if let asset = obj as? PHAsset , idx < self.count && idx > 0 {
                 expect(asset.localIdentifier) == selectedAssets[idx-1].localIdentifier
             }
         }
@@ -76,15 +76,15 @@ class ImageSelectionWithLimitTests: ImageSelectionTests {
         imageController.maximumSelection = maxSelection
         
         for i in 0 ..< count {
-            let indexPath = NSIndexPath(forItem: 0, inSection: i)
+            let indexPath = IndexPath(item: 0, section: i)
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
         expect(self.imageController.selectedImageAssets.count) == maxSelection
         
         let selectedAssets = imageController.selectedImageAssets
-        result.enumerateObjectsUsingBlock { obj, idx, _ in
-            if let asset = obj as? PHAsset where idx < maxSelection && idx > 0 {
+        result.enumerateObjects { obj, idx, _ in
+            if let asset = obj as? PHAsset , idx < maxSelection && idx > 0 {
                 expect(asset.localIdentifier) == selectedAssets[idx-1].localIdentifier
             }
         }

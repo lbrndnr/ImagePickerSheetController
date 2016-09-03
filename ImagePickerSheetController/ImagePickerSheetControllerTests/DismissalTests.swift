@@ -15,8 +15,8 @@ class DismissalTests: ImagePickerSheetControllerTests {
     override func setUp() {
         super.setUp()
         
-        imageController.addAction(ImagePickerAction(title: defaultActionTitle, style: .Default, handler: { _ in }))
-        imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .Cancel, handler: { _ in }))
+        imageController.addAction(ImagePickerAction(title: defaultActionTitle, style: .default, handler: { _ in }))
+        imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .cancel, handler: { _ in }))
         
         presentImagePickerSheetController()
     }
