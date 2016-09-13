@@ -11,11 +11,11 @@ import KIF
 
 extension XCTestCase {
     
-    func tester(file : String = __FILE__, _ line : Int = __LINE__) -> KIFUITestActor {
+    func tester(_ file : String = #file, _ line : Int = #line) -> KIFUITestActor {
         return KIFUITestActor(inFile: file, atLine: line, delegate: self)
     }
     
-    func system(file : String = __FILE__, _ line : Int = __LINE__) -> KIFSystemTestActor {
+    func system(_ file : String = #file, _ line : Int = #line) -> KIFSystemTestActor {
         return KIFSystemTestActor(inFile: file, atLine: line, delegate: self)
     }
     
@@ -23,11 +23,11 @@ extension XCTestCase {
 
 extension KIFTestActor {
     
-    func tester(file : String = __FILE__, _ line : Int = __LINE__) -> KIFUITestActor {
+    func tester(_ file : String = #file, _ line : Int = #line) -> KIFUITestActor {
         return KIFUITestActor(inFile: file, atLine: line, delegate: self)
     }
     
-    func system(file : String = __FILE__, _ line : Int = __LINE__) -> KIFSystemTestActor {
+    func system(_ file : String = #file, _ line : Int = #line) -> KIFSystemTestActor {
         return KIFSystemTestActor(inFile: file, atLine: line, delegate: self)
     }
     
@@ -36,7 +36,7 @@ extension KIFTestActor {
 extension KIFUITestActor {
     
     // Needed because UICollectionView fails to select an item due to a reason I don't quite grasp
-    func tapImagePreviewAtIndexPath(indexPath: NSIndexPath, inCollectionViewWithAccessibilityIdentifier collectionViewIdentifier: String) {
+    func tapImagePreviewAtIndexPath(_ indexPath: NSIndexPath, inCollectionViewWithAccessibilityIdentifier collectionViewIdentifier: String) {
         let collectionView = waitForViewWithAccessibilityIdentifier(collectionViewIdentifier) as! UICollectionView
         
         let cellAttributes = collectionView.layoutAttributesForItemAtIndexPath(indexPath)

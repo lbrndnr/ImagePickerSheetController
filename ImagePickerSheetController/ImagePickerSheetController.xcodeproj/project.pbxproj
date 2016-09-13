@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4944CA851B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		4944CA851B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4944CA841B8DB7F3007EA349 /* SheetActionCollectionViewCell.swift */; };
 		494505AC1B2201AF00EF9ADC /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494505AB1B2201AF00EF9ADC /* KIFExtensions.swift */; };
 		494505AE1B22022F00EF9ADC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408461B21854300D6005C /* CoreGraphics.framework */; };
 		494505B11B22026600EF9ADC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408481B2186D500D6005C /* IOKit.framework */; };
-		494B3B711B8EF3CB004B467C /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */; settings = {ASSET_TAGS = (); }; };
+		494B3B711B8EF3CB004B467C /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B3B701B8EF3CB004B467C /* ImagePickerSheetController.swift */; };
 		495E5F551B9DE84D004729E6 /* KIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; };
 		495F89A91B394288006B9BA4 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49DC4AAD1B14FB9A00B4E78E /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		49665AD71B8F2DC6005AA666 /* SheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49665AD61B8F2DC6005AA666 /* SheetController.swift */; settings = {ASSET_TAGS = (); }; };
+		49665AD71B8F2DC6005AA666 /* SheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49665AD61B8F2DC6005AA666 /* SheetController.swift */; };
 		4981CB031B8B246000A09750 /* SheetPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFD1B8B246000A09750 /* SheetPreviewCollectionViewCell.swift */; };
 		4981CB041B8B246000A09750 /* PreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CAFF1B8B246000A09750 /* PreviewCollectionViewCell.swift */; };
 		4981CB051B8B246000A09750 /* PreviewCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB001B8B246000A09750 /* PreviewCollectionView.swift */; };
@@ -22,12 +22,12 @@
 		4981CB071B8B246000A09750 /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB021B8B246000A09750 /* PreviewSupplementaryView.swift */; };
 		4981CB091B8B255A00A09750 /* SheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4981CB081B8B255A00A09750 /* SheetCollectionViewCell.swift */; };
 		4989232F1B9B05CB00D68C8E /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49A408441B21853E00D6005C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		499E65CF1B8E317C005B807F /* SheetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */; settings = {ASSET_TAGS = (); }; };
-		49A93AE81B9CC0F100EE8A40 /* PresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AE71B9CC0F100EE8A40 /* PresentationTests.swift */; settings = {ASSET_TAGS = (); }; };
-		49A93AF11B9CC15A00EE8A40 /* DismissalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF01B9CC15A00EE8A40 /* DismissalTests.swift */; settings = {ASSET_TAGS = (); }; };
-		49A93AF31B9CCB3900EE8A40 /* AddingActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF21B9CCB3900EE8A40 /* AddingActionTests.swift */; settings = {ASSET_TAGS = (); }; };
-		49A93AF51B9CCBA900EE8A40 /* ActionHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF41B9CCBA900EE8A40 /* ActionHandlingTests.swift */; settings = {ASSET_TAGS = (); }; };
-		49A93AF71B9CCC9500EE8A40 /* ImageSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF61B9CCC9500EE8A40 /* ImageSelectionTests.swift */; settings = {ASSET_TAGS = (); }; };
+		499E65CF1B8E317C005B807F /* SheetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499E65CE1B8E317C005B807F /* SheetCollectionViewLayout.swift */; };
+		49A93AE81B9CC0F100EE8A40 /* PresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AE71B9CC0F100EE8A40 /* PresentationTests.swift */; };
+		49A93AF11B9CC15A00EE8A40 /* DismissalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF01B9CC15A00EE8A40 /* DismissalTests.swift */; };
+		49A93AF31B9CCB3900EE8A40 /* AddingActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF21B9CCB3900EE8A40 /* AddingActionTests.swift */; };
+		49A93AF51B9CCBA900EE8A40 /* ActionHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF41B9CCBA900EE8A40 /* ActionHandlingTests.swift */; };
+		49A93AF71B9CCC9500EE8A40 /* ImageSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A93AF61B9CCC9500EE8A40 /* ImageSelectionTests.swift */; };
 		49DC4A571B14F1BC00B4E78E /* ImagePickerSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 49DC4A561B14F1BC00B4E78E /* ImagePickerSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49DC4A5D1B14F1BC00B4E78E /* ImagePickerSheetController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49DC4A511B14F1BC00B4E78E /* ImagePickerSheetController.framework */; };
 		49DC4A641B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC4A631B14F1BC00B4E78E /* ImagePickerSheetControllerTests.swift */; };
@@ -369,19 +369,23 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Laurin Brandner";
 				TargetAttributes = {
 					49DC4A501B14F1BC00B4E78E = {
 						CreatedOnToolsVersion = 6.3.1;
+						LastSwiftMigration = 0800;
 					};
 					49DC4A5B1B14F1BC00B4E78E = {
 						CreatedOnToolsVersion = 6.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 49DC4A851B14F31500B4E78E;
 					};
 					49DC4A851B14F31500B4E78E = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 5953RHWYWT;
+						DevelopmentTeam = Q44S7Q92R5;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -537,8 +541,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -586,8 +592,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -607,6 +615,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -617,6 +626,7 @@
 		49DC4A681B14F1BC00B4E78E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -629,12 +639,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		49DC4A691B14F1BC00B4E78E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -647,13 +659,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		49DC4A6B1B14F1BC00B4E78E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../Carthage/Build/iOS";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -663,6 +676,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Debug;
@@ -670,12 +684,13 @@
 		49DC4A6C1B14F1BC00B4E78E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../Carthage/Build/iOS";
 				INFOPLIST_FILE = ImagePickerSheetControllerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Release;
@@ -683,9 +698,9 @@
 		49DC4AA31B14F31500B4E78E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q44S7Q92R5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -694,21 +709,25 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "748b135e-7d0e-4ba7-8175-a4bb7043146f";
+				PROVISIONING_PROFILE_SPECIFIER = "Vlad *";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		49DC4AA41B14F31500B4E78E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q44S7Q92R5;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.laurinbrandner.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "748b135e-7d0e-4ba7-8175-a4bb7043146f";
+				PROVISIONING_PROFILE_SPECIFIER = "Vlad *";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

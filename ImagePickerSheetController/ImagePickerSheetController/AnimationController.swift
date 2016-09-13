@@ -22,10 +22,8 @@ class AnimationController: NSObject {
     
     // MARK: - Animation
     
-    private func animatePresentation(context: UIViewControllerContextTransitioning) {
-        guard let containerView = context.containerView() else {
-            return
-        }
+    fileprivate func animatePresentation(_ context: UIViewControllerContextTransitioning) {
+        let containerView = context.containerView
         
         containerView.addSubview(imagePickerSheetController.view)
         
@@ -33,7 +31,7 @@ class AnimationController: NSObject {
         imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
         imagePickerSheetController.backgroundView.alpha = 0
         
-        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: transitionDuration(using: context), delay: 0, options: .curveEaseOut, animations: { () -> Void in
             self.imagePickerSheetController.sheetCollectionView.frame.origin.y = sheetOriginY
             self.imagePickerSheetController.backgroundView.alpha = 1
         }, completion: { _ in
@@ -41,12 +39,10 @@ class AnimationController: NSObject {
         })
     }
     
-    private func animateDismissal(context: UIViewControllerContextTransitioning) {
-        guard let containerView = context.containerView() else {
-            return
-        }
+    fileprivate func animateDismissal(_ context: UIViewControllerContextTransitioning) {
+        let containerView = context.containerView
         
-        UIView.animateWithDuration(transitionDuration(context), delay: 0, options: .CurveEaseIn, animations: { () -> Void in
+        UIView.animate(withDuration: transitionDuration(using: context), delay: 0, options: .curveEaseIn, animations: { () -> Void in
             self.imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
             self.imagePickerSheetController.backgroundView.alpha = 0
         }, completion: { _ in
@@ -60,7 +56,7 @@ class AnimationController: NSObject {
 // MARK: - UIViewControllerAnimatedTransitioning
 extension AnimationController: UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         guard #available(iOS 9, *) else {
             return 0.3
         }
@@ -68,7 +64,7 @@ extension AnimationController: UIViewControllerAnimatedTransitioning {
         return 0.25
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         if presenting {
             animatePresentation(transitionContext)
         }

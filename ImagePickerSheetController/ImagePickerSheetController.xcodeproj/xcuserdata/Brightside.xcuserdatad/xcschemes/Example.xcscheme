@@ -14,34 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49DC4A501B14F1BC00B4E78E"
-               BuildableName = "ImagePickerSheetController.framework"
-               BlueprintName = "ImagePickerSheetController"
-               ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49DC4A5B1B14F1BC00B4E78E"
-               BuildableName = "ImagePickerSheetControllerTests.xctest"
-               BlueprintName = "ImagePickerSheetControllerTests"
-               ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "49DC4A851B14F31500B4E78E"
                BuildableName = "Example.app"
                BlueprintName = "Example"
@@ -54,26 +26,15 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49DC4A5B1B14F1BC00B4E78E"
-               BuildableName = "ImagePickerSheetControllerTests.xctest"
-               BlueprintName = "ImagePickerSheetControllerTests"
-               ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "49DC4A501B14F1BC00B4E78E"
-            BuildableName = "ImagePickerSheetController.framework"
-            BlueprintName = "ImagePickerSheetController"
+            BlueprintIdentifier = "49DC4A851B14F31500B4E78E"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
             ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -90,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "49DC4A501B14F1BC00B4E78E"
-            BuildableName = "ImagePickerSheetController.framework"
-            BlueprintName = "ImagePickerSheetController"
+            BlueprintIdentifier = "49DC4A851B14F31500B4E78E"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
             ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -108,15 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "49DC4A501B14F1BC00B4E78E"
-            BuildableName = "ImagePickerSheetController.framework"
-            BlueprintName = "ImagePickerSheetController"
+            BlueprintIdentifier = "49DC4A851B14F31500B4E78E"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
             ReferencedContainer = "container:ImagePickerSheetController.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

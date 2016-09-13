@@ -33,6 +33,11 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Please grant access in order to select a picture.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Please grant access in order to take a picture.</string>
 </dict>
 </plist>
