@@ -17,8 +17,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.presentImagePickerSheet(_:)))
-        view.addGestureRecognizer(tapRecognizer)
+        let button = UIButton(type: .System)
+        button.setTitle("Tap Me!", forState: .Normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+        button.heightAnchor.constraintEqualToConstant(40).active = true
+        button.widthAnchor.constraintEqualToConstant(150).active = true
+        button.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+        button.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor).active = true
+        button.addTarget(self, action: #selector(presentImagePickerSheet(_:)), forControlEvents: .TouchUpInside)
     }
     
     // MARK: Other Methods
