@@ -147,13 +147,18 @@ class SheetController: NSObject {
         reloadActionItems()
     }
     
+    func removeAllActions() {
+        actions = []
+        reloadActionItems()
+    }
+    
     private func handleAction(action: ImagePickerAction) {
         actionHandlingCallback?()
         action.handle(numberOfSelectedImages)
     }
     
     func handleCancelAction() {
-        let cancelAction = actions.filter { $0.style == ImagePickerActionStyle.Cancel }
+        let cancelAction = actions.filter { $0.style == .Cancel }
                                   .first
         
         if let cancelAction = cancelAction {

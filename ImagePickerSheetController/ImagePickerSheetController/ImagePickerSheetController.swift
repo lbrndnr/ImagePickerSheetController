@@ -24,7 +24,11 @@ public class ImagePickerSheetController: UIViewController {
     private lazy var sheetController: SheetController = {
         let controller = SheetController(previewCollectionView: self.previewCollectionView)
         controller.actionHandlingCallback = { [weak self] in
-            self?.dismissViewControllerAnimated(true, completion: nil)
+            self?.dismissViewControllerAnimated(true, completion: { _ in
+                // Possible retain cycle when action handlers hold a reference to the IPSC
+                // Remove all actions to break it
+                controller.removeAllActions()
+            })
         }
         
         return controller
@@ -57,7 +61,7 @@ public class ImagePickerSheetController: UIViewController {
         let view = UIView()
         view.accessibilityIdentifier = "ImagePickerSheetBackground"
         view.backgroundColor = UIColor(white: 0.0, alpha: 0.3961)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ImagePickerSheetController.cancel)))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self.sheetController, action: #selector(SheetController.handleCancelAction)))
         
         return view
     }()
@@ -125,11 +129,16 @@ public class ImagePickerSheetController: UIViewController {
         modalPresentationStyle = .Custom
         transitioningDelegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImagePickerSheetController.cancel), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        let center = NSNotificationCenter.defaultCenter()
+            
+        center.addObserver(sheetController, selector: #selector(SheetController.handleCancelAction), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        center.addObserver(self, selector: #selector(ImagePickerSheetController.statusBarFrameDidChange), name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        let center = NSNotificationCenter.defaultCenter()
+        center.removeObserver(self, name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
+        center.removeObserver(sheetController, name: UIApplicationDidEnterBackgroundNotification, object: nil)
     }
     
     // MARK: - View Lifecycle
@@ -183,10 +192,6 @@ public class ImagePickerSheetController: UIViewController {
     public func addAction(action: ImagePickerAction) {
         sheetController.addAction(action)
         view.setNeedsLayout()
-    }
-    
-    @objc private func cancel() {
-        sheetController.handleCancelAction()
     }
     
     // MARK: - Images
@@ -345,6 +350,13 @@ public class ImagePickerSheetController: UIViewController {
             self.view.layoutIfNeeded()
             self.sheetCollectionView.collectionViewLayout.invalidateLayout()
         }, completion: completion)
+    }
+    
+    @objc private func statusBarFrameDidChange(notification: NSNotification) {
+        view.setNeedsLayout()
+        UIView.animateWithDuration(0.2, delay: 0, options: [.BeginFromCurrentState, .AllowUserInteraction], animations: { 
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
 }
