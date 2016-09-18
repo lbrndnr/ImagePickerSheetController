@@ -12,7 +12,7 @@ import ImagePickerSheetController
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    // MARK: View Lifecycle
+    // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         button.addTarget(self, action: #selector(presentImagePickerSheet(_:)), forControlEvents: .TouchUpInside)
     }
     
-    // MARK: Other Methods
+    // MARK: - Other Methods
     
     func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
         let presentImagePickerController: UIImagePickerControllerSourceType -> () = { source in
@@ -66,7 +66,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         presentViewController(controller, animated: true, completion: nil)
     }
     
-    // MARK: UIImagePickerControllerDelegate
+    // MARK: - UIImagePickerControllerDelegate
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)

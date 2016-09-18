@@ -129,16 +129,11 @@ public class ImagePickerSheetController: UIViewController {
         modalPresentationStyle = .Custom
         transitioningDelegate = self
         
-        let center = NSNotificationCenter.defaultCenter()
-            
-        center.addObserver(sheetController, selector: #selector(SheetController.handleCancelAction), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        center.addObserver(self, selector: #selector(ImagePickerSheetController.statusBarFrameDidChange), name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(sheetController, selector: #selector(SheetController.handleCancelAction), name: UIApplicationDidEnterBackgroundNotification, object: nil)
     }
     
     deinit {
-        let center = NSNotificationCenter.defaultCenter()
-        center.removeObserver(self, name: UIApplicationDidChangeStatusBarFrameNotification, object: nil)
-        center.removeObserver(sheetController, name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(sheetController, name: UIApplicationDidEnterBackgroundNotification, object: nil)
     }
     
     // MARK: - View Lifecycle
@@ -285,7 +280,19 @@ public class ImagePickerSheetController: UIViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        backgroundView.frame = view.bounds
+        if popoverPresentationController == nil {
+            // Offset necessary for expanded status bar
+            // Bug in UIKit which doesn't reset the view's frame correctly
+            
+            let offset = UIApplication.sharedApplication().statusBarFrame.height
+            var backgroundViewFrame = UIScreen.mainScreen().bounds
+            backgroundViewFrame.origin.y = -offset
+            backgroundViewFrame.size.height += offset
+            backgroundView.frame = backgroundViewFrame
+        }
+        else {
+            backgroundView.frame = view.bounds
+        }
         
         reloadMaximumPreviewHeight()
         reloadCurrentPreviewHeight(invalidateLayout: true)
@@ -350,13 +357,6 @@ public class ImagePickerSheetController: UIViewController {
             self.view.layoutIfNeeded()
             self.sheetCollectionView.collectionViewLayout.invalidateLayout()
         }, completion: completion)
-    }
-    
-    @objc private func statusBarFrameDidChange(notification: NSNotification) {
-        view.setNeedsLayout()
-        UIView.animateWithDuration(0.2, delay: 0, options: [.BeginFromCurrentState, .AllowUserInteraction], animations: { 
-            self.view.layoutIfNeeded()
-        }, completion: nil)
     }
     
 }
