@@ -8,7 +8,7 @@
 
 import UIKit
 
-private let defaultInset: CGFloat = 10
+let sheetInset: CGFloat = 10
 
 class SheetController: NSObject {
     
@@ -38,10 +38,6 @@ class SheetController: NSObject {
     var preferredSheetHeight: CGFloat {
         return allIndexPaths().map { self.sizeForSheetItemAtIndexPath($0).height }
             .reduce(0, combine: +)
-    }
-    
-    var preferredSheetWidth: CGFloat {
-        return sheetCollectionView.bounds.width - 2 * defaultInset
     }
     
     // MARK: - Initialization
@@ -93,13 +89,12 @@ class SheetController: NSObject {
     // MARK: - Design
     
     private func attributesForItemAtIndexPath(indexPath: NSIndexPath) -> (corners: RoundedCorner, backgroundInsets: UIEdgeInsets) {
-
         let cornerRadius: CGFloat = 13
         let innerInset: CGFloat = 4
         var indexPaths = allIndexPaths()
         
         guard indexPaths.first != indexPath else {
-            return (.Top(cornerRadius), UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
+            return (.Top(cornerRadius), UIEdgeInsets(top: 0, left: sheetInset, bottom: 0, right: sheetInset))
         }
         
         let cancelIndexPath = actions.indexOf { $0.style == ImagePickerActionStyle.Cancel }
@@ -108,20 +103,20 @@ class SheetController: NSObject {
         
         if let cancelIndexPath = cancelIndexPath {
             if cancelIndexPath == indexPath {
-                return (.All(cornerRadius), UIEdgeInsets(top: innerInset, left: defaultInset, bottom: defaultInset, right: defaultInset))
+                return (.All(cornerRadius), UIEdgeInsets(top: innerInset, left: sheetInset, bottom: sheetInset, right: sheetInset))
             }
             
             indexPaths.removeLast()
             
             if indexPath == indexPaths.last {
-                return (.Bottom(cornerRadius), UIEdgeInsets(top: 0, left: defaultInset, bottom: innerInset, right: defaultInset))
+                return (.Bottom(cornerRadius), UIEdgeInsets(top: 0, left: sheetInset, bottom: innerInset, right: sheetInset))
             }
         }
         else if indexPath == indexPaths.last {
-            return (.Bottom(cornerRadius), UIEdgeInsets(top: 0, left: defaultInset, bottom: defaultInset, right: defaultInset))
+            return (.Bottom(cornerRadius), UIEdgeInsets(top: 0, left: sheetInset, bottom: sheetInset, right: sheetInset))
         }
         
-        return (.None, UIEdgeInsets(top: 0, left: defaultInset, bottom: 0, right: defaultInset))
+        return (.None, UIEdgeInsets(top: 0, left: sheetInset, bottom: 0, right: sheetInset))
     }
     
     private func fontForAction(action: ImagePickerAction) -> UIFont {

@@ -9,7 +9,7 @@
 import Foundation
 import Photos
 
-private let previewCollectionViewInset: CGFloat = 5
+let previewInset: CGFloat = 5
 
 /// The media type an instance of ImagePickerSheetController can display
 public enum ImagePickerMediaType {
@@ -39,7 +39,7 @@ public class ImagePickerSheetController: UIViewController {
         collectionView.accessibilityIdentifier = "ImagePickerSheetPreview"
         collectionView.backgroundColor = .clearColor()
         collectionView.allowsMultipleSelection = true
-        collectionView.imagePreviewLayout.sectionInset = UIEdgeInsetsMake(previewCollectionViewInset, previewCollectionViewInset, previewCollectionViewInset, previewCollectionViewInset)
+        collectionView.imagePreviewLayout.sectionInset = UIEdgeInsets(top: previewInset, left: previewInset, bottom: previewInset, right: previewInset)
         collectionView.imagePreviewLayout.showsSupplementaryViews = false
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -194,7 +194,7 @@ public class ImagePickerSheetController: UIViewController {
     private func sizeForAsset(asset: PHAsset, scale: CGFloat = 1) -> CGSize {
         let proportion = CGFloat(asset.pixelWidth)/CGFloat(asset.pixelHeight)
     
-        let imageHeight = maximumPreviewHeight - 2 * previewCollectionViewInset
+        let imageHeight = maximumPreviewHeight - 2 * previewInset
         let imageWidth = floor(proportion * imageHeight)
         
         return CGSize(width: imageWidth * scale, height: imageHeight * scale)
@@ -205,7 +205,7 @@ public class ImagePickerSheetController: UIViewController {
         reloadMaximumPreviewHeight()
         reloadCurrentPreviewHeight(invalidateLayout: false)
         
-        // Filter out the assets that are too thin. This can't be done before becuase
+        // Filter out the assets that are too thin. This can't be done before because
         // we don't know how tall the images should be
         let minImageWidth = 2 * previewCheckmarkInset + (PreviewSupplementaryView.checkmarkImage?.size.width ?? 0)
         assets = assets.filter { asset in
@@ -308,7 +308,7 @@ public class ImagePickerSheetController: UIViewController {
     
     private func reloadMaximumPreviewHeight() {
         let maxHeight: CGFloat = 400
-        let maxImageWidth = sheetController.preferredSheetWidth - 2 * previewCollectionViewInset
+        let maxImageWidth = view.bounds.width - 2 * sheetInset - 2 * previewInset
 
         let assetRatios = assets.map { (asset: PHAsset) -> CGSize in
                 CGSize(width: max(asset.pixelHeight, asset.pixelWidth), height: min(asset.pixelHeight, asset.pixelWidth))
@@ -328,8 +328,8 @@ public class ImagePickerSheetController: UIViewController {
         }
 
         // Just a sanity check, to make sure this doesn't exceed 400 points
-        let scaledHeight: CGFloat = max(min(assetHeight, maxHeight), 200)
-        maximumPreviewHeight = scaledHeight + 2 * previewCollectionViewInset
+        let scaledHeight: CGFloat = min(assetHeight, maxHeight)
+        maximumPreviewHeight = scaledHeight + 2 * previewInset
     }
     
     // MARK: -
@@ -341,10 +341,8 @@ public class ImagePickerSheetController: UIViewController {
         
         view.setNeedsLayout()
         
-        let animationDuration = 0.2
-        
         self.sheetCollectionView.collectionViewLayout.invalidateLayout()
-        UIView.animateWithDuration(animationDuration, animations: {
+        UIView.animateWithDuration(0.2, animations: {
             self.sheetCollectionView.reloadSections(NSIndexSet(index: 0))
             self.view.layoutIfNeeded()
         }, completion: completion)
@@ -452,7 +450,7 @@ extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
         let size = sizeForAsset(asset)
         
         // Scale down to the current preview height, sizeForAsset returns the original size
-        let currentImagePreviewHeight = sheetController.previewHeight - 2 * previewCollectionViewInset
+        let currentImagePreviewHeight = sheetController.previewHeight - 2 * previewInset
         let scale = currentImagePreviewHeight / size.height
         
         return CGSize(width: size.width * scale, height: currentImagePreviewHeight)
@@ -460,7 +458,7 @@ extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let checkmarkWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
-        return CGSizeMake(checkmarkWidth + 2 * previewCheckmarkInset, sheetController.previewHeight - 2 * previewCollectionViewInset)
+        return CGSizeMake(checkmarkWidth + 2 * previewCheckmarkInset, sheetController.previewHeight - 2 * previewInset)
     }
     
 }
