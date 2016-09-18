@@ -16,8 +16,8 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ImagePickerSheetController"
-  s.version      = "0.9.1"
-  s.summary      = "ImagePickerSheetController is like the custom photo action sheet in iMessage just without the glitches."
+  s.version      = "0.9.3"
+  s.summary      = "ImagePickerSheetController is like the custom photo action sheet found in the iOS 8 and 9 version of iMessage"
 
   s.description  = <<-DESC
                    ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIAlertController which makes its usage simple and concise.
@@ -56,10 +56,10 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
 
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "9.0"
 
   #  When using multiple platforms
-  s.ios.deployment_target = "8.0"
+  s.ios.deployment_target = "9.0"
   # s.osx.deployment_target = "10.7"
 
 
