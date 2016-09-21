@@ -18,6 +18,19 @@ public enum ImagePickerMediaType {
     case imageAndVideo
 }
 
+@objc public protocol ImagePickerSheetControllerDelegate {
+    
+    @objc optional func controllerWillEnlargePreview(_ controller: ImagePickerSheetController)
+    @objc optional func controllerDidEnlargePreview(_ controller: ImagePickerSheetController)
+    
+    @objc optional func controller(_ controller: ImagePickerSheetController, willSelectAsset asset: PHAsset)
+    @objc optional func controller(_ controller: ImagePickerSheetController, didSelectAsset asset: PHAsset)
+    
+    @objc optional func controller(_ controller: ImagePickerSheetController, willDeselectAsset asset: PHAsset)
+    @objc optional func controller(_ controller: ImagePickerSheetController, didDeselectAsset asset: PHAsset)
+    
+}
+
 @available(iOS 9.0, *)
 open class ImagePickerSheetController: UIViewController {
     
@@ -65,6 +78,8 @@ open class ImagePickerSheetController: UIViewController {
         
         return view
     }()
+    
+    open var delegate: ImagePickerSheetControllerDelegate?
     
     /// All the actions. The first action is shown at the top.
     open var actions: [ImagePickerAction] {
@@ -344,17 +359,23 @@ open class ImagePickerSheetController: UIViewController {
     
     // MARK: -
     
-    func enlargePreviewsByCenteringToIndexPath(_ indexPath: IndexPath?, completion: ((Bool) -> ())?) {
+    func enlargePreviewsByCenteringToIndexPath(_ indexPath: IndexPath?, completion: (() -> ())?) {
         enlargedPreviews = true
         previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
         reloadCurrentPreviewHeight(invalidateLayout: false)
         
         view.setNeedsLayout()
         
+        self.delegate?.controllerWillEnlargePreview?(self)
+        
         UIView.animate(withDuration: 0.2, animations: {
             self.view.layoutIfNeeded()
             self.sheetCollectionView.collectionViewLayout.invalidateLayout()
-        }, completion: completion)
+        }, completion: { _ in
+            self.delegate?.controllerDidEnlargePreview?(self)
+            
+            completion?()
+        })
     }
     
 }
@@ -408,17 +429,25 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         if let maximumSelection = maximumSelection {
             if selectedImageIndices.count >= maximumSelection,
                 let previousItemIndex = selectedImageIndices.first {
+                    let deselectedAsset = selectedImageAssets[previousItemIndex]
+                    delegate?.controller?(self, willDeselectAsset: deselectedAsset)
+                
                     supplementaryViews[previousItemIndex]?.selected = false
                     selectedImageIndices.remove(at: 0)
+                
+                    delegate?.controller?(self, didDeselectAsset: deselectedAsset)
             }
         }
+        
+        let selectedAsset = assets[indexPath.section]
+        delegate?.controller?(self, willSelectAsset: selectedAsset)
         
         // Just to make sure the image is only selected once
         selectedImageIndices = selectedImageIndices.filter { $0 != indexPath.section }
         selectedImageIndices.append(indexPath.section)
         
         if !enlargedPreviews {
-            enlargePreviewsByCenteringToIndexPath(indexPath) { _ in
+            enlargePreviewsByCenteringToIndexPath(indexPath) {
                 self.sheetController.reloadActionItems()
                 self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
             }
@@ -437,12 +466,19 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         }
         
         supplementaryViews[indexPath.section]?.selected = true
+        
+        delegate?.controller?(self, didSelectAsset: selectedAsset)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let index = selectedImageIndices.index(of: indexPath.section) {
+            let deselectedAsset = selectedImageAssets[index]
+            delegate?.controller?(self, willDeselectAsset: deselectedAsset)
+            
             selectedImageIndices.remove(at: index)
             sheetController.reloadActionItems()
+            
+            delegate?.controller?(self, didDeselectAsset: deselectedAsset)
         }
         
         supplementaryViews[indexPath.section]?.selected = false

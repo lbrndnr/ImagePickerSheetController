@@ -10,7 +10,7 @@ import UIKit
 import Photos
 import ImagePickerSheetController
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController {
     
     // MARK: - View Lifecycle
     
@@ -45,6 +45,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         let controller = ImagePickerSheetController(mediaType: .imageAndVideo)
+        controller.delegate = self
+        
         controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
             presentImagePickerController(.camera)
         }, secondaryHandler: { _, numberOfPhotos in
@@ -66,10 +68,41 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(controller, animated: true, completion: nil)
     }
     
-    // MARK: - UIImagePickerControllerDelegate
+}
+
+// MARK: - UIImagePickerControllerDelegate
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - ImagePickerSheetControllerDelegate
+extension ViewController: ImagePickerSheetControllerDelegate {
+    
+    func controllerWillEnlargePreview(_ controller: ImagePickerSheetController) {
+        print("Will enlarge the preview")
+    }
+    
+    func controllerDidEnlargePreview(_ controller: ImagePickerSheetController) {
+        print("Did enlarge the preview")
+    }
+    
+    func controller(_ controller: ImagePickerSheetController, willSelectAsset asset: PHAsset) {
+        print("Will select an asset")
+    }
+    
+    func controller(_ controller: ImagePickerSheetController, didSelectAsset asset: PHAsset) {
+        print("Did select an asset")
+    }
+    
+    func controller(_ controller: ImagePickerSheetController, willDeselectAsset asset: PHAsset) {
+        print("Will deselect an asset")
+    }
+    
+    func controller(_ controller: ImagePickerSheetController, didDeselectAsset asset: PHAsset) {
+        print("Did deselect an asset")
     }
     
 }
