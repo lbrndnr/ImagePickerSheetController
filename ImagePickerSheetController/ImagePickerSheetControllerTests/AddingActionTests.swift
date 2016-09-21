@@ -14,16 +14,16 @@ import ImagePickerSheetController
 class AddingActionTests: ImagePickerSheetControllerTests {
 
     func testAddingTwoCancelActions() {
-        imageController.addAction(ImagePickerAction(title: "Cancel1", style: .Cancel, handler: { _ in }))
-        imageController.addAction(ImagePickerAction(title: "Cancel2", style: .Cancel, handler: { _ in }))
+        imageController.addAction(ImagePickerAction(title: "Cancel1", style: .cancel, handler: { _ in }))
+        imageController.addAction(ImagePickerAction(title: "Cancel2", style: .cancel, handler: { _ in }))
         
         expect(self.imageController.actions.filter { $0.style == .Cancel }.count) == 1
     }
     
     func testDisplayOfAddedActions() {
-        let actions: [(String, ImagePickerActionStyle)] = [("Action1", .Default),
-                                                           ("Action2", .Default),
-                                                           ("Cancel", .Cancel)]
+        let actions: [(String, ImagePickerActionStyle)] = [("Action1", .default),
+                                                           ("Action2", .default),
+                                                           ("Cancel", .cancel)]
         
         for (title, style) in actions {
             imageController.addAction(ImagePickerAction(title: title, style: style, handler: { _ in }))
@@ -32,12 +32,12 @@ class AddingActionTests: ImagePickerSheetControllerTests {
         presentImagePickerSheetController()
         
         for (title, _) in actions {
-            tester().waitForViewWithAccessibilityLabel(title)
+            tester().waitForView(withAccessibilityLabel: title)
         }
     }
     
     func testActionOrdering() {
-        imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .Cancel, handler: { _ in }))
+        imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .cancel, handler: { _ in }))
         imageController.addAction(ImagePickerAction(title: defaultActionTitle, handler: { _ in }))
         
         expect(self.imageController.actions.map { $0.title }) == [defaultActionTitle, cancelActionTitle]
@@ -47,7 +47,7 @@ class AddingActionTests: ImagePickerSheetControllerTests {
         presentImagePickerSheetController()
         
         imageController.addAction(ImagePickerAction(title: defaultActionTitle, handler: { _ in }))
-        tester().waitForViewWithAccessibilityLabel(defaultActionTitle)
+        tester().waitForView(withAccessibilityLabel: defaultActionTitle)
     }
     
 }

@@ -19,7 +19,7 @@ let imageControllerPreviewIdentifier = "ImagePickerSheetPreview"
 
 class ImagePickerSheetControllerTests: XCTestCase {
     
-    let rootViewController = UIApplication.sharedApplication().windows.first!.rootViewController!
+    let rootViewController = UIApplication.shared.windows.first!.rootViewController!
     var imageController: ImagePickerSheetController!
     
     let defaultActionTitle = "Action"
@@ -30,20 +30,20 @@ class ImagePickerSheetControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        imageController = ImagePickerSheetController(mediaType: .ImageAndVideo)
+        imageController = ImagePickerSheetController(mediaType: .imageAndVideo)
     }
     
     override func tearDown() {
         super.tearDown()
         
-        rootViewController.dismissViewControllerAnimated(false, completion: nil)
+        rootViewController.dismiss(animated: false, completion: nil)
     }
     
     // MARK: - Utilities
     
-    func presentImagePickerSheetController(animated: Bool = false) {
-        rootViewController.presentViewController(imageController, animated: animated, completion: nil)
-        tester().waitForViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
+    func presentImagePickerSheetController(_ animated: Bool = false) {
+        rootViewController.present(imageController, animated: animated, completion: nil)
+        tester().waitForView(withAccessibilityIdentifier: imageControllerViewIdentifier)
     }
     
 }
