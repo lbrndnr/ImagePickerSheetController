@@ -89,15 +89,15 @@ open class ImagePickerSheetController: UIViewController {
     /// Maximum selection of images.
     open var maximumSelection: Int?
     
-    fileprivate var selectedImageIndices = [Int]() {
+    fileprivate var selectedAssetIndices = [Int]() {
         didSet {
-            sheetController.numberOfSelectedImages = selectedImageIndices.count
+            sheetController.numberOfSelectedAssets = selectedAssetIndices.count
         }
     }
     
     /// The selected image assets
-    open var selectedImageAssets: [PHAsset] {
-        return selectedImageIndices.map { self.assets[$0] }
+    open var selectedAssets: [PHAsset] {
+        return selectedAssetIndices.map { self.assets[$0] }
     }
     
     /// The media type of the displayed assets
@@ -402,7 +402,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
             cell.imageView.image = image
         }
         
-        cell.isSelected = selectedImageIndices.contains(indexPath.section)
+        cell.isSelected = selectedAssetIndices.contains(indexPath.section)
         
         return cell
     }
@@ -412,7 +412,7 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), for: indexPath) as! PreviewSupplementaryView
         view.isUserInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, previewCheckmarkInset, previewCheckmarkInset, 0.0)
-        view.selected = selectedImageIndices.contains(indexPath.section)
+        view.selected = selectedAssetIndices.contains(indexPath.section)
         
         supplementaryViews[indexPath.section] = view
         
@@ -427,13 +427,13 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let maximumSelection = maximumSelection {
-            if selectedImageIndices.count >= maximumSelection,
-                let previousItemIndex = selectedImageIndices.first {
-                    let deselectedAsset = selectedImageAssets[previousItemIndex]
+            if selectedAssetIndices.count >= maximumSelection,
+                let previousItemIndex = selectedAssetIndices.first {
+                    let deselectedAsset = selectedAssets[previousItemIndex]
                     delegate?.controller?(self, willDeselectAsset: deselectedAsset)
                 
                     supplementaryViews[previousItemIndex]?.selected = false
-                    selectedImageIndices.remove(at: 0)
+                    selectedAssetIndices.remove(at: 0)
                 
                     delegate?.controller?(self, didDeselectAsset: deselectedAsset)
             }
@@ -443,8 +443,8 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         delegate?.controller?(self, willSelectAsset: selectedAsset)
         
         // Just to make sure the image is only selected once
-        selectedImageIndices = selectedImageIndices.filter { $0 != indexPath.section }
-        selectedImageIndices.append(indexPath.section)
+        selectedAssetIndices = selectedAssetIndices.filter { $0 != indexPath.section }
+        selectedAssetIndices.append(indexPath.section)
         
         if !enlargedPreviews {
             enlargePreviewsByCenteringToIndexPath(indexPath) {
@@ -471,11 +471,11 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let index = selectedImageIndices.index(of: indexPath.section) {
-            let deselectedAsset = selectedImageAssets[index]
+        if let index = selectedAssetIndices.index(of: indexPath.section) {
+            let deselectedAsset = selectedAssets[index]
             delegate?.controller?(self, willDeselectAsset: deselectedAsset)
             
-            selectedImageIndices.remove(at: index)
+            selectedAssetIndices.remove(at: index)
             sheetController.reloadActionItems()
             
             delegate?.controller?(self, didDeselectAsset: deselectedAsset)
