@@ -41,11 +41,11 @@ class ImageSelectionWithoutLimitTests: ImageSelectionTests {
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
-        expect(self.imageController.selectedImageAssets.count) == count
+        expect(self.imageController.selectedAssets.count) == count
     }
     
     func testImageSelection() {
-        let selectedAssets = imageController.selectedImageAssets
+        let selectedAssets = imageController.selectedAssets
         result.enumerateObjects { obj, idx, _ in
             if let asset = obj as? PHAsset , idx < 3 {
                 expect(asset.localIdentifier) == selectedAssets[idx].localIdentifier
@@ -57,9 +57,9 @@ class ImageSelectionWithoutLimitTests: ImageSelectionTests {
         let indexPath = IndexPath(item: 0, section: 0)
         tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         
-        expect(self.imageController.selectedImageAssets.count) == count - 1
+        expect(self.imageController.selectedAssets.count) == count - 1
         
-        let selectedAssets = imageController.selectedImageAssets
+        let selectedAssets = imageController.selectedAssets
         result.enumerateObjects { obj, idx, _ in
             if let asset = obj as? PHAsset , idx < self.count && idx > 0 {
                 expect(asset.localIdentifier) == selectedAssets[idx-1].localIdentifier
@@ -80,9 +80,9 @@ class ImageSelectionWithLimitTests: ImageSelectionTests {
             tester().tapImagePreviewAtIndexPath(indexPath, inCollectionViewWithAccessibilityIdentifier: imageControllerPreviewIdentifier)
         }
         
-        expect(self.imageController.selectedImageAssets.count) == maxSelection
+        expect(self.imageController.selectedAssets.count) == maxSelection
         
-        let selectedAssets = imageController.selectedImageAssets
+        let selectedAssets = imageController.selectedAssets
         result.enumerateObjects { obj, idx, _ in
             if let asset = obj as? PHAsset , idx < maxSelection && idx > 0 {
                 expect(asset.localIdentifier) == selectedAssets[idx-1].localIdentifier

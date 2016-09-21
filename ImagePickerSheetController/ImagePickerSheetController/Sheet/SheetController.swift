@@ -33,7 +33,7 @@ class SheetController: NSObject {
     var actionHandlingCallback: (() -> ())?
     
     fileprivate(set) var previewHeight: CGFloat = 0
-    var numberOfSelectedImages = 0
+    var numberOfSelectedAssets = 0
     
     var preferredSheetHeight: CGFloat {
         return allIndexPaths().map { self.sizeForSheetItemAtIndexPath($0).height }
@@ -154,7 +154,7 @@ class SheetController: NSObject {
     
     fileprivate func handleAction(_ action: ImagePickerAction) {
         actionHandlingCallback?()
-        action.handle(numberOfSelectedImages)
+        action.handle(numberOfSelectedAssets)
     }
     
     func handleCancelAction() {
@@ -203,7 +203,7 @@ extension SheetController: UICollectionViewDataSource {
             let action = actions[indexPath.item]
             let actionCell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(SheetActionCollectionViewCell.self), for: indexPath) as! SheetActionCollectionViewCell
             actionCell.textLabel.font = fontForAction(action)
-            actionCell.textLabel.text = numberOfSelectedImages > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
+            actionCell.textLabel.text = numberOfSelectedAssets > 0 ? action.secondaryTitle(numberOfSelectedAssets) : action.title
             
             cell = actionCell
         }
