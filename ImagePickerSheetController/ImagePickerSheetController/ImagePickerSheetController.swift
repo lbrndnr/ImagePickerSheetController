@@ -374,14 +374,14 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(PreviewCollectionViewCell.self), for: indexPath) as! PreviewCollectionViewCell
         
-        let asset = assets[(indexPath as NSIndexPath).section]
+        let asset = assets[indexPath.section]
         cell.videoIndicatorView.isHidden = asset.mediaType != .video
 
         requestImageForAsset(asset) { image in
             cell.imageView.image = image
         }
         
-        cell.isSelected = selectedImageIndices.contains((indexPath as NSIndexPath).section)
+        cell.isSelected = selectedImageIndices.contains(indexPath.section)
         
         return cell
     }
@@ -391,9 +391,9 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), for: indexPath) as! PreviewSupplementaryView
         view.isUserInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, previewCheckmarkInset, previewCheckmarkInset, 0.0)
-        view.selected = selectedImageIndices.contains((indexPath as NSIndexPath).section)
+        view.selected = selectedImageIndices.contains(indexPath.section)
         
-        supplementaryViews[(indexPath as NSIndexPath).section] = view
+        supplementaryViews[indexPath.section] = view
         
         return view
     }
@@ -414,8 +414,8 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
         }
         
         // Just to make sure the image is only selected once
-        selectedImageIndices = selectedImageIndices.filter { $0 != (indexPath as NSIndexPath).section }
-        selectedImageIndices.append((indexPath as NSIndexPath).section)
+        selectedImageIndices = selectedImageIndices.filter { $0 != indexPath.section }
+        selectedImageIndices.append(indexPath.section)
         
         if !enlargedPreviews {
             enlargePreviewsByCenteringToIndexPath(indexPath) { _ in
@@ -436,16 +436,16 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             sheetController.reloadActionItems()
         }
         
-        supplementaryViews[(indexPath as NSIndexPath).section]?.selected = true
+        supplementaryViews[indexPath.section]?.selected = true
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let index = selectedImageIndices.index(of: (indexPath as NSIndexPath).section) {
+        if let index = selectedImageIndices.index(of: indexPath.section) {
             selectedImageIndices.remove(at: index)
             sheetController.reloadActionItems()
         }
         
-        supplementaryViews[(indexPath as NSIndexPath).section]?.selected = false
+        supplementaryViews[indexPath.section]?.selected = false
     }
     
 }
@@ -455,7 +455,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
 extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let asset = assets[(indexPath as NSIndexPath).section]
+        let asset = assets[indexPath.section]
         let size = sizeForAsset(asset)
         
         // Scale down to the current preview height, sizeForAsset returns the original size

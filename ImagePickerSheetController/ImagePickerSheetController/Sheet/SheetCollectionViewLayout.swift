@@ -69,11 +69,11 @@ class SheetCollectionViewLayout: UICollectionViewLayout {
     }
     
     fileprivate func layoutAttributesForItemAtIndexPath(_ indexPath: IndexPath, allAttributes: [[UICollectionViewLayoutAttributes]]) -> UICollectionViewLayoutAttributes? {
-        guard allAttributes.count > (indexPath as NSIndexPath).section && allAttributes[(indexPath as NSIndexPath).section].count > (indexPath as NSIndexPath).item else {
+        guard allAttributes.count > indexPath.section && allAttributes[indexPath.section].count > indexPath.item else {
             return nil
         }
         
-        return allAttributes[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).item]
+        return allAttributes[indexPath.section][indexPath.item]
     }
     
     fileprivate func invalidatedLayoutAttributesForItemAtIndexPath(_ indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {

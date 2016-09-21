@@ -73,7 +73,7 @@ class SheetController: NSObject {
     
     fileprivate func sizeForSheetItemAtIndexPath(_ indexPath: IndexPath) -> CGSize {
         let height: CGFloat = {
-            if (indexPath as NSIndexPath).section == 0 {
+            if indexPath.section == 0 {
                 return previewHeight
             }
             
@@ -193,14 +193,14 @@ extension SheetController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: SheetCollectionViewCell
         
-        if (indexPath as NSIndexPath).section == 0 {
+        if indexPath.section == 0 {
             let previewCell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(SheetPreviewCollectionViewCell.self), for: indexPath) as! SheetPreviewCollectionViewCell
             previewCell.collectionView = previewCollectionView
             
             cell = previewCell
         }
         else {
-            let action = actions[(indexPath as NSIndexPath).item]
+            let action = actions[indexPath.item]
             let actionCell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(SheetActionCollectionViewCell.self), for: indexPath) as! SheetActionCollectionViewCell
             actionCell.textLabel.font = fontForAction(action)
             actionCell.textLabel.text = numberOfSelectedImages > 0 ? action.secondaryTitle(numberOfSelectedImages) : action.title
@@ -208,7 +208,7 @@ extension SheetController: UICollectionViewDataSource {
             cell = actionCell
         }
         
-        cell.separatorVisible = ((indexPath as NSIndexPath).section == 1)
+        cell.separatorVisible = (indexPath.section == 1)
         
         // iOS specific design
         (cell.roundedCorners, cell.backgroundInsets) = attributesForItemAtIndexPath(indexPath)
@@ -224,13 +224,13 @@ extension SheetController: UICollectionViewDataSource {
 extension SheetController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return (indexPath as NSIndexPath).section != 0
+        return indexPath.section != 0
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        handleAction(actions[(indexPath as NSIndexPath).item])
+        handleAction(actions[indexPath.item])
     }
     
 }

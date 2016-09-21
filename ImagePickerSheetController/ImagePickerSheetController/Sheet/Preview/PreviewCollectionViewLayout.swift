@@ -82,7 +82,7 @@ class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
         var contentOffset = proposedContentOffset
         if let indexPath = invalidationCenteredIndexPath {
             if let collectionView = collectionView {
-                        let frame = layoutAttributes[(indexPath as NSIndexPath).section].frame
+                        let frame = layoutAttributes[indexPath.section].frame
                   contentOffset.x = frame.midX - collectionView.frame.width / 2.0
                 
                 contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
@@ -106,7 +106,7 @@ class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return layoutAttributes[(indexPath as NSIndexPath).section]
+        return layoutAttributes[indexPath.section]
     }
     
     override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
@@ -131,7 +131,7 @@ class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
             }()
             let visibleFrame = CGRect(origin: contentOffset, size: visibleSize)
             
-            let size = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: (indexPath as NSIndexPath).section) ?? CGSize.zero
+            let size = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: indexPath.section) ?? CGSize.zero
             let originX = max(itemAttributes.frame.minX, min(itemAttributes.frame.maxX - size.width, visibleFrame.maxX - size.width))
             
             let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: elementKind, with: indexPath)
