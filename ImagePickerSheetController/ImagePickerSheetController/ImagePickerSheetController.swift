@@ -18,7 +18,7 @@ public enum ImagePickerMediaType {
     case imageAndVideo
 }
 
-@available(iOS 8.0, *)
+@available(iOS 9.0, *)
 open class ImagePickerSheetController: UIViewController {
     
     fileprivate lazy var sheetController: SheetController = {
