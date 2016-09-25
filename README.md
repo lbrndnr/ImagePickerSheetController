@@ -46,7 +46,7 @@ pod "ImagePickerSheetController", "~> 0.9.1"
 github "lbrndnr/ImagePickerSheetController" ~> 0.9.1
 ```
 
-You should also add two new values to your app's `Info.plist` to tell the user why your app need to access the Camera and Photo Library.
+You should also add two new values to your app's `Info.plist` to tell the user why you need to access the Camera and Photo Library.
 ```
 <key>NSCameraUsageDescription</key>
 <string>Camera usage description</string>
