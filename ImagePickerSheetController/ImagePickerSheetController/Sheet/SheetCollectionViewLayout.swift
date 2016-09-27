@@ -23,14 +23,13 @@ class SheetCollectionViewLayout: UICollectionViewLayout {
         contentSize = CGSize.zero
         
         if let collectionView = collectionView,
-            let dataSource = collectionView.dataSource,
             let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-                let sections = dataSource.numberOfSections?(in: collectionView) ?? 0
+                let sections = collectionView.numberOfSections
                 var origin = CGPoint()
                 
                 for section in 0 ..< sections {
                     var sectionAttributes = [UICollectionViewLayoutAttributes]()
-                    let items = dataSource.collectionView(collectionView, numberOfItemsInSection: section)
+                    let items = collectionView.numberOfItems(inSection: section)
                     let indexPaths = (0 ..< items).map { IndexPath(item: $0, section: section) }
                     
                     for indexPath in indexPaths {
