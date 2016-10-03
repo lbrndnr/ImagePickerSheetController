@@ -55,7 +55,7 @@ You should also add two new values to your app's `Info.plist` to tell the user w
 ```
 
 ## Requirements
-ImagePickerSheetController is written in Swift and links against `Photos.framework`. It therefore requires iOS 8 or later.
+ImagePickerSheetController is written in Swift and links against `Photos.framework`. It therefore requires iOS 9.0 or later.
 
 ## Author
 I'm Laurin Brandner, I'm on [Twitter](https://twitter.com/lbrndnr).
