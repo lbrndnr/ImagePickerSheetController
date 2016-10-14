@@ -48,12 +48,14 @@ class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
         contentSize = CGSize.zero
 
         if let collectionView = collectionView,
-                   let dataSource = collectionView.dataSource,
                      let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
             var origin = CGPoint(x: sectionInset.left, y: sectionInset.top)
-            let numberOfSections = dataSource.numberOfSections?(in: collectionView) ?? 0
+            let numberOfSections = collectionView.numberOfSections
             
             for s in 0 ..< numberOfSections {
+                guard collectionView.numberOfItems(inSection: s) > 0
+                    else { continue }
+                
                 let indexPath = IndexPath(item: 0, section: s)
                 let size = delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? CGSize.zero
                 
