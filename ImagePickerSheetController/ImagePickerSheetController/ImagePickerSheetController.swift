@@ -113,7 +113,7 @@ open class ImagePickerSheetController: UIViewController {
         return options
     }()
     
-    fileprivate let imageManager = PHCachingImageManager()
+    fileprivate var imageManager: PHCachingImageManager!
     
     /// Whether the image preview has been elarged. This is the case when at least once
     /// image has been selected.
@@ -166,6 +166,7 @@ open class ImagePickerSheetController: UIViewController {
         preferredContentSize = CGSize(width: 400, height: view.frame.height)
         
         if PHPhotoLibrary.authorizationStatus() == .authorized {
+            imageManager = PHCachingImageManager()
             prepareAssets()
         }
     }
@@ -177,6 +178,7 @@ open class ImagePickerSheetController: UIViewController {
             PHPhotoLibrary.requestAuthorization() { status in
                 if status == .authorized {
                     DispatchQueue.main.async {
+                        self.imageManager = self.imageManager ?? PHCachingImageManager()
                         self.prepareAssets()
                         self.previewCollectionView.reloadData()
                         self.sheetCollectionView.reloadData()
