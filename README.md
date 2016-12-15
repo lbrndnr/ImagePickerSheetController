@@ -6,6 +6,7 @@
 
 ## About
 ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIAlertController which makes its usage simple and concise.
+⚠️You can also find an iOS 10 version of this library [here](https://github.com/lbrndnr/ImagePickerTrayController)⚠️
 
 ![Screenshot](https://raw.githubusercontent.com/lbrndnr/ImagePickerSheetController/master/Screenshots/GoT.gif)
 
