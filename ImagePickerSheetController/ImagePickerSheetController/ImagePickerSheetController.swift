@@ -31,6 +31,8 @@ public enum ImagePickerMediaType {
     
 }
 
+fileprivate let imageManager = PHCachingImageManager()
+
 @available(iOS 9.0, *)
 open class ImagePickerSheetController: UIViewController {
     
@@ -112,8 +114,6 @@ open class ImagePickerSheetController: UIViewController {
         
         return options
     }()
-    
-    fileprivate let imageManager = PHCachingImageManager()
     
     /// Whether the image preview has been elarged. This is the case when at least once
     /// image has been selected.
@@ -257,7 +257,7 @@ open class ImagePickerSheetController: UIViewController {
                 }
             }
             
-            self.imageManager.requestImageData(for: asset, options: requestOptions) { data, _, _, info in
+            imageManager.requestImageData(for: asset, options: requestOptions) { data, _, _, info in
                 if data != nil {
                     self.assets.append(asset)
                 }
