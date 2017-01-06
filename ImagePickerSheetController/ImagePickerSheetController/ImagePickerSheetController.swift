@@ -31,13 +31,19 @@ public enum ImagePickerMediaType {
     
 }
 
+fileprivate let imageManager = PHCachingImageManager()
+
 @available(iOS 9.0, *)
 open class ImagePickerSheetController: UIViewController {
     
     fileprivate lazy var sheetController: SheetController = {
         let controller = SheetController(previewCollectionView: self.previewCollectionView)
         controller.actionHandlingCallback = { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: true, completion: { _ in
+                // Possible retain cycle when action handlers hold a reference to the IPSC
+                // Remove all actions to break it
+                controller.removeAllActions()
+            })
         }
         
         return controller
@@ -108,8 +114,6 @@ open class ImagePickerSheetController: UIViewController {
         
         return options
     }()
-    
-    fileprivate let imageManager = PHCachingImageManager()
     
     /// Whether the image preview has been elarged. This is the case when at least once
     /// image has been selected.
@@ -253,7 +257,7 @@ open class ImagePickerSheetController: UIViewController {
                 }
             }
             
-            self.imageManager.requestImageData(for: asset, options: requestOptions) { data, _, _, info in
+            imageManager.requestImageData(for: asset, options: requestOptions) { data, _, _, info in
                 if data != nil {
                     self.assets.append(asset)
                 }

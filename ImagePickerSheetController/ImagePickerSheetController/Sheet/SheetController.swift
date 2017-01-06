@@ -147,6 +147,10 @@ class SheetController: NSObject {
         reloadActionItems()
     }
     
+    func removeAllActions() {
+        actions = []
+        reloadActionItems()
+    }
     
     fileprivate func handleAction(_ action: ImagePickerAction) {
         actionHandlingCallback?()
