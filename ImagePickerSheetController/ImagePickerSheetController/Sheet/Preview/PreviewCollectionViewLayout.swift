@@ -100,7 +100,7 @@ class PreviewCollectionViewLayout: UICollectionViewFlowLayout {
         return layoutAttributes
                     .filter { rect.intersects($0.frame) }
                     .reduce([UICollectionViewLayoutAttributes]()) { memo, attributes in
-                        if let supplementaryAttributes = layoutAttributesForSupplementaryView(ofKind: UICollectionElementKindSectionHeader, at: attributes.indexPath) {
+                        if let supplementaryAttributes = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: attributes.indexPath) {
                             return memo + [attributes, supplementaryAttributes]
                         }
                         return memo

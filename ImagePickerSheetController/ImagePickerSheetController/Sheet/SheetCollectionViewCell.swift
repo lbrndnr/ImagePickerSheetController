@@ -122,7 +122,7 @@ class SheetCollectionViewCell: UICollectionViewCell {
 
         let layerMask = layer.mask as? CAShapeLayer
         layerMask?.frame = bounds
-        layerMask?.path = maskPathWithRect(UIEdgeInsetsInsetRect(bounds, backgroundInsets), roundedCorner: roundedCorners)
+        layerMask?.path = maskPathWithRect(bounds.inset(by: backgroundInsets), roundedCorner: roundedCorners)
     }
     
     fileprivate func maskPathWithRect(_ rect: CGRect, roundedCorner: RoundedCorner) -> CGPath {

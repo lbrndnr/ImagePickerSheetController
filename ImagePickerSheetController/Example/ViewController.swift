@@ -18,20 +18,20 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let button = UIButton(type: .system)
-        button.setTitle("Tap Me!", for: UIControlState())
+        button.setTitle("Tap Me!", for: [])
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
         button.heightAnchor.constraint(equalToConstant: 40).isActive = true
         button.widthAnchor.constraint(equalToConstant: 150).isActive = true
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        button.addTarget(self, action: #selector(presentImagePickerSheet(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(presentImagePickerSheet(gestureRecognizer:)), for: .touchUpInside)
     }
     
     // MARK: - Other Methods
     
-    func presentImagePickerSheet(_ gestureRecognizer: UITapGestureRecognizer) {
-        let presentImagePickerController: (UIImagePickerControllerSourceType) -> () = { source in
+    @objc func presentImagePickerSheet(gestureRecognizer: UITapGestureRecognizer) {
+        let presentImagePickerController: (UIImagePickerController.SourceType) -> () = { source in
             let controller = UIImagePickerController()
             controller.delegate = self
             var sourceType = source
@@ -73,7 +73,7 @@ class ViewController: UIViewController {
 // MARK: - UIImagePickerControllerDelegate
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
 }

@@ -63,8 +63,7 @@ class SheetActionCollectionViewCell: SheetCollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        textLabel.frame = UIEdgeInsetsInsetRect(bounds, backgroundInsets)
+        textLabel.frame = bounds.inset(by: backgroundInsets)
     }
     
 }
