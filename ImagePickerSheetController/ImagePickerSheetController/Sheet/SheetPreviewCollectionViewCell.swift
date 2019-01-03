@@ -33,7 +33,7 @@ class SheetPreviewCollectionViewCell: SheetCollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        collectionView?.frame = UIEdgeInsetsInsetRect(bounds, backgroundInsets)
+        collectionView?.frame = bounds.inset(by: backgroundInsets)
     }
     
 }

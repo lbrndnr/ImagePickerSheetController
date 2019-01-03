@@ -12,7 +12,7 @@ class PreviewCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
         return imageView
@@ -20,14 +20,14 @@ class PreviewCollectionViewCell: UICollectionViewCell {
     
     let videoIndicatorView: UIImageView = {
         let imageView = UIImageView(image: videoImage)
-        imageView.hidden = true
+        imageView.isHidden = true
         
         return imageView
     }()
     
-    private class var videoImage: UIImage? {
-        let bundle = NSBundle(forClass: ImagePickerSheetController.self)
-        let image = UIImage(named: "PreviewCollectionViewCell-video", inBundle: bundle, compatibleWithTraitCollection: nil)
+    fileprivate class var videoImage: UIImage? {
+        let bundle = Bundle(for: ImagePickerSheetController.self)
+        let image = UIImage(named: "PreviewCollectionViewCell-video", in: bundle, compatibleWith: nil)
         
         return image
     }
@@ -46,7 +46,7 @@ class PreviewCollectionViewCell: UICollectionViewCell {
         initialize()
     }
     
-    private func initialize() {
+    fileprivate func initialize() {
         addSubview(imageView)
         addSubview(videoIndicatorView)
     }
@@ -57,7 +57,7 @@ class PreviewCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         imageView.image = nil
-        videoIndicatorView.hidden = true
+        videoIndicatorView.isHidden = true
     }
     
     // MARK: - Layout
