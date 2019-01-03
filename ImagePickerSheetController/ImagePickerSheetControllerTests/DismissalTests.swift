@@ -15,25 +15,25 @@ class DismissalTests: ImagePickerSheetControllerTests {
     override func setUp() {
         super.setUp()
         
-        imageController.addAction(ImagePickerAction(title: defaultActionTitle, style: .Default, handler: { _ in }))
-        imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .Cancel, handler: { _ in }))
+        imageController.addAction(ImagePickerAction(title: defaultActionTitle, style: .default, handler: { _ in }))
+        imageController.addAction(ImagePickerAction(title: cancelActionTitle, style: .cancel, handler: { _ in }))
         
         presentImagePickerSheetController()
     }
     
     func testDismissalByTappingDefaultAction() {
-        tester().tapViewWithAccessibilityLabel(defaultActionTitle)
-        tester().waitForAbsenceOfViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
+        tester().tapView(withAccessibilityLabel: defaultActionTitle)
+        tester().waitForAbsenceOfView(withAccessibilityIdentifier: imageControllerViewIdentifier)
     }
     
     func testDismissalByTappingCancelAction() {
-        tester().tapViewWithAccessibilityLabel(cancelActionTitle)
-        tester().waitForAbsenceOfViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
+        tester().tapView(withAccessibilityLabel: cancelActionTitle)
+        tester().waitForAbsenceOfView(withAccessibilityIdentifier: imageControllerViewIdentifier)
     }
     
     func testDismissalByTappingBackground() {
-        tester().tapViewWithAccessibilityIdentifier(imageControllerBackgroundViewIdentifier)
-        tester().waitForAbsenceOfViewWithAccessibilityIdentifier(imageControllerViewIdentifier)
+        tester().tapView(withAccessibilityIdentifier: imageControllerBackgroundViewIdentifier)
+        tester().waitForAbsenceOfView(withAccessibilityIdentifier: imageControllerViewIdentifier)
     }
     
 }
