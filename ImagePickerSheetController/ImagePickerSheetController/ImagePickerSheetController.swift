@@ -431,14 +431,14 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
 extension ImagePickerSheetController: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let maximumSelection = maximumSelection, selectedAssetIndices.count >= maximumSelection {
-            if let previousItemIndex = selectedAssetIndices.first {
-                guard let deselectedAsset = selectedAssets.first else { return }
-                
+        if let maximumSelection = maximumSelection {
+            if selectedAssetIndices.count >= maximumSelection,
+                let previousItemIndex = selectedAssetIndices.first {
+                let deselectedAsset = assets[previousItemIndex]
                 delegate?.controller?(self, willDeselectAsset: deselectedAsset)
                 
                 supplementaryViews[previousItemIndex]?.selected = false
-                selectedAssetIndices.removeFirst()
+                selectedAssetIndices.remove(at: 0)
                 
                 delegate?.controller?(self, didDeselectAsset: deselectedAsset)
             }
