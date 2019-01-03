@@ -6,6 +6,7 @@
 
 ## About
 ImagePickerSheetController is a component that replicates the custom photo action sheet in iMessage. It's very similar to UIAlertController which makes its usage simple and concise.
+⚠️You can also find an iOS 10 version of this library [here](https://github.com/lbrndnr/ImagePickerTrayController)⚠️
 
 ![Screenshot](https://raw.githubusercontent.com/lbrndnr/ImagePickerSheetController/master/Screenshots/GoT.gif)
 
@@ -46,8 +47,16 @@ pod "ImagePickerSheetController", "~> 0.9.1"
 github "lbrndnr/ImagePickerSheetController" ~> 0.9.1
 ```
 
+You should also add two new values to your app's `Info.plist` to tell the user why you need to access the Camera and Photo Library.
+```
+<key>NSCameraUsageDescription</key>
+<string>Camera usage description</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Photo Library usage description</string>
+```
+
 ## Requirements
-ImagePickerSheetController is written in Swift and links against `Photos.framework`. It therefore requires iOS 8 or later.
+ImagePickerSheetController is written in Swift and links against `Photos.framework`. It therefore requires iOS 9.0 or later.
 
 ## Author
 I'm Laurin Brandner, I'm on [Twitter](https://twitter.com/lbrndnr).
