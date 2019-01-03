@@ -20,13 +20,13 @@ open class ImagePickerAction {
     public typealias SecondaryHandler = (ImagePickerAction, Int) -> ()
     
     /// The title of the action's button.
-    open let title: String
+    public let title: String
     
     /// The title of the action's button when more than one image is selected.
-    open let secondaryTitle: Title
+    public let secondaryTitle: Title
     
     /// The style of the action. This is used to call a cancel handler when dismissing the controller by tapping the background.
-    open let style: ImagePickerActionStyle
+    public let style: ImagePickerActionStyle
     
     fileprivate let handler: Handler?
     fileprivate let secondaryHandler: SecondaryHandler?

@@ -32,7 +32,7 @@ public enum ImagePickerMediaType {
 }
 
 @available(iOS 9.0, *)
-open class ImagePickerSheetController: UIViewController {
+public final class ImagePickerSheetController: UIViewController {
     
     fileprivate lazy var sheetController: SheetController = {
         let controller = SheetController(previewCollectionView: self.previewCollectionView)
@@ -84,15 +84,15 @@ open class ImagePickerSheetController: UIViewController {
         return view
     }()
     
-    open var delegate: ImagePickerSheetControllerDelegate?
+    public var delegate: ImagePickerSheetControllerDelegate?
     
     /// All the actions. The first action is shown at the top.
-    open var actions: [ImagePickerAction] {
+    public var actions: [ImagePickerAction] {
         return sheetController.actions
     }
     
     /// Maximum selection of images.
-    open var maximumSelection: Int?
+    public var maximumSelection: Int?
     
     fileprivate var selectedAssetIndices = [Int]() {
         didSet {
@@ -101,12 +101,12 @@ open class ImagePickerSheetController: UIViewController {
     }
     
     /// The selected image assets
-    open var selectedAssets: [PHAsset] {
+    public var selectedAssets: [PHAsset] {
         return selectedAssetIndices.map { self.assets[$0] }
     }
     
     /// The media type of the displayed assets
-    open let mediaType: ImagePickerMediaType
+    public let mediaType: ImagePickerMediaType
     
     fileprivate var assets = [PHAsset]()
     
@@ -122,7 +122,7 @@ open class ImagePickerSheetController: UIViewController {
     
     /// Whether the image preview has been elarged. This is the case when at least once
     /// image has been selected.
-    open fileprivate(set) var enlargedPreviews = false
+    public fileprivate(set) var enlargedPreviews = false
     
     fileprivate let minimumPreviewHeight: CGFloat = 129
     fileprivate var maximumPreviewHeight: CGFloat = 129
@@ -158,14 +158,14 @@ open class ImagePickerSheetController: UIViewController {
     
     // MARK: - View Lifecycle
     
-    override open func loadView() {
+    override public func loadView() {
         super.loadView()
         
         view.addSubview(backgroundView)
         view.addSubview(sheetCollectionView)
     }
     
-    open override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         preferredContentSize = CGSize(width: 400, height: view.frame.height)
@@ -175,7 +175,7 @@ open class ImagePickerSheetController: UIViewController {
         }
     }
     
-    open override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if PHPhotoLibrary.authorizationStatus() == .notDetermined {
@@ -204,7 +204,7 @@ open class ImagePickerSheetController: UIViewController {
     /// Adds an new action.
     /// If the passed action is of type Cancel, any pre-existing Cancel actions will be removed.
     /// Always arranges the actions so that the Cancel action appears at the bottom.
-    open func addAction(_ action: ImagePickerAction) {
+    public func addAction(_ action: ImagePickerAction) {
         sheetController.addAction(action)
         view.setNeedsLayout()
     }
@@ -295,7 +295,7 @@ open class ImagePickerSheetController: UIViewController {
     
     // MARK: - Layout
     
-    open override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         if popoverPresentationController == nil {
