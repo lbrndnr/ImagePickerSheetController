@@ -317,11 +317,18 @@ public final class ImagePickerSheetController: UIViewController {
         
         let sheetHeight = sheetController.preferredSheetHeight
         let sheetSize = CGSize(width: view.bounds.width, height: sheetHeight)
-        
+
+        let additionalPadding: CGFloat
+        if #available(iOS 11, *) {
+          additionalPadding = view.safeAreaInsets.bottom
+        } else {
+          additionalPadding = 0
+        }
+
         // This particular order is necessary so that the sheet is layed out
         // correctly with and without an enclosing popover
         preferredContentSize = sheetSize
-        sheetCollectionView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY - view.frame.origin.y - sheetHeight), size: sheetSize)
+        sheetCollectionView.frame = CGRect(origin: CGPoint(x: view.bounds.minX, y: view.bounds.maxY - view.frame.origin.y - sheetHeight - additionalPadding), size: sheetSize)
     }
     
     fileprivate func reloadCurrentPreviewHeight(invalidateLayout invalidate: Bool) {
