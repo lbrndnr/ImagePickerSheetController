@@ -9,7 +9,7 @@
 import Foundation
 import Photos
 
-let previewInset: CGFloat = 5
+let previewInset: CGFloat = 8
 
 /// The media type an instance of ImagePickerSheetController can display
 public enum ImagePickerMediaType {
