@@ -90,6 +90,9 @@ public final class ImagePickerSheetController: UIViewController {
     public var actions: [ImagePickerAction] {
         return sheetController.actions
     }
+
+    /// Corner radius of preview cells.
+    public var cornerRadius: CGFloat = 0
     
     /// Maximum selection of images.
     public var maximumSelection: Int?
@@ -415,7 +418,8 @@ extension ImagePickerSheetController: UICollectionViewDataSource {
         }
         
         cell.isSelected = selectedAssetIndices.contains(indexPath.section)
-        
+        cell.imageView.layer.cornerRadius = cornerRadius
+      
         return cell
     }
     
