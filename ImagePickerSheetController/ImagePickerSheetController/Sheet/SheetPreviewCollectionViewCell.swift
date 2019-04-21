@@ -36,4 +36,22 @@ class SheetPreviewCollectionViewCell: SheetCollectionViewCell {
         collectionView?.frame = bounds.inset(by: backgroundInsets)
     }
     
+    override func reloadMask() {
+      if needsMasking && layer.mask == nil {
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = bounds
+        maskLayer.lineWidth = 0
+        maskLayer.fillColor = UIColor.black.cgColor
+
+        layer.mask = maskLayer
+      }
+
+      let layerMask = layer.mask as? CAShapeLayer
+
+      var bounds = self.bounds
+      bounds.size.height = max(bounds.size.height, collectionView?.bounds.height ?? 0)
+
+      layerMask?.frame = bounds
+      layerMask?.path = maskPathWithRect(bounds.inset(by: backgroundInsets), roundedCorner: roundedCorners)
+    }
 }

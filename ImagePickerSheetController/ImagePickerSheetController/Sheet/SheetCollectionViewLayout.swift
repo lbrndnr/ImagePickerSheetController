@@ -23,29 +23,30 @@ class SheetCollectionViewLayout: UICollectionViewLayout {
         contentSize = CGSize.zero
         
         if let collectionView = collectionView,
-            let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-                let sections = collectionView.numberOfSections
-                var origin = CGPoint()
-                
-                for section in 0 ..< sections {
-                    var sectionAttributes = [UICollectionViewLayoutAttributes]()
-                    let items = collectionView.numberOfItems(inSection: section)
-                    let indexPaths = (0 ..< items).map { IndexPath(item: $0, section: section) }
-                    
-                    for indexPath in indexPaths {
-                        let size = delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? CGSize.zero
-                        
-                        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-                        attributes.frame = CGRect(origin: origin, size: size)
-                        
-                        sectionAttributes.append(attributes)
-                        origin.y = attributes.frame.maxY
-                    }
+           let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout
+        {
+            let sections = collectionView.numberOfSections
+            var origin = CGPoint.zero
 
-                    layoutAttributes.append(sectionAttributes)
+            for section in 0 ..< sections {
+                var sectionAttributes = [UICollectionViewLayoutAttributes]()
+                let items = collectionView.numberOfItems(inSection: section)
+                let indexPaths = (0 ..< items).map { IndexPath(item: $0, section: section) }
+
+                for indexPath in indexPaths {
+                    var size = delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? CGSize.zero
+
+                    let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+                    attributes.frame = CGRect(origin: origin, size: size)
+
+                    sectionAttributes.append(attributes)
+                    origin.y = attributes.frame.maxY
                 }
-                
-                contentSize = CGSize(width: collectionView.frame.width, height: origin.y)
+
+                layoutAttributes.append(sectionAttributes)
+            }
+
+            contentSize = CGSize(width: collectionView.frame.width, height: origin.y)
         }
     }
     
@@ -67,7 +68,7 @@ class SheetCollectionViewLayout: UICollectionViewLayout {
                                .filter { rect.intersects($0.frame) }
     }
     
-    fileprivate func layoutAttributesForItemAtIndexPath(_ indexPath: IndexPath, allAttributes: [[UICollectionViewLayoutAttributes]]) -> UICollectionViewLayoutAttributes? {
+    fileprivate func layoutAttributesForItem(at indexPath: IndexPath, allAttributes: [[UICollectionViewLayoutAttributes]]) -> UICollectionViewLayoutAttributes? {
         guard allAttributes.count > indexPath.section && allAttributes[indexPath.section].count > indexPath.item else {
             return nil
         }
@@ -80,11 +81,11 @@ class SheetCollectionViewLayout: UICollectionViewLayout {
             return nil
         }
         
-        return layoutAttributesForItemAtIndexPath(indexPath, allAttributes: invalidatedLayoutAttributes)
+      return layoutAttributesForItem(at: indexPath, allAttributes: invalidatedLayoutAttributes)
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return layoutAttributesForItemAtIndexPath(indexPath, allAttributes: layoutAttributes)
+        return layoutAttributesForItem(at: indexPath, allAttributes: layoutAttributes)
     }
     
     override func initialLayoutAttributesForAppearingItem(at itemIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {

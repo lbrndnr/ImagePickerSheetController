@@ -8,23 +8,12 @@
 
 import UIKit
 
-class PreviewSupplementaryView: UICollectionReusableView {
-    
-    fileprivate let button: UIButton = {
-        let button = UIButton()
-        button.tintColor = .white
-        button.isUserInteractionEnabled = false
-        button.setImage(PreviewSupplementaryView.checkmarkImage, for: UIControl.State())
-        button.setImage(PreviewSupplementaryView.selectedCheckmarkImage, for: .selected)
-        
-        return button
-    }()
-    
+class PreviewSupplementaryView: UIButton {
+
     var buttonInset = UIEdgeInsets.zero
     
-    var selected: Bool = false {
+    override var isSelected: Bool {
         didSet {
-            button.isSelected = selected
             reloadButtonBackgroundColor()
         }
     }
@@ -58,15 +47,11 @@ class PreviewSupplementaryView: UICollectionReusableView {
     }
     
     fileprivate func initialize() {
-        addSubview(button)
-    }
-    
-    // MARK: - Other Methods
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        selected = false
+        tintColor = .white
+        layer.cornerRadius = frame.height / 2
+        isUserInteractionEnabled = false
+        setImage(PreviewSupplementaryView.checkmarkImage, for: UIControl.State())
+        setImage(PreviewSupplementaryView.selectedCheckmarkImage, for: .selected)
     }
     
     override func tintColorDidChange() {
@@ -76,17 +61,6 @@ class PreviewSupplementaryView: UICollectionReusableView {
     }
     
     fileprivate func reloadButtonBackgroundColor() {
-        button.backgroundColor = (selected) ? tintColor : nil
+        backgroundColor = isSelected ? superview?.tintColor : .clear
     }
-    
-    // MARK: - Layout
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        button.sizeToFit()
-        button.frame.origin = CGPoint(x: buttonInset.left, y: bounds.height-button.frame.height-buttonInset.bottom)
-        button.layer.cornerRadius = button.frame.height / 2.0
-    }
-    
 }

@@ -9,7 +9,26 @@
 import UIKit
 
 class PreviewCollectionViewCell: UICollectionViewCell {
-    
+
+    public let selectionElement = PreviewSupplementaryView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 22, height: 22)))
+
+    private var selectionCenter: CGPoint = .zero {
+      didSet {
+        if selectionCenter != oldValue {
+          setNeedsLayout()
+        }
+      }
+    }
+
+    public var showSelectionCircles: Bool = true {
+      didSet {
+        if showSelectionCircles != oldValue {
+          selectionElement.center = selectionCenter
+          selectionElement.isHidden = !showSelectionCircles
+        }
+      }
+    }
+
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -31,6 +50,10 @@ class PreviewCollectionViewCell: UICollectionViewCell {
         
         return image
     }
+
+    public func updateSelection(isSelected: Bool) {
+      selectionElement.isSelected = isSelected
+    }
     
     // MARK: - Initialization
     
@@ -49,6 +72,7 @@ class PreviewCollectionViewCell: UICollectionViewCell {
     fileprivate func initialize() {
         addSubview(imageView)
         addSubview(videoIndicatorView)
+        addSubview(selectionElement)
     }
     
     // MARK: - Other Methods
@@ -71,5 +95,15 @@ class PreviewCollectionViewCell: UICollectionViewCell {
         let inset: CGFloat = 4
         let videoIndicatorViewOrigin = CGPoint(x: bounds.minX + inset, y: bounds.maxY - inset - videoIndicatViewSize.height)
         videoIndicatorView.frame = CGRect(origin: videoIndicatorViewOrigin, size: videoIndicatViewSize)
+
+        selectionElement.center = selectionCenter
+    }
+
+    override public func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+      super.apply(layoutAttributes)
+      if let attributes = layoutAttributes as? PreviewCollectionViewLayout.Attributes {
+        selectionCenter = attributes.selectionCenter
+      }
+      layoutIfNeeded()
     }
 }

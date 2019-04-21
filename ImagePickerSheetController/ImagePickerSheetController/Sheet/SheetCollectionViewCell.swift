@@ -69,7 +69,7 @@ class SheetCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    fileprivate var needsMasking: Bool {
+    internal var needsMasking: Bool {
         guard backgroundInsets == UIEdgeInsets() else {
             return true
         }
@@ -110,7 +110,7 @@ class SheetCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Mask
     
-    fileprivate func reloadMask() {
+    internal func reloadMask() {
         if needsMasking && layer.mask == nil {
             let maskLayer = CAShapeLayer()
             maskLayer.frame = bounds
@@ -125,7 +125,7 @@ class SheetCollectionViewCell: UICollectionViewCell {
         layerMask?.path = maskPathWithRect(bounds.inset(by: backgroundInsets), roundedCorner: roundedCorners)
     }
     
-    fileprivate func maskPathWithRect(_ rect: CGRect, roundedCorner: RoundedCorner) -> CGPath {
+    internal func maskPathWithRect(_ rect: CGRect, roundedCorner: RoundedCorner) -> CGPath {
         let radii: CGFloat
         let corners: UIRectCorner
         

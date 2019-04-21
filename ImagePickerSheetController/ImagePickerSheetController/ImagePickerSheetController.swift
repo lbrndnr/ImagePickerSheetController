@@ -61,19 +61,15 @@ public final class ImagePickerSheetController: UIViewController {
         collectionView.accessibilityIdentifier = "ImagePickerSheetPreview"
         collectionView.backgroundColor = .clear
         collectionView.allowsMultipleSelection = true
-        collectionView.imagePreviewLayout.sectionInset = UIEdgeInsets(top: previewInset, left: previewInset, bottom: previewInset, right: previewInset)
-        collectionView.imagePreviewLayout.showsSupplementaryViews = false
+        collectionView.contentInset = UIEdgeInsets(top: previewInset, left: previewInset, bottom: previewInset, right: previewInset)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
         collectionView.register(PreviewCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(PreviewCollectionViewCell.self))
-        collectionView.register(PreviewSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self))
         
         return collectionView
     }()
-    
-    fileprivate var supplementaryViews = [Int: PreviewSupplementaryView]()
     
     lazy var backgroundView: UIView = {
         let view = UIView()
@@ -376,7 +372,7 @@ public final class ImagePickerSheetController: UIViewController {
     
     func enlargePreviewsByCenteringToIndexPath(_ indexPath: IndexPath?, completion: (() -> ())?) {
         enlargedPreviews = true
-        previewCollectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
+        previewCollectionView.imagePreviewLayout.selectedCellIndexPath = indexPath
         reloadCurrentPreviewHeight(invalidateLayout: false)
         
         view.setNeedsLayout()
@@ -386,11 +382,29 @@ public final class ImagePickerSheetController: UIViewController {
         UIView.animate(withDuration: 0.2, animations: {
             self.view.layoutIfNeeded()
             self.sheetCollectionView.collectionViewLayout.invalidateLayout()
+            self.updateVisibleCellsVisibleAreaRects()
         }, completion: { _ in
             self.delegate?.controllerDidEnlargePreview?(self)
             
             completion?()
         })
+    }
+
+    func shrinkPreviews(_ indexPath: IndexPath?, completion: (() -> ())?) {
+      enlargedPreviews = false
+
+      previewCollectionView.imagePreviewLayout.selectedCellIndexPath = indexPath
+      self.reloadCurrentPreviewHeight(invalidateLayout: false)
+
+      view.setNeedsLayout()
+
+      UIView.animate(withDuration: 0.2, animations: {
+        self.view.layoutIfNeeded()
+        self.sheetCollectionView.collectionViewLayout.invalidateLayout()
+        self.updateVisibleCellsVisibleAreaRects()
+      }, completion: { _ in
+        completion?()
+      })
     }
     
 }
@@ -400,41 +414,28 @@ public final class ImagePickerSheetController: UIViewController {
 extension ImagePickerSheetController: UICollectionViewDataSource {
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return assets.count
+        return 1
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return assets.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(PreviewCollectionViewCell.self), for: indexPath) as! PreviewCollectionViewCell
         
-        let asset = assets[indexPath.section]
+        let asset = assets[indexPath.row]
         cell.videoIndicatorView.isHidden = asset.mediaType != .video
         
         requestImageForAsset(asset) { image in
             cell.imageView.image = image
         }
         
-        cell.isSelected = selectedAssetIndices.contains(indexPath.section)
+        cell.selectionElement.isSelected = selectedAssetIndices.contains(indexPath.row)
         cell.imageView.layer.cornerRadius = cornerRadius
       
         return cell
     }
-    
-    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath:
-        IndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), for: indexPath) as! PreviewSupplementaryView
-        view.isUserInteractionEnabled = false
-        view.buttonInset = UIEdgeInsets(top: 0.0, left: previewCheckmarkInset, bottom: previewCheckmarkInset, right: 0.0)
-        view.selected = selectedAssetIndices.contains(indexPath.section)
-        
-        supplementaryViews[indexPath.section] = view
-        
-        return view
-    }
-    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -447,31 +448,33 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
                 let previousItemIndex = selectedAssetIndices.first {
                 let deselectedAsset = assets[previousItemIndex]
                 delegate?.controller?(self, willDeselectAsset: deselectedAsset)
-                
-                supplementaryViews[previousItemIndex]?.selected = false
+
                 selectedAssetIndices.remove(at: 0)
-                
+                if let cell = previewCollectionView.cellForItem(at: IndexPath(row: previousItemIndex, section: 0)) as? PreviewCollectionViewCell {
+                  cell.updateSelection(isSelected: false)
+                }
+
                 delegate?.controller?(self, didDeselectAsset: deselectedAsset)
             }
         }
         
-        let selectedAsset = assets[indexPath.section]
+        let selectedAsset = assets[indexPath.row]
         delegate?.controller?(self, willSelectAsset: selectedAsset)
         
         // Just to make sure the image is only selected once
-        selectedAssetIndices = selectedAssetIndices.filter { $0 != indexPath.section }
-        selectedAssetIndices.append(indexPath.section)
+        selectedAssetIndices = selectedAssetIndices.filter { $0 != indexPath.row }
+        selectedAssetIndices.append(indexPath.row)
         
         if !enlargedPreviews {
             enlargePreviewsByCenteringToIndexPath(indexPath) {
                 self.sheetController.reloadActionItems()
-                self.previewCollectionView.imagePreviewLayout.showsSupplementaryViews = true
+                self.previewCollectionView.imagePreviewLayout.invalidateLayout()
             }
         }
         else {
             // scrollToItemAtIndexPath doesn't work reliably
             if let cell = collectionView.cellForItem(at: indexPath) {
-                var contentOffset = CGPoint(x: cell.frame.midX - collectionView.frame.width / 2.0, y: 0.0)
+                var contentOffset = CGPoint(x: cell.frame.midX - collectionView.frame.width / 2.0, y: -previewInset)
                 contentOffset.x = max(contentOffset.x, -collectionView.contentInset.left)
                 contentOffset.x = min(contentOffset.x, collectionView.contentSize.width - collectionView.frame.width + collectionView.contentInset.right)
                 
@@ -480,31 +483,70 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
             
             sheetController.reloadActionItems()
         }
-        
-        supplementaryViews[indexPath.section]?.selected = true
-        
+
+        if let cell = previewCollectionView.cellForItem(at: indexPath) as? PreviewCollectionViewCell {
+          cell.updateSelection(isSelected: true)
+        }
+
         delegate?.controller?(self, didSelectAsset: selectedAsset)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let index = selectedAssetIndices.index(of: indexPath.section) {
+        if let index = selectedAssetIndices.index(of: indexPath.row) {
             let deselectedAsset = selectedAssets[index]
             delegate?.controller?(self, willDeselectAsset: deselectedAsset)
             
             selectedAssetIndices.remove(at: index)
-            sheetController.reloadActionItems()
+            shrinkPreviews(indexPath) {
+              self.sheetController.reloadActionItems()
+              self.previewCollectionView.imagePreviewLayout.invalidateLayout()
+            }
             
             delegate?.controller?(self, didDeselectAsset: deselectedAsset)
         }
-        
-        supplementaryViews[indexPath.section]?.selected = false
+
+        if let cell = previewCollectionView.cellForItem(at: indexPath) as? PreviewCollectionViewCell {
+          cell.updateSelection(isSelected: false)
+        }
     }
-    
+
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+      updateVisibleAreaRect(cell: cell, indexPath: indexPath)
+    }
+
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      guard scrollView === previewCollectionView else {
+        return
+      }
+
+      updateVisibleCellsVisibleAreaRects()
+    }
+
+    private func updateVisibleCellsVisibleAreaRects() {
+      let indexPaths = previewCollectionView.indexPathsForVisibleItems
+      for indexPath in indexPaths {
+        if let cell = previewCollectionView.cellForItem(at: indexPath) {
+          updateVisibleAreaRect(cell: cell, indexPath: indexPath)
+        }
+      }
+    }
+
+    private func updateVisibleAreaRect(cell: UICollectionViewCell, indexPath: IndexPath) {
+      guard let cell = cell as? PreviewCollectionViewCell else {
+        return
+      }
+
+      let cellVisibleRectInCollectionView = cell.convert(cell.bounds, to: previewCollectionView)
+      let cellVisibleAreaInCollectionView = cellVisibleRectInCollectionView.intersection(previewCollectionView.bounds)
+      let cellVisibleRect = cell.convert(cellVisibleAreaInCollectionView, from: previewCollectionView)
+
+      previewCollectionView.imagePreviewLayout.updateVisibleArea(cellVisibleRect, itemAt: indexPath, cell: cell)
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension ImagePickerSheetController: UICollectionViewDelegateFlowLayout {
+extension ImagePickerSheetController: PreviewCollectionViewLayoutDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let asset = assets[indexPath.section]
