@@ -123,8 +123,8 @@ public final class ImagePickerSheetController: UIViewController {
     /// image has been selected.
     public fileprivate(set) var enlargedPreviews = false
     
-    fileprivate let minimumPreviewHeight: CGFloat = 129
-    fileprivate var maximumPreviewHeight: CGFloat = 129
+    fileprivate let minimumPreviewHeight: CGFloat = 100
+    fileprivate var maximumPreviewHeight: CGFloat = 100
     
     fileprivate var previewCheckmarkInset: CGFloat {
         return 12.5
@@ -344,7 +344,7 @@ public final class ImagePickerSheetController: UIViewController {
     
     fileprivate func reloadMaximumPreviewHeight() {
         let maxHeight: CGFloat = 400
-        let maxImageWidth = view.bounds.width - 2 * sheetInset - 2 * previewInset
+        let maxImageWidth = (view.bounds.width - ((2 * sheetInset) + (2 * previewInset))) * 0.75
         
         let assetRatios = assets.map { (asset: PHAsset) -> CGSize in
             CGSize(width: max(asset.pixelHeight, asset.pixelWidth), height: min(asset.pixelHeight, asset.pixelWidth))
@@ -548,22 +548,24 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
 
 extension ImagePickerSheetController: PreviewCollectionViewLayoutDelegate {
     
-    public func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let asset = assets[indexPath.section]
-        let size = sizeForAsset(asset)
-        
-        // Scale down to the current preview height, sizeForAsset returns the original size
-        let currentImagePreviewHeight = sheetController.previewHeight - 2 * previewInset
-        let scale = currentImagePreviewHeight / size.height
-        
-        return CGSize(width: size.width * scale, height: currentImagePreviewHeight)
+    public func collectionView(_ aCollectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+      if enlargedPreviews {
+        return collectionView(aCollectionView, layout: layout, largeSizeForItemAt: indexPath)
+      }
+
+      let size = minimumPreviewHeight - 2 * previewInset
+      return CGSize(width: size, height: size)
     }
-    
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let checkmarkWidth = PreviewSupplementaryView.checkmarkImage?.size.width ?? 0
-        return CGSize(width: checkmarkWidth + 2 * previewCheckmarkInset, height: sheetController.previewHeight - 2 * previewInset)
+
+    public func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, largeSizeForItemAt indexPath: IndexPath) -> CGSize {
+      let asset = assets[indexPath.row]
+      let size = sizeForAsset(asset)
+
+      let currentImagePreviewHeight = sheetController.previewHeight - 2 * previewInset
+      let scale = currentImagePreviewHeight / size.height
+
+      return CGSize(width: size.width * scale, height: currentImagePreviewHeight)
     }
-    
 }
 
 // MARK: - UIViewControllerTransitioningDelegate
