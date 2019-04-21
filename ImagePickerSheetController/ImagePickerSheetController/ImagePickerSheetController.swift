@@ -379,7 +379,7 @@ public final class ImagePickerSheetController: UIViewController {
         
         self.delegate?.controllerWillEnlargePreview?(self)
         
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.92, initialSpringVelocity: 1, options: .curveLinear, animations: {
             self.view.layoutIfNeeded()
             self.sheetCollectionView.collectionViewLayout.invalidateLayout()
             self.updateVisibleCellsVisibleAreaRects()
@@ -398,7 +398,7 @@ public final class ImagePickerSheetController: UIViewController {
 
       view.setNeedsLayout()
 
-      UIView.animate(withDuration: 0.2, animations: {
+      UIView.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1, options: .curveLinear, animations: {
         self.view.layoutIfNeeded()
         self.sheetCollectionView.collectionViewLayout.invalidateLayout()
         self.updateVisibleCellsVisibleAreaRects()

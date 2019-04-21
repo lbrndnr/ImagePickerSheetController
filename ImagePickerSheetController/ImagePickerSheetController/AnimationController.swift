@@ -30,7 +30,7 @@ class AnimationController: NSObject {
         imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
         imagePickerSheetController.backgroundView.alpha = 0
         
-        UIView.animate(withDuration: transitionDuration(using: context), delay: 0, options: .curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: transitionDuration(using: context), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.9, options: .beginFromCurrentState, animations: { () -> Void in
             self.imagePickerSheetController.sheetCollectionView.frame.origin.y = sheetOriginY
             self.imagePickerSheetController.backgroundView.alpha = 1
         }, completion: { _ in
@@ -41,7 +41,7 @@ class AnimationController: NSObject {
     fileprivate func animateDismissal(_ context: UIViewControllerContextTransitioning) {
         let containerView = context.containerView
         
-        UIView.animate(withDuration: transitionDuration(using: context), delay: 0, options: .curveEaseIn, animations: { () -> Void in
+        UIView.animate(withDuration: transitionDuration(using: context), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.9, options: .beginFromCurrentState, animations: { () -> Void in
             self.imagePickerSheetController.sheetCollectionView.frame.origin.y = containerView.bounds.maxY
             self.imagePickerSheetController.backgroundView.alpha = 0
         }, completion: { _ in
@@ -56,7 +56,7 @@ class AnimationController: NSObject {
 extension AnimationController: UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.25
+        return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
