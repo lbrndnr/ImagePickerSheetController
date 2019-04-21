@@ -46,6 +46,7 @@ class ViewController: UIViewController {
         
         let controller = ImagePickerSheetController(mediaType: .imageAndVideo)
         controller.maximumSelection = 1
+        controller.cornerRadius = 8
         controller.delegate = self
         
         controller.addAction(ImagePickerAction(title: NSLocalizedString("Take Photo Or Video", comment: "Action Title"), secondaryTitle: NSLocalizedString("Add comment", comment: "Action Title"), handler: { _ in
