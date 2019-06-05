@@ -34,7 +34,7 @@ class SheetCollectionViewLayout: UICollectionViewLayout {
                 let indexPaths = (0 ..< items).map { IndexPath(item: $0, section: section) }
 
                 for indexPath in indexPaths {
-                    var size = delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? CGSize.zero
+                    let size = delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? CGSize.zero
 
                     let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
                     attributes.frame = CGRect(origin: origin, size: size)

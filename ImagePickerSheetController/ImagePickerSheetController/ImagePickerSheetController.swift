@@ -103,7 +103,7 @@ public final class ImagePickerSheetController: UIViewController {
     public var selectedAssets: [PHAsset] {
         return selectedAssetIndices.map {
             let asset = PHAsset()
-            if case let asset? = self.fetchedResults?[$0] as? PHAsset {
+            if case let asset? = self.fetchedResults?[$0] {
                 return asset
             }
             return asset
@@ -496,7 +496,7 @@ extension ImagePickerSheetController: UICollectionViewDelegate {
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let index = selectedAssetIndices.index(of: indexPath.row) {
+        if let index = selectedAssetIndices.firstIndex(of: indexPath.row) {
             let deselectedAsset = selectedAssets[index]
             delegate?.controller?(self, willDeselectAsset: deselectedAsset)
             

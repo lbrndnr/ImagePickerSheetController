@@ -97,7 +97,7 @@ class SheetController: NSObject {
             return (.top(cornerRadius), UIEdgeInsets(top: 0, left: sheetInset, bottom: 0, right: sheetInset))
         }
         
-        let cancelIndexPath = actions.index { $0.style == ImagePickerActionStyle.cancel }
+        let cancelIndexPath = actions.firstIndex { $0.style == ImagePickerActionStyle.cancel }
                                      .map { IndexPath(item: $0, section: 1) }
         
         
@@ -139,7 +139,7 @@ class SheetController: NSObject {
         
         actions.append(action)
         
-        if let index = actions.index(where: { $0.style == .cancel }) {
+        if let index = actions.firstIndex(where: { $0.style == .cancel }) {
             let cancelAction = actions.remove(at: index)
             actions.append(cancelAction)
         }
