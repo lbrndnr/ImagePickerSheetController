@@ -224,8 +224,9 @@ class PreviewCollectionViewLayout: UICollectionViewLayout {
 
       let itemLeft = itemFrame.origin.x
       let itemWidth = itemFrame.size.width
+      let newLeft = itemLeft - ((width - itemWidth) / 2)
 
-      finalContentOffset = CGPoint(x: itemLeft - (width/2 - itemWidth/2), y: -inset.top)
+      finalContentOffset = CGPoint(x: min(contentSize.width - (width - lineSpacing), max(-lineSpacing, newLeft)), y: -inset.top)
     }
 
     return finalContentOffset
