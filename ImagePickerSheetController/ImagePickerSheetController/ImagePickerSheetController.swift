@@ -118,6 +118,7 @@ public final class ImagePickerSheetController: UIViewController {
     fileprivate lazy var requestOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
         options.resizeMode = .fast
         
         return options
@@ -252,6 +253,7 @@ public final class ImagePickerSheetController: UIViewController {
         let requestOptions = PHImageRequestOptions()
         requestOptions.isSynchronous = true
         requestOptions.deliveryMode = .fastFormat
+        requestOptions.isNetworkAccessAllowed = true
         
         result.enumerateObjects(options: [], using: { asset, index, stop in
             if index == fetchLimit {
