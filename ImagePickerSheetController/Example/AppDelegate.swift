@@ -13,7 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow? = {
         let window = UIWindow(frame: UIScreen.main.bounds)
+
+        #if swift(>=5.1)
+        if #available(iOS 13.0, *) {
+          window.backgroundColor = .systemBackground
+        } else {
+          window.backgroundColor = .white
+        }
+        #else
         window.backgroundColor = .white
+        #endif
         
         return window
     }()

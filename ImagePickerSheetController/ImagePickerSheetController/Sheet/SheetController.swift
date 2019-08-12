@@ -209,12 +209,24 @@ extension SheetController: UICollectionViewDataSource {
         }
         
         cell.separatorVisible = (indexPath.section == 1)
-        
+
         // iOS specific design
         (cell.roundedCorners, cell.backgroundInsets) = attributesForItemAtIndexPath(indexPath)
+        #if swift(>=5.1)
+        if #available(iOS 13.0, *) {
+          cell.normalBackgroundColor = UIColor.secondarySystemBackground
+          cell.highlightedBackgroundColor = UIColor.tertiarySystemBackground
+          cell.separatorColor = .separator
+        } else {
+          cell.normalBackgroundColor = UIColor(white: 0.97, alpha: 1)
+          cell.highlightedBackgroundColor = UIColor(white: 0.92, alpha: 1)
+          cell.separatorColor = UIColor(white: 0.84, alpha: 1)
+        }
+        #else
         cell.normalBackgroundColor = UIColor(white: 0.97, alpha: 1)
         cell.highlightedBackgroundColor = UIColor(white: 0.92, alpha: 1)
         cell.separatorColor = UIColor(white: 0.84, alpha: 1)
+        #endif
         
         return cell
     }
