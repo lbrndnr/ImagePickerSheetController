@@ -220,7 +220,7 @@ class PreviewCollectionViewLayout: UICollectionViewLayout {
     var finalContentOffset = proposedContentOffset
 
     if let itemFrame = layoutAttributesForItem(at: selectedCellIndexPath)?.frame {
-      let width = collectionView.bounds.size.width
+      let width = min(contentSize.width + (2 * lineSpacing), collectionView.bounds.size.width)
 
       let itemLeft = itemFrame.origin.x
       let itemWidth = itemFrame.size.width
