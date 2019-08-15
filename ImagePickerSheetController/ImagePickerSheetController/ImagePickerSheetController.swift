@@ -365,9 +365,8 @@ public final class ImagePickerSheetController: UIViewController {
         else {
             assetHeight = 0
         }
-        
-        // Just a sanity check, to make sure this doesn't exceed 400 points
-        let scaledHeight: CGFloat = min(assetHeight, maxHeight)
+
+        let scaledHeight: CGFloat = min(assetHeight, 250)
         maximumPreviewHeight = scaledHeight + 2 * previewInset
     }
     
